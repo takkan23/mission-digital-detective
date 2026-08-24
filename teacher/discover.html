@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+<html lang="th">
+
+<head>
+
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <title>
+    Discover | Teacher Control
+  </title>
+
+
+  <link
+    rel="preconnect"
+    href="https://fonts.googleapis.com"
+  >
+
+  <link
+    rel="preconnect"
+    href="https://fonts.gstatic.com"
+    crossorigin
+  >
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700;800&display=swap"
+    rel="stylesheet"
+  >
+
+  <link
+    rel="stylesheet"
+    href="../css/teacher.css"
+  >
+
+</head>
+
+
+<body class="teacher-page">
+
+
+  <!-- =====================================================
+       TOP BAR
+  ====================================================== -->
+
+  <header class="teacher-topbar">
+
+
+    <div class="teacher-brand">
+
+      <div class="teacher-brand-icon">
+        D
+      </div>
+
+
+      <div>
+
+        <div class="teacher-brand-small">
+          MISSION DIGITAL DETECTIVE
+        </div>
+
+        <div class="teacher-brand-title">
+          TEACHER SUCHAREE POONPAL
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <div class="teacher-top-actions">
+
+      <span class="teacher-online">
+        ● SYSTEM ONLINE
+      </span>
+
+      <a
+        href="dashboard.html"
+        class="teacher-back-button"
+      >
+        ← DASHBOARD
+      </a>
+
+    </div>
+
+
+  </header>
+
+
+  <!-- =====================================================
+       DARE NAVIGATION
+  ====================================================== -->
+
+  <nav class="teacher-dare-nav">
+
+
+    <!-- D -->
+
+    <a
+      href="discover.html"
+      class="teacher-dare-nav-link active"
+      data-page="discover"
+    >
+
+      <span class="teacher-dare-nav-code">
+        D
+      </span>
+
+      <span>
+        DISCOVER
+      </span>
+
+    </a>
+
+
+    <!-- A -->
+
+    <a
+      href="checkpoint.html"
+      class="teacher-dare-nav-link"
+      data-page="analyze"
+    >
+
+      <span class="teacher-dare-nav-code">
+        A
+      </span>
+
+      <span>
+        ANALYZE
+      </span>
+
+    </a>
+
+
+    <!-- R -->
+
+    <a
+      href="final.html"
+      class="teacher-dare-nav-link"
+      data-page="reason"
+    >
+
+      <span class="teacher-dare-nav-code">
+        R
+      </span>
+
+      <span>
+        REASON
+      </span>
+
+    </a>
+
+
+    <!-- E -->
+
+    <a
+      href="info.html"
+      class="teacher-dare-nav-link"
+      data-page="evolve"
+    >
+
+      <span class="teacher-dare-nav-code">
+        E
+      </span>
+
+      <span>
+        EVOLVE
+      </span>
+
+    </a>
+
+
+    <!-- SUMMARY -->
+
+    <a
+      href="summary.html"
+      class="
+        teacher-dare-nav-link
+        teacher-dare-nav-summary
+      "
+      data-page="summary"
+    >
+
+      <span class="teacher-dare-nav-code">
+        Σ
+      </span>
+
+      <span>
+        SUMMARY
+      </span>
+
+    </a>
+
+
+  </nav>
+
+
+  <!-- =====================================================
+       HEADER
+  ====================================================== -->
+
+  <section class="teacher-discover-header">
+
+
+    <div>
+
+      <div class="teacher-section-label">
+        D • DISCOVER
+      </div>
+
+
+      <h1>
+        ค้นพบและตระหนักรู้
+      </h1>
+
+
+      <p>
+        ติดตามการเข้าร่วมกิจกรรม Discover
+        ของนักเรียนในแต่ละห้องเรียน
+        ขั้นนี้ไม่มีคะแนนและไม่มีเกณฑ์ผ่าน–ไม่ผ่าน
+        โดยข้อมูลที่นักเรียนทำจะนำไปใช้ประกอบ
+        การวิเคราะห์และสรุปร่วมกันในขั้นถัดไป
+      </p>
+
+    </div>
+
+
+    <div class="teacher-discover-badge">
+      NO SCORE
+    </div>
+
+
+  </section>
+
+<!-- =====================================================
+     MISSION CONTROL
+====================================================== -->
+
+<section class="teacher-mission-control teacher-mission-control-d">
+
+  <div class="teacher-mission-control-head">
+
+    <div>
+
+      <span>
+        MISSION CONTROL
+      </span>
+
+      <h2>
+        ควบคุมการเปิด D • Discover
+      </h2>
+
+      <p>
+        เลือกห้องเรียนด้านล่าง
+        แล้วปลดล็อก Discover
+        ให้ทั้งห้องพร้อมกัน
+        หรือปลดล็อกรายคนจากตารางนักเรียน
+      </p>
+
+    </div>
+
+    <div class="teacher-mission-control-state">
+      TEACHER CONTROLLED
+    </div>
+
+  </div>
+
+
+  <div class="teacher-mission-control-actions">
+
+    <div class="teacher-control-selected-class">
+
+      <span>
+        ห้องที่เลือก
+      </span>
+
+      <strong id="discoverControlClassName">
+        กรุณาเลือกห้องเรียน
+      </strong>
+
+    </div>
+
+
+    <button
+      type="button"
+      id="unlockDiscoverClassButton"
+      class="teacher-control-unlock"
+    >
+      🔓 UNLOCK D ทั้งห้อง
+    </button>
+
+
+    <button
+      type="button"
+      id="lockDiscoverClassButton"
+      class="teacher-control-lock"
+    >
+      🔒 LOCK D ทั้งห้อง
+    </button>
+
+  </div>
+
+
+  <div
+    id="discoverControlMessage"
+    class="teacher-control-message"
+  ></div>
+
+</section>
+  <!-- =====================================================
+       FILTER
+  ====================================================== -->
+
+  <section class="teacher-info-filter">
+
+
+    <select id="discoverClassFilter">
+
+      <option value="">
+        ทุกห้องเรียน
+      </option>
+
+    </select>
+
+
+    <select id="discoverStatusFilter">
+
+      <option value="">
+        ทุกสถานะ
+      </option>
+
+      <option value="completed">
+        ทำ Discover แล้ว
+      </option>
+
+      <option value="pending">
+        ยังไม่ทำ
+      </option>
+
+    </select>
+
+
+    <input
+      type="text"
+      id="discoverStudentSearch"
+      placeholder="ค้นหาชื่อ รหัสนักเรียน หรือเลขที่..."
+    >
+
+
+    <button
+      type="button"
+      id="discoverRefreshButton"
+      class="teacher-dashboard-refresh"
+    >
+      ↻ REFRESH
+    </button>
+
+
+  </section>
+
+
+  <!-- =====================================================
+       SUMMARY
+  ====================================================== -->
+
+  <section class="teacher-discover-summary">
+
+
+    <article class="teacher-info-stat">
+
+      <span>
+        นักเรียนทั้งหมด
+      </span>
+
+      <strong id="discoverTotalStudents">
+        0
+      </strong>
+
+    </article>
+
+
+    <article class="teacher-info-stat">
+
+      <span>
+        ทำ Discover แล้ว
+      </span>
+
+      <strong
+        id="discoverCompletedStudents"
+        class="teacher-green"
+      >
+        0
+      </strong>
+
+    </article>
+
+
+    <article class="teacher-info-stat">
+
+      <span>
+        ยังไม่ทำ
+      </span>
+
+      <strong
+        id="discoverPendingStudents"
+        class="teacher-yellow"
+      >
+        0
+      </strong>
+
+    </article>
+
+
+    <article class="teacher-info-stat">
+
+      <span>
+        ความก้าวหน้า
+      </span>
+
+      <strong
+        id="discoverCompletionPercent"
+        class="teacher-cyan"
+      >
+        0%
+      </strong>
+
+    </article>
+
+
+  </section>
+
+
+  <!-- =====================================================
+       PROGRESS
+  ====================================================== -->
+
+  <section class="teacher-discover-progress-card">
+
+
+    <div class="teacher-discover-progress-head">
+
+      <div>
+
+        <span>
+          DISCOVER PROGRESS
+        </span>
+
+        <strong>
+          ความก้าวหน้าของห้องเรียน
+        </strong>
+
+      </div>
+
+
+      <div id="discoverProgressCount">
+        0 / 0
+      </div>
+
+    </div>
+
+
+    <div class="teacher-discover-track">
+
+      <div
+        id="discoverMainProgressBar"
+        class="teacher-discover-fill"
+      ></div>
+
+    </div>
+
+
+  </section>
+
+
+  <!-- =====================================================
+       STUDENT TABLE
+  ====================================================== -->
+
+  <section class="teacher-discover-table-panel">
+
+
+    <div class="teacher-panel-title">
+
+      <div>
+
+        <span>
+          STUDENT STATUS
+        </span>
+
+        <h2>
+          รายชื่อนักเรียน
+        </h2>
+
+      </div>
+
+
+      <div id="discoverStudentCount">
+        0 คน
+      </div>
+
+    </div>
+
+
+    <div class="teacher-discover-table-wrap">
+
+
+      <table class="teacher-discover-table">
+
+
+        <thead>
+
+          <tr>
+
+            <th>
+              เลขที่
+            </th>
+
+            <th>
+              รหัสนักเรียน
+            </th>
+
+            <th>
+              ชื่อ - นามสกุล
+            </th>
+
+            <th>
+              ห้อง
+            </th>
+            
+            <th>
+              กำลังใช้งาน
+            </th>
+
+            <th>
+              D • DISCOVER
+            </th>
+
+            <th>
+              ACCESS
+            </th>
+
+            <th>
+              ขั้นถัดไป
+            </th>
+
+          </tr>
+
+        </thead>
+
+
+        <tbody id="discoverStudentTableBody">
+
+          <tr>
+
+            <td
+              colspan="8"
+              class="teacher-table-message"
+            >
+              กำลังโหลดข้อมูล...
+            </td>
+
+          </tr>
+
+        </tbody>
+
+
+      </table>
+
+
+    </div>
+
+
+  </section>
+
+
+  <!-- =====================================================
+       NOTE
+  ====================================================== -->
+
+  <section class="teacher-discover-note">
+
+
+    <div class="teacher-discover-note-icon">
+      i
+    </div>
+
+
+    <div>
+
+      <strong>
+        การประเมิน D • DISCOVER
+      </strong>
+
+
+<p>
+  ขั้น Discover ไม่มีคะแนนและไม่มีเกณฑ์ผ่าน–ไม่ผ่าน
+  เมื่อนักเรียนทำกิจกรรมครบ ระบบจะบันทึกสถานะ Completed
+  ส่วน A • Analyze จะเปิดให้นักเรียนเข้าใช้งาน
+  เมื่อครูผู้สอนปลดล็อกภารกิจให้ทั้งห้อง
+  หรือปลดล็อกให้นักเรียนเป็นรายบุคคล
+</p>
+
+    </div>
+
+
+  </section>
+
+
+  <!-- =====================================================
+       FOOTER
+  ====================================================== -->
+
+  <footer class="teacher-dashboard-footer">
+
+    <span>
+      D • DISCOVER
+    </span>
+
+    <strong>
+      DARE LEARNING MODEL
+    </strong>
+
+    <span>
+      TEACHER CONTROL
+    </span>
+
+  </footer>
+
+
+  <!-- =====================================================
+       SCRIPTS
+  ====================================================== -->
+
+  <script
+    src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"
+  ></script>
+
+<script src="../js/supabase-config.js"></script>
+
+<script src="../js/teacher-auth.js"></script>
+
+<script src="../js/teacher-discover.js?v=20260822-01"></script>
+
+
+</body>
+
+</html>

@@ -1,0 +1,797 @@
+<!DOCTYPE html>
+<html lang="th">
+
+<head>
+
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <title>
+    Teacher Dashboard | Mission Digital Detective
+  </title>
+
+
+  <link
+    rel="preconnect"
+    href="https://fonts.googleapis.com"
+  >
+
+  <link
+    rel="preconnect"
+    href="https://fonts.gstatic.com"
+    crossorigin
+  >
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700;800&display=swap"
+    rel="stylesheet"
+  >
+
+
+  <link
+    rel="stylesheet"
+    href="../css/teacher.css"
+  >
+
+</head>
+
+
+<body class="teacher-page">
+
+
+  <!-- =====================================================
+       TOP BAR
+  ====================================================== -->
+
+  <header class="teacher-topbar">
+
+
+    <div class="teacher-brand">
+
+      <div class="teacher-brand-icon">
+        T
+      </div>
+
+
+      <div>
+
+        <div class="teacher-brand-small">
+          MISSION DIGITAL DETECTIVE
+        </div>
+
+        <div class="teacher-brand-title">
+          TEACHER SUCHAREE POONPAL
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <div class="teacher-top-actions">
+
+      <span class="teacher-online">
+        ● SYSTEM ONLINE
+      </span>
+
+<a
+  href="change-password.html"
+  class="teacher-back-button"
+>
+  🔐 CHANGE PASSWORD
+</a>
+      <button
+        type="button"
+        id="teacherLogoutButton"
+        class="teacher-back-button"
+      >
+        LOGOUT
+      </button>
+
+    </div>
+
+
+  </header>
+
+
+  <!-- =====================================================
+       HEADER
+  ====================================================== -->
+
+  <section class="teacher-dashboard-header">
+
+
+    <div>
+
+      <div class="teacher-section-label">
+        TEACHER DASHBOARD
+      </div>
+
+
+      <h1>
+        DARE LEARNING CONTROL
+      </h1>
+
+
+      <p>
+        ติดตามความก้าวหน้า ผลคะแนน
+        และชิ้นงานของนักเรียนในแต่ละขั้นของ
+        DARE Learning Model
+      </p>
+
+    </div>
+
+
+    <div class="teacher-dashboard-badge">
+      LIVE DATA
+    </div>
+
+
+  </section>
+
+
+  <!-- =====================================================
+       FILTER
+  ====================================================== -->
+
+  <section class="teacher-dashboard-filter">
+
+
+    <select id="dashboardClassFilter">
+
+      <option value="">
+        ทุกห้องเรียน
+      </option>
+
+    </select>
+
+
+    <button
+      type="button"
+      id="refreshDashboardButton"
+      class="teacher-dashboard-refresh"
+    >
+      ↻ REFRESH
+    </button>
+
+
+  </section>
+
+
+  <!-- =====================================================
+       OVERVIEW
+  ====================================================== -->
+
+  <section class="teacher-dashboard-overview">
+
+
+    <article class="teacher-dashboard-stat">
+
+      <small>
+        นักเรียนทั้งหมด
+      </small>
+
+      <strong id="dashboardTotalStudents">
+        0
+      </strong>
+
+      <span>
+        ACTIVE STUDENTS
+      </span>
+
+    </article>
+
+
+    <article class="teacher-dashboard-stat">
+
+      <small>
+        D • DISCOVER
+      </small>
+
+      <strong
+        id="dashboardDiscoverCompleted"
+        class="teacher-cyan"
+      >
+        0
+      </strong>
+
+      <span>
+        COMPLETED
+      </span>
+
+    </article>
+
+
+    <article class="teacher-dashboard-stat">
+
+      <small>
+        A • ANALYZE
+      </small>
+
+      <strong
+        id="dashboardAnalyzePassed"
+        class="teacher-purple-text"
+      >
+        0
+      </strong>
+
+      <span>
+        PASSED
+      </span>
+
+    </article>
+
+
+    <article class="teacher-dashboard-stat">
+
+      <small>
+        R • REASON
+      </small>
+
+      <strong
+        id="dashboardReasonPassed"
+        class="teacher-yellow"
+      >
+        0
+      </strong>
+
+      <span>
+        PASSED
+      </span>
+
+    </article>
+
+
+    <article class="teacher-dashboard-stat">
+
+      <small>
+        E • EVOLVE
+      </small>
+
+      <strong
+        id="dashboardEvolvePassed"
+        class="teacher-green"
+      >
+        0
+      </strong>
+
+      <span>
+        PASSED
+      </span>
+
+    </article>
+
+
+  </section>
+
+<article class="teacher-dashboard-stat">
+
+    </article>
+
+
+    <!-- ONLINE STUDENTS -->
+
+    <article class="teacher-dashboard-stat">
+
+      <small>
+        กำลังเข้าใช้งาน
+      </small>
+
+      <strong
+        id="dashboardOnlineStudents"
+        class="teacher-green"
+      >
+        0
+      </strong>
+
+      <span>
+        🟢 ONLINE NOW
+      </span>
+
+    </article>
+
+
+  </section>
+  <!-- =====================================================
+       DARE MODULES
+  ====================================================== -->
+
+  <section class="teacher-dashboard-modules">
+
+
+    <!-- DISCOVER -->
+
+    <a
+      href="discover.html"
+      class="teacher-dashboard-module"
+    >
+
+      <div class="teacher-module-number">
+        D
+      </div>
+
+
+      <div class="teacher-module-content">
+
+        <small>
+          DISCOVER
+        </small>
+
+        <h2>
+          ค้นพบและตระหนักรู้
+        </h2>
+
+        <p>
+          ตรวจสอบการเข้าร่วมกิจกรรม Discover
+          และสถานะการทำกิจกรรมของนักเรียน
+        </p>
+
+      </div>
+
+
+      <div class="teacher-module-meta">
+
+        <strong id="moduleDiscoverCount">
+          0
+        </strong>
+
+        <span>
+          COMPLETED
+        </span>
+
+      </div>
+
+    </a>
+
+
+    <!-- ANALYZE -->
+
+    <a
+      href="checkpoint.html"
+      class="teacher-dashboard-module"
+    >
+
+      <div class="teacher-module-number">
+        A
+      </div>
+
+
+      <div class="teacher-module-content">
+
+        <small>
+          ANALYZE
+        </small>
+
+        <h2>
+          วิเคราะห์ Learning Base
+        </h2>
+
+        <p>
+          ดูคะแนน 5 Learning Base
+          คะแนนรวม 10 คะแนน
+          และผลผ่านเกณฑ์ของนักเรียน
+        </p>
+
+      </div>
+
+
+      <div class="teacher-module-meta">
+
+        <strong id="moduleAnalyzeCount">
+          0
+        </strong>
+
+        <span>
+          PASSED
+        </span>
+
+      </div>
+
+    </a>
+
+
+    <!-- REASON -->
+
+    <a
+      href="final.html"
+      class="teacher-dashboard-module"
+    >
+
+      <div class="teacher-module-number">
+        R
+      </div>
+
+
+      <div class="teacher-module-content">
+
+        <small>
+          REASON
+        </small>
+
+        <h2>
+          Final Mission
+        </h2>
+
+        <p>
+          ตรวจสอบคะแนนการใช้เหตุผล
+          การตัดสินใจจากสถานการณ์ดิจิทัล
+          และระดับคุณภาพ
+        </p>
+
+      </div>
+
+
+      <div class="teacher-module-meta">
+
+        <strong id="moduleReasonCount">
+          0
+        </strong>
+
+        <span>
+          PASSED
+        </span>
+
+      </div>
+
+    </a>
+
+
+    <!-- EVOLVE -->
+
+    <a
+      href="info.html"
+      class="teacher-dashboard-module"
+    >
+
+      <div class="teacher-module-number">
+        E
+      </div>
+
+
+      <div class="teacher-module-content">
+
+        <small>
+          EVOLVE
+        </small>
+
+        <h2>
+          Info Mission
+        </h2>
+
+        <p>
+          ตรวจสอบชิ้นงานอินโฟกราฟิก
+          Reflection และประเมินรูบริก
+          4 ด้าน รวม 16 คะแนน
+        </p>
+
+      </div>
+
+
+      <div class="teacher-module-meta">
+
+        <strong id="moduleEvolveWaiting">
+          0
+        </strong>
+
+        <span>
+          WAITING
+        </span>
+
+      </div>
+
+    </a>
+<!-- CLASS MANAGEMENT -->
+
+<a
+  href="class.html"
+  class="teacher-dashboard-module teacher-class-module"
+>
+
+  <div class="teacher-module-number">
+    C
+  </div>
+
+
+  <div class="teacher-module-content">
+
+    <small>
+      CLASS MANAGEMENT
+    </small>
+
+    <h2>
+      จัดการนักเรียน
+    </h2>
+
+    <p>
+      ดูรายชื่อนักเรียน
+      ตรวจสอบสถานะบัญชี
+      รีเซ็ตรหัสผ่าน
+      และจัดการความก้าวหน้าของนักเรียน
+    </p>
+
+  </div>
+
+
+  <div class="teacher-module-meta">
+
+    <strong>
+      →
+    </strong>
+
+    <span>
+      MANAGE CLASS
+    </span>
+
+  </div>
+
+</a>
+
+    <!-- SUMMARY -->
+
+    <a
+      href="summary.html"
+      class="teacher-dashboard-module teacher-summary-module"
+    >
+
+      <div class="teacher-module-number">
+        Σ
+      </div>
+
+
+      <div class="teacher-module-content">
+
+        <small>
+          SUMMARY
+        </small>
+
+        <h2>
+          สรุปผล DARE
+        </h2>
+
+        <p>
+          ดูผล D • A • R • E
+          ของนักเรียนแต่ละคนในหน้าสรุปรวม
+        </p>
+
+      </div>
+
+
+      <div class="teacher-module-meta">
+
+        <strong id="moduleDareComplete">
+          0
+        </strong>
+
+        <span>
+          DARE COMPLETE
+        </span>
+
+      </div>
+
+    </a>
+
+
+  </section>
+
+
+  <!-- =====================================================
+       CLASS PROGRESS
+  ====================================================== -->
+
+  <section class="teacher-dashboard-progress">
+
+
+    <div class="teacher-panel-title">
+
+      <div>
+
+        <span>
+          CLASS PROGRESS
+        </span>
+
+        <h2>
+          ความก้าวหน้าของห้องเรียน
+        </h2>
+
+      </div>
+
+    </div>
+
+
+    <!-- D -->
+
+    <div class="teacher-dashboard-progress-row">
+
+      <div class="teacher-progress-label">
+
+        <strong>
+          D
+        </strong>
+
+        <span>
+          Discover
+        </span>
+
+      </div>
+
+
+      <div class="teacher-progress-track">
+
+        <div
+          id="discoverProgressBar"
+          class="teacher-progress-fill teacher-progress-cyan"
+        ></div>
+
+      </div>
+
+
+      <div
+        id="discoverProgressText"
+        class="teacher-progress-value"
+      >
+        0%
+      </div>
+
+    </div>
+
+
+    <!-- A -->
+
+    <div class="teacher-dashboard-progress-row">
+
+      <div class="teacher-progress-label">
+
+        <strong>
+          A
+        </strong>
+
+        <span>
+          Analyze
+        </span>
+
+      </div>
+
+
+      <div class="teacher-progress-track">
+
+        <div
+          id="analyzeProgressBar"
+          class="teacher-progress-fill teacher-progress-purple"
+        ></div>
+
+      </div>
+
+
+      <div
+        id="analyzeProgressText"
+        class="teacher-progress-value"
+      >
+        0%
+      </div>
+
+    </div>
+
+
+    <!-- R -->
+
+    <div class="teacher-dashboard-progress-row">
+
+      <div class="teacher-progress-label">
+
+        <strong>
+          R
+        </strong>
+
+        <span>
+          Reason
+        </span>
+
+      </div>
+
+
+      <div class="teacher-progress-track">
+
+        <div
+          id="reasonProgressBar"
+          class="teacher-progress-fill teacher-progress-yellow"
+        ></div>
+
+      </div>
+
+
+      <div
+        id="reasonProgressText"
+        class="teacher-progress-value"
+      >
+        0%
+      </div>
+
+    </div>
+
+
+    <!-- E -->
+
+    <div class="teacher-dashboard-progress-row">
+
+      <div class="teacher-progress-label">
+
+        <strong>
+          E
+        </strong>
+
+        <span>
+          Evolve
+        </span>
+
+      </div>
+
+
+      <div class="teacher-progress-track">
+
+        <div
+          id="evolveProgressBar"
+          class="teacher-progress-fill teacher-progress-green"
+        ></div>
+
+      </div>
+
+
+      <div
+        id="evolveProgressText"
+        class="teacher-progress-value"
+      >
+        0%
+      </div>
+
+    </div>
+
+
+  </section>
+
+
+  <!-- =====================================================
+       FOOTER
+  ====================================================== -->
+
+  <footer class="teacher-dashboard-footer">
+
+    <span>
+      MISSION DIGITAL DETECTIVE
+    </span>
+
+    <strong>
+      DARE LEARNING MODEL
+    </strong>
+
+    <span>
+      TEACHER CONTROL
+    </span>
+
+  </footer>
+
+
+  <!-- =====================================================
+       SUPABASE
+  ====================================================== -->
+
+  <script
+    src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"
+  ></script>
+
+  <script
+    src="../js/supabase-config.js"
+  ></script>
+
+
+  <script
+    src="../js/teacher-dashboard.js"
+  ></script>
+
+
+</body>
+
+</html>

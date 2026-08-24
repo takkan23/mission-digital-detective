@@ -1,0 +1,892 @@
+<!DOCTYPE html>
+<html lang="th">
+
+<head>
+
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <title>
+    Mission HQ | Mission Digital Detective
+  </title>
+
+  <link
+    rel="preconnect"
+    href="https://fonts.googleapis.com"
+  >
+
+  <link
+    rel="preconnect"
+    href="https://fonts.gstatic.com"
+    crossorigin
+  >
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700;800&display=swap"
+    rel="stylesheet"
+  >
+
+  <link
+    rel="stylesheet"
+    href="css/style.css"
+  >
+
+</head>
+
+
+<body class="dashboard-page-body">
+
+
+  <div class="dashboard-bg-grid"></div>
+
+  <div class="dashboard-glow dashboard-glow-cyan"></div>
+  <div class="dashboard-glow dashboard-glow-pink"></div>
+
+
+  <main class="mission-hq">
+
+
+    <!-- =====================================================
+         TOP BAR
+    ====================================================== -->
+
+    <header class="hq-topbar">
+
+
+      <div class="hq-brand">
+
+        <div class="hq-brand-icon">
+          ◈
+        </div>
+
+        <div>
+
+          <small>
+            MISSION DIGITAL DETECTIVE
+          </small>
+
+          <strong>
+            STUDENT MISSION HQ
+          </strong>
+
+        </div>
+
+      </div>
+
+
+      <div class="hq-top-status">
+
+        <div class="hq-online">
+
+          <span></span>
+
+          SYSTEM ONLINE
+
+        </div>
+
+
+        <button
+          type="button"
+          class="hq-logout"
+          id="logoutButton"
+        >
+
+          LOG OUT
+
+        </button>
+
+      </div>
+
+
+    </header>
+
+
+    <!-- =====================================================
+         STUDENT HERO
+    ====================================================== -->
+
+    <section class="hq-hero">
+
+
+      <div class="hq-hero-content">
+
+
+        <div class="hq-eyebrow">
+          DETECTIVE PROFILE
+        </div>
+
+
+        <h1>
+
+          ยินดีต้อนรับ
+
+          <span id="studentName">
+            นักสืบดิจิทัล
+          </span>
+
+        </h1>
+
+
+        <div class="hq-student-meta">
+
+          <span>
+            ID:
+            <strong id="studentIdDisplay">
+              00000
+            </strong>
+          </span>
+
+          <span>
+            CLASS:
+            <strong id="classroomDisplay">
+              ม.2/3
+            </strong>
+          </span>
+
+          <span>
+            STATUS:
+            <strong class="hq-status-active">
+              ACTIVE
+            </strong>
+          </span>
+
+        </div>
+
+
+        <p>
+
+          ดำเนินภารกิจตามลำดับของ
+          <strong>DARE Learning Model</strong>
+          เพื่อพัฒนาทักษะการใช้เทคโนโลยีสารสนเทศ
+          อย่างปลอดภัย มีวิจารณญาณ และมีความรับผิดชอบ
+
+        </p>
+
+
+      </div>
+
+
+      <!-- =================================================
+           PROFILE CARD
+      ================================================== -->
+
+      <div class="hq-profile-card">
+
+
+        <div class="hq-avatar">
+          🤖
+        </div>
+
+
+<div>
+
+  <small>
+    DETECTIVE PROFILE
+  </small>
+
+  <strong id="profileStudentName">
+    นักเรียน
+  </strong>
+
+  <p>
+    ID:
+    <span id="profileStudentId">
+      -----
+    </span>
+  </p>
+
+  <p>
+    ความก้าวหน้า
+    <span id="overallProgressText">
+      0%
+    </span>
+  </p>
+
+</div>
+
+
+        <div class="hq-profile-progress">
+
+          <span id="overallProgressBar"></span>
+
+        </div>
+
+
+      </div>
+
+
+    </section>
+
+
+    <!-- =====================================================
+         DARE OVERVIEW
+    ====================================================== -->
+
+    <section class="hq-section">
+
+
+      <div class="hq-section-header">
+
+        <div>
+
+          <small>
+            LEARNING PATH
+          </small>
+
+          <h2>
+            DARE Learning Model
+          </h2>
+
+        </div>
+
+
+        <div class="hq-path-status">
+
+          <span id="completedMissionCount">
+            0
+          </span>
+
+          / 4 COMPLETE
+
+        </div>
+
+      </div>
+
+
+      <div class="hq-mission-grid">
+
+
+        <!-- =================================================
+             D
+        ================================================== -->
+
+        <article
+          class="hq-mission-card active"
+          data-mission="discover"
+        >
+
+
+          <div class="hq-mission-top">
+
+            <span class="hq-stage-number">
+              01
+            </span>
+
+            <span
+              class="hq-mission-status"
+              id="discoverStatus"
+            >
+              ACTIVE
+            </span>
+
+          </div>
+
+
+          <div class="hq-stage-letter cyan">
+            D
+          </div>
+
+
+          <small>
+            DISCOVER
+          </small>
+
+
+          <h3>
+            ค้นพบและตระหนักรู้
+          </h3>
+
+
+          <p>
+
+            เริ่มต้นจากเหตุการณ์หรือสถานการณ์ดิจิทัล
+            สังเกตปัญหา แสดงความคิดเห็น
+            และตระหนักถึงผลกระทบของการใช้เทคโนโลยี
+
+          </p>
+
+
+          <div class="hq-card-line cyan-line"></div>
+
+
+          <button
+            type="button"
+            class="hq-mission-button"
+            data-page="discover.html"
+            id="discoverButton"
+          >
+
+            START DISCOVER →
+
+          </button>
+
+
+        </article>
+
+
+        <!-- =================================================
+             A
+        ================================================== -->
+
+        <article
+          class="hq-mission-card locked"
+          data-mission="analyze"
+        >
+
+
+          <div class="hq-mission-top">
+
+            <span class="hq-stage-number">
+              02
+            </span>
+
+            <span
+              class="hq-mission-status locked-label"
+              id="analyzeStatus"
+            >
+              LOCKED
+            </span>
+
+          </div>
+
+
+          <div class="hq-stage-letter purple">
+            A
+          </div>
+
+
+          <small>
+            ANALYZE
+          </small>
+
+
+          <h3>
+            สืบค้นและวิเคราะห์
+          </h3>
+
+
+          <p>
+
+            ศึกษาองค์ความรู้จาก Learning Base
+            สืบค้นข้อมูลจากแหล่งที่น่าเชื่อถือ
+            และผ่าน Learning Checkpoint ครบทุกฐาน
+
+          </p>
+
+
+          <div class="hq-card-line purple-line"></div>
+
+
+          <button
+            type="button"
+            class="hq-mission-button"
+            data-page="analyze.html"
+            id="analyzeButton"
+            disabled
+          >
+
+            🔒 WAIT FOR TEACHER
+
+          </button>
+
+
+        </article>
+
+
+        <!-- =================================================
+             R
+        ================================================== -->
+
+        <article
+          class="hq-mission-card locked"
+          data-mission="reason"
+        >
+
+
+          <div class="hq-mission-top">
+
+            <span class="hq-stage-number">
+              03
+            </span>
+
+            <span
+              class="hq-mission-status locked-label"
+              id="reasonStatus"
+            >
+              LOCKED
+            </span>
+
+          </div>
+
+
+          <div class="hq-stage-letter pink">
+            R
+          </div>
+
+
+          <small>
+            REASON
+          </small>
+
+
+          <h3>
+            ใช้เหตุผลและตัดสินใจ
+          </h3>
+
+
+          <p>
+
+            เข้าสู่ Final Mission
+            วิเคราะห์สถานการณ์ดิจิทัล
+            เลือกแนวทางปฏิบัติและอธิบายเหตุผลประกอบการตัดสินใจ
+
+          </p>
+
+
+          <div class="hq-card-line pink-line"></div>
+
+
+          <button
+            type="button"
+            class="hq-mission-button"
+            data-page="final-mission.html"
+            id="reasonButton"
+            disabled
+          >
+
+            🔒 FINAL MISSION LOCKED
+
+          </button>
+
+
+        </article>
+
+
+        <!-- =================================================
+             E
+        ================================================== -->
+
+        <article
+          class="hq-mission-card locked"
+          data-mission="evolve"
+        >
+
+
+          <div class="hq-mission-top">
+
+            <span class="hq-stage-number">
+              04
+            </span>
+
+            <span
+              class="hq-mission-status locked-label"
+              id="evolveStatus"
+            >
+              LOCKED
+            </span>
+
+          </div>
+
+
+          <div class="hq-stage-letter yellow">
+            E
+          </div>
+
+
+          <small>
+            EVOLVE
+          </small>
+
+
+          <h3>
+            สร้างสรรค์และพัฒนา
+          </h3>
+
+
+          <p>
+
+            สร้าง Infographic
+            เรื่องแนวทางการใช้เทคโนโลยีสารสนเทศ
+            อย่างปลอดภัยและมีความรับผิดชอบ
+            พร้อม Reflection
+
+          </p>
+
+
+          <div class="hq-card-line yellow-line"></div>
+
+
+          <button
+            type="button"
+            class="hq-mission-button"
+            data-page="info-mission.html"
+            id="evolveButton"
+            disabled
+          >
+
+            🔒 INFO MISSION LOCKED
+
+          </button>
+
+
+        </article>
+
+
+      </div>
+
+
+    </section>
+
+<!-- =====================================================
+     DARE FINAL RESULT
+     แสดงเมื่อทำภารกิจครบ 100% เท่านั้น
+====================================================== -->
+
+<section
+  class="hq-section"
+  id="finalResultSection"
+  style="display: none;"
+>
+
+  <div class="hq-section-header">
+
+    <div>
+      <small>
+        DARE FINAL RESULT
+      </small>
+
+      <h2>
+        🎉 สรุปผลการประเมิน
+      </h2>
+    </div>
+
+    <div class="hq-path-status">
+      100% COMPLETE
+    </div>
+
+  </div>
+
+
+  <div class="dare-result-card">
+
+    <div class="dare-result-title">
+
+      <small>
+        MISSION ACCOMPLISHED
+      </small>
+
+      <h2>
+        ภารกิจ DARE สำเร็จครบ 100%
+      </h2>
+
+      <p>
+        ผลการเรียนรู้และการประเมินจากภารกิจ
+        Analyze • Reason • Evolve
+      </p>
+
+    </div>
+
+
+    <div class="dare-result-score">
+
+      <span>
+        คะแนนรวม
+      </span>
+
+      <strong id="finalTotalScore">
+        0 / 36
+      </strong>
+
+    </div>
+
+
+    <div class="dare-result-percent">
+
+      <span id="finalPercentage">
+        0.00%
+      </span>
+
+      <small>
+        คะแนนร้อยละ
+      </small>
+
+    </div>
+
+
+    <div class="dare-result-summary">
+
+      <div>
+
+        <small>
+          ระดับคุณภาพ
+        </small>
+
+        <strong id="finalQuality">
+          -
+        </strong>
+
+      </div>
+
+
+      <div>
+
+        <small>
+          ผลการประเมิน
+        </small>
+
+        <strong id="finalEvaluation">
+          -
+        </strong>
+
+      </div>
+
+    </div>
+
+
+    <div class="dare-result-breakdown">
+
+      <div>
+        <span>
+          A • ANALYZE
+        </span>
+
+        <strong id="finalAnalyzeScore">
+          0 / 10
+        </strong>
+      </div>
+
+
+      <div>
+        <span>
+          R • REASON
+        </span>
+
+        <strong id="finalReasonScore">
+          0 / 10
+        </strong>
+      </div>
+
+
+      <div>
+        <span>
+          E • EVOLVE
+        </span>
+
+        <strong id="finalEvolveScore">
+          0 / 16
+        </strong>
+      </div>
+
+    </div>
+
+  </div>
+
+</section>
+    <!-- =====================================================
+         CURRENT MISSION
+    ====================================================== -->
+
+    <section class="hq-bottom-grid">
+
+
+      <article class="hq-info-card">
+
+
+        <div class="hq-info-head">
+
+          <div>
+
+            <small>
+              CURRENT MISSION
+            </small>
+
+            <h3>
+              ภารกิจปัจจุบัน
+            </h3>
+
+          </div>
+
+
+          <span class="hq-info-code">
+            D-01
+          </span>
+
+        </div>
+
+
+        <div class="hq-current-content">
+
+          <div class="hq-current-icon">
+            🔎
+          </div>
+
+          <div>
+
+            <strong>
+              Discover
+            </strong>
+
+            <p id="currentMissionDescription">
+
+              รอครูเปิดภารกิจเพื่อเริ่มต้น
+              ค้นพบและตระหนักรู้จากสถานการณ์ดิจิทัล
+
+            </p>
+
+          </div>
+
+        </div>
+
+
+      </article>
+
+
+      <!-- =================================================
+           MISSION CONTROL STATUS
+      ================================================== -->
+
+      <article class="hq-info-card">
+
+
+        <div class="hq-info-head">
+
+          <div>
+
+            <small>
+              MISSION CONTROL
+            </small>
+
+            <h3>
+              สถานะจากครู
+            </h3>
+
+          </div>
+
+
+          <span class="hq-live-indicator">
+            ● LIVE
+          </span>
+
+        </div>
+
+
+        <div class="hq-control-list">
+
+
+          <div>
+
+            <span>
+              Discover
+            </span>
+
+            <strong
+              class="control-open"
+              id="controlDiscover"
+            >
+              OPEN
+            </strong>
+
+          </div>
+
+
+          <div>
+
+            <span>
+              Analyze
+            </span>
+
+            <strong
+              class="control-locked"
+              id="controlAnalyze"
+            >
+              LOCKED
+            </strong>
+
+          </div>
+
+
+          <div>
+
+            <span>
+              Final Mission
+            </span>
+
+            <strong
+              class="control-locked"
+              id="controlReason"
+            >
+              LOCKED
+            </strong>
+
+          </div>
+
+
+          <div>
+
+            <span>
+              Info Mission
+            </span>
+
+            <strong
+              class="control-locked"
+              id="controlEvolve"
+            >
+              LOCKED
+            </strong>
+
+          </div>
+
+
+        </div>
+
+
+      </article>
+
+
+    </section>
+
+
+    <!-- =====================================================
+         FOOTER
+    ====================================================== -->
+
+    <footer class="hq-footer">
+
+      <span>
+        🔒 SECURE LEARNING SESSION
+      </span>
+
+      <strong>
+        MISSION DIGITAL DETECTIVE
+      </strong>
+
+      <span>
+        DARE LEARNING MODEL
+      </span>
+
+    </footer>
+
+
+  </main>
+
+
+<script
+  src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"
+></script>
+
+<script
+  src="js/supabase-config.js"
+></script>
+
+<script
+  src="js/dashboard.js?v=20260822-01"
+></script>
+
+
+</body>
+
+</html>

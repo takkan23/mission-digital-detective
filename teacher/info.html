@@ -1,0 +1,1134 @@
+<!DOCTYPE html>
+<html lang="th">
+
+<head>
+
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <title>
+    Evolve | Teacher Control
+  </title>
+
+  <link
+    rel="preconnect"
+    href="https://fonts.googleapis.com"
+  >
+
+  <link
+    rel="preconnect"
+    href="https://fonts.gstatic.com"
+    crossorigin
+  >
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700;800&display=swap"
+    rel="stylesheet"
+  >
+
+  <link
+    rel="stylesheet"
+    href="../css/teacher.css"
+  >
+
+</head>
+
+
+<body class="teacher-page">
+
+
+  <!-- =====================================================
+       TOP BAR
+  ====================================================== -->
+
+  <header class="teacher-topbar">
+
+    <div class="teacher-brand">
+
+      <div class="teacher-brand-icon">
+        E
+      </div>
+
+      <div>
+
+        <div class="teacher-brand-small">
+          MISSION DIGITAL DETECTIVE
+        </div>
+
+        <div class="teacher-brand-title">
+          TEACHER SUCHAREE POONPAL
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <div class="teacher-top-actions">
+
+      <span class="teacher-online">
+        ● SYSTEM ONLINE
+      </span>
+
+      <a
+        href="dashboard.html"
+        class="teacher-back-button"
+      >
+        ← DASHBOARD
+      </a>
+
+    </div>
+
+  </header>
+
+
+  <!-- =====================================================
+       DARE NAVIGATION
+  ====================================================== -->
+
+  <nav class="teacher-dare-nav">
+
+    <a
+      href="discover.html"
+      class="teacher-dare-nav-link"
+      data-page="discover"
+    >
+      <span class="teacher-dare-nav-code">
+        D
+      </span>
+      <span>
+        DISCOVER
+      </span>
+    </a>
+
+
+    <a
+      href="checkpoint.html"
+      class="teacher-dare-nav-link"
+      data-page="analyze"
+    >
+      <span class="teacher-dare-nav-code">
+        A
+      </span>
+      <span>
+        ANALYZE
+      </span>
+    </a>
+
+
+    <a
+      href="final.html"
+      class="teacher-dare-nav-link"
+      data-page="reason"
+    >
+      <span class="teacher-dare-nav-code">
+        R
+      </span>
+      <span>
+        REASON
+      </span>
+    </a>
+
+
+    <a
+      href="info.html"
+      class="teacher-dare-nav-link active"
+      data-page="evolve"
+    >
+      <span class="teacher-dare-nav-code">
+        E
+      </span>
+      <span>
+        EVOLVE
+      </span>
+    </a>
+
+
+    <a
+      href="summary.html"
+      class="
+        teacher-dare-nav-link
+        teacher-dare-nav-summary
+      "
+      data-page="summary"
+    >
+      <span class="teacher-dare-nav-code">
+        Σ
+      </span>
+      <span>
+        SUMMARY
+      </span>
+    </a>
+
+  </nav>
+
+
+  <!-- =====================================================
+       HEADER
+  ====================================================== -->
+
+  <section class="teacher-evolve-header">
+
+    <div>
+
+      <div class="teacher-section-label">
+        E • EVOLVE
+      </div>
+
+      <h1>
+        ต่อยอดและประยุกต์ใช้
+      </h1>
+
+      <p>
+        ตรวจชิ้นงาน Info Mission
+        และประเมินคุณภาพผลงานของนักเรียน
+        ตามเกณฑ์ 4 ด้าน ด้านละ 4 คะแนน
+        รวมคะแนนเต็ม 16 คะแนน
+      </p>
+
+    </div>
+
+
+    <div class="teacher-evolve-badge">
+      16 POINTS
+    </div>
+
+  </section>
+
+
+  <!-- =====================================================
+       AUTO UNLOCK
+  ====================================================== -->
+
+  <section class="teacher-evolve-auto-card">
+
+    <div>
+
+      <span>
+        AUTO UNLOCK
+      </span>
+
+      <h2>
+        E • EVOLVE เปิดอัตโนมัติ
+      </h2>
+
+      <p>
+        เมื่อนักเรียนผ่าน D • Discover,
+        A • Analyze และ R • Reason
+        ครบทั้ง 3 ขั้น
+        ระบบจะปลดล็อก E ให้อัตโนมัติ
+      </p>
+
+    </div>
+
+
+    <div class="teacher-evolve-auto-icon">
+      ⚡
+    </div>
+
+  </section>
+
+
+  <!-- =====================================================
+       FILTER
+  ====================================================== -->
+
+  <section class="teacher-info-filter">
+
+    <select id="evolveClassFilter">
+
+      <option value="">
+        ทุกห้องเรียน
+      </option>
+
+    </select>
+
+
+    <select id="evolveStatusFilter">
+
+      <option value="">
+        ทุกสถานะ
+      </option>
+
+      <option value="locked">
+        ยังไม่ปลดล็อก
+      </option>
+
+      <option value="ready">
+        พร้อมทำ E
+      </option>
+
+      <option value="submitted">
+        ส่งแล้ว รอตรวจ
+      </option>
+
+      <option value="passed">
+        ตรวจแล้ว • ผ่าน
+      </option>
+
+      <option value="failed">
+        ตรวจแล้ว • ไม่ผ่าน
+      </option>
+
+    </select>
+
+
+    <input
+      id="evolveStudentSearch"
+      type="text"
+      placeholder="ค้นหาชื่อ รหัสนักเรียน หรือเลขที่..."
+    >
+
+
+    <button
+      type="button"
+      id="evolveRefreshButton"
+      class="teacher-dashboard-refresh"
+    >
+      ↻ REFRESH
+    </button>
+
+  </section>
+
+<!-- =====================================================
+     SUMMARY
+====================================================== -->
+
+<section class="teacher-evolve-summary">
+
+  <article class="teacher-info-stat">
+
+    <span>
+      นักเรียนทั้งหมด
+    </span>
+
+    <strong id="evolveTotalStudents">
+      0
+    </strong>
+
+  </article>
+
+
+  <article class="teacher-info-stat">
+
+    <span>
+      พร้อมเข้า E
+    </span>
+
+    <strong
+      id="evolveUnlockedStudents"
+      class="teacher-green"
+    >
+      0
+    </strong>
+
+  </article>
+
+
+  <article class="teacher-info-stat">
+
+    <span>
+      ส่งแล้ว รอตรวจ
+    </span>
+
+    <strong
+      id="evolveWaitingStudents"
+      class="teacher-cyan"
+    >
+      0
+    </strong>
+
+  </article>
+
+
+  <article class="teacher-info-stat">
+
+    <span>
+      ผ่าน
+    </span>
+
+    <strong
+      id="evolvePassedStudents"
+      class="teacher-green"
+    >
+      0
+    </strong>
+
+  </article>
+
+
+  <article class="teacher-info-stat">
+
+    <span>
+      ไม่ผ่าน
+    </span>
+
+    <strong
+      id="evolveFailedStudents"
+      class="teacher-pink"
+    >
+      0
+    </strong>
+
+  </article>
+
+</section>
+<!-- =====================================================
+     EVOLVE PROGRESS
+====================================================== -->
+
+<section class="teacher-evolve-progress-card">
+
+  <div class="teacher-discover-progress-head">
+
+    <div>
+
+      <span>
+        EVOLVE ASSESSMENT
+      </span>
+
+      <strong>
+        ความคืบหน้าการตรวจชิ้นงาน
+      </strong>
+
+    </div>
+
+
+    <div id="evolveProgressCount">
+      0 / 0
+    </div>
+
+  </div>
+
+
+  <div class="teacher-discover-track">
+
+    <div
+      id="evolveMainProgressBar"
+      class="
+        teacher-discover-fill
+        teacher-evolve-progress-fill
+      "
+    ></div>
+
+  </div>
+
+</section>
+  <!-- =====================================================
+       TABLE
+  ====================================================== -->
+
+  <section class="teacher-evolve-table-panel">
+
+    <div class="teacher-panel-title">
+
+      <div>
+
+        <span>
+          INFO MISSION ASSESSMENT
+        </span>
+
+        <h2>
+          ตรวจและประเมินชิ้นงาน
+        </h2>
+
+      </div>
+
+      <div id="evolveStudentCount">
+        0 คน
+      </div>
+
+    </div>
+
+
+    <div class="teacher-discover-table-wrap">
+
+      <table class="teacher-discover-table">
+
+        <thead>
+
+          <tr>
+
+            <th>เลขที่</th>
+            <th>รหัสนักเรียน</th>
+            <th>ชื่อ - นามสกุล</th>
+            <th>ห้อง</th>
+            <th>D/A/R</th>
+            <th>E ACCESS</th>
+            <th>ส่งงาน</th>
+            <th>คะแนน</th>
+            <th>ระดับ</th>
+            <th>ผล</th>
+            <th>ตรวจงาน</th>
+
+          </tr>
+
+        </thead>
+
+
+        <tbody id="evolveStudentTableBody">
+
+          <tr>
+
+            <td
+              colspan="11"
+              class="teacher-table-message"
+            >
+              กำลังโหลดข้อมูล...
+            </td>
+
+          </tr>
+
+        </tbody>
+
+      </table>
+
+    </div>
+
+  </section>
+
+
+  <!-- =====================================================
+       NOTE
+  ====================================================== -->
+
+  <section class="teacher-discover-note">
+
+    <div class="teacher-discover-note-icon">
+      i
+    </div>
+
+    <div>
+
+      <strong>
+        เกณฑ์การประเมิน E • EVOLVE
+      </strong>
+
+      <p>
+        ประเมิน 4 ด้าน ได้แก่ รู้ใช้ รู้คิด รู้สิทธิ และรู้สื่อ
+        ด้านละ 1–4 คะแนน รวมเต็ม 16 คะแนน
+        ผ่านเมื่อได้ตั้งแต่ 12 คะแนนขึ้นไป
+        หรือระดับคุณภาพ 3 ขึ้นไป
+      </p>
+
+    </div>
+
+  </section>
+
+
+  <!-- =====================================================
+       ASSESSMENT MODAL
+  ====================================================== -->
+
+  <div
+    id="evolveAssessmentModal"
+    class="teacher-modal teacher-hidden"
+  >
+
+    <div
+      id="evolveAssessmentBackdrop"
+      class="teacher-modal-backdrop"
+    ></div>
+
+
+    <section
+      class="
+        teacher-modal-card
+        teacher-evolve-assessment-modal
+      "
+    >
+
+      <button
+        type="button"
+        id="closeEvolveAssessmentModal"
+        class="teacher-modal-close"
+      >
+        ×
+      </button>
+
+
+      <div class="teacher-section-label">
+        INFO MISSION ASSESSMENT
+      </div>
+
+
+      <h2>
+        ประเมินชิ้นงานนักเรียน
+      </h2>
+
+
+      <!-- STUDENT -->
+
+      <div class="teacher-reset-student">
+
+        <span>
+          นักเรียน
+        </span>
+
+        <strong id="evolveAssessmentStudentName">
+          -
+        </strong>
+
+        <small id="evolveAssessmentStudentInfo">
+          -
+        </small>
+
+      </div>
+
+
+      <!-- SUBMISSION LINK -->
+
+      <div class="teacher-evolve-submission-box">
+
+        <div>
+
+          <span>
+            STUDENT SUBMISSION
+          </span>
+
+          <strong>
+            ชิ้นงาน Info Mission
+          </strong>
+
+          <small id="evolveSubmissionUrlText">
+            ยังไม่พบลิงก์ชิ้นงาน
+          </small>
+
+        </div>
+
+
+        <a
+          id="evolveSubmissionLink"
+          class="
+            teacher-evolve-submission-link
+            teacher-hidden
+          "
+          href="#"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          เปิดชิ้นงาน ↗
+        </a>
+
+      </div>
+
+
+      <!-- =================================================
+           RUBRIC 1
+      ================================================== -->
+
+      <section
+        class="teacher-evolve-rubric-item"
+        data-score-target="evolveScore1"
+      >
+
+        <div class="teacher-evolve-rubric-title">
+
+          <span>
+            ด้านที่ 1
+          </span>
+
+          <strong>
+            รู้ใช้ : ใช้เทคโนโลยีอย่างปลอดภัย
+          </strong>
+
+        </div>
+
+
+        <input
+          type="hidden"
+          id="evolveScore1"
+          value=""
+        >
+
+
+        <div class="teacher-rubric-guide">
+
+          <button
+            type="button"
+            class="teacher-rubric-level level-4"
+            data-score="4"
+          >
+            <strong>
+              4 • ดีเยี่ยม
+            </strong>
+
+            <span>
+              บอกวิธีใช้เทคโนโลยีอย่างปลอดภัยได้
+              ถูกต้องและครบถ้วน
+            </span>
+          </button>
+
+
+          <button
+            type="button"
+            class="teacher-rubric-level level-3"
+            data-score="3"
+          >
+            <strong>
+              3 • ดี
+            </strong>
+
+            <span>
+              บอกวิธีใช้เทคโนโลยีอย่างปลอดภัยได้
+              ถูกต้องเกือบครบ
+            </span>
+          </button>
+
+
+          <button
+            type="button"
+            class="teacher-rubric-level level-2"
+            data-score="2"
+          >
+            <strong>
+              2 • พอใช้
+            </strong>
+
+            <span>
+              บอกวิธีที่ปลอดภัยได้บางส่วน
+            </span>
+          </button>
+
+
+          <button
+            type="button"
+            class="teacher-rubric-level level-1"
+            data-score="1"
+          >
+            <strong>
+              1 • ควรปรับปรุง
+            </strong>
+
+            <span>
+              บอกวิธีที่ปลอดภัยไม่ได้
+              หรือไม่ถูกต้อง
+            </span>
+          </button>
+
+        </div>
+
+      </section>
+
+
+      <!-- =================================================
+           RUBRIC 2
+      ================================================== -->
+
+      <section
+        class="teacher-evolve-rubric-item"
+        data-score-target="evolveScore2"
+      >
+
+        <div class="teacher-evolve-rubric-title">
+
+          <span>
+            ด้านที่ 2
+          </span>
+
+          <strong>
+            รู้คิด : ใช้อย่างรับผิดชอบ
+          </strong>
+
+        </div>
+
+
+        <input
+          type="hidden"
+          id="evolveScore2"
+          value=""
+        >
+
+
+        <div class="teacher-rubric-guide">
+
+          <button
+            type="button"
+            class="teacher-rubric-level level-4"
+            data-score="4"
+          >
+            <strong>
+              4 • ดีเยี่ยม
+            </strong>
+
+            <span>
+              บอกสิ่งที่ควรทำและไม่ควรทำ
+              พร้อมคำนึงถึงผลที่อาจเกิดกับตนเองและผู้อื่น
+            </span>
+          </button>
+
+
+          <button
+            type="button"
+            class="teacher-rubric-level level-3"
+            data-score="3"
+          >
+            <strong>
+              3 • ดี
+            </strong>
+
+            <span>
+              บอกสิ่งที่ควรทำและไม่ควรทำได้
+              ถูกต้องเกือบครบ
+            </span>
+          </button>
+
+
+          <button
+            type="button"
+            class="teacher-rubric-level level-2"
+            data-score="2"
+          >
+            <strong>
+              2 • พอใช้
+            </strong>
+
+            <span>
+              บอกสิ่งที่ควรทำหรือไม่ควรทำ
+              ได้บางส่วน
+            </span>
+          </button>
+
+
+          <button
+            type="button"
+            class="teacher-rubric-level level-1"
+            data-score="1"
+          >
+            <strong>
+              1 • ควรปรับปรุง
+            </strong>
+
+            <span>
+              ยังบอกสิ่งที่ควรทำ
+              หรือไม่ควรทำไม่ได้
+            </span>
+          </button>
+
+        </div>
+
+      </section>
+
+
+      <!-- =================================================
+           RUBRIC 3
+      ================================================== -->
+
+      <section
+        class="teacher-evolve-rubric-item"
+        data-score-target="evolveScore3"
+      >
+
+        <div class="teacher-evolve-rubric-title">
+
+          <span>
+            ด้านที่ 3
+          </span>
+
+          <strong>
+            รู้สิทธิ : เคารพสิทธิของผู้อื่น
+          </strong>
+
+        </div>
+
+
+        <input
+          type="hidden"
+          id="evolveScore3"
+          value=""
+        >
+
+
+        <div class="teacher-rubric-guide">
+
+          <button
+            type="button"
+            class="teacher-rubric-level level-4"
+            data-score="4"
+          >
+            <strong>
+              4 • ดีเยี่ยม
+            </strong>
+
+            <span>
+              ใช้ข้อมูลและภาพอย่างเหมาะสม
+              บอกแหล่งที่มา
+              และไม่ละเมิดสิทธิผู้อื่น
+            </span>
+          </button>
+
+
+          <button
+            type="button"
+            class="teacher-rubric-level level-3"
+            data-score="3"
+          >
+            <strong>
+              3 • ดี
+            </strong>
+
+            <span>
+              ใช้ข้อมูลและภาพอย่างเหมาะสม
+              และบอกแหล่งที่มาเกือบครบ
+            </span>
+          </button>
+
+
+          <button
+            type="button"
+            class="teacher-rubric-level level-2"
+            data-score="2"
+          >
+            <strong>
+              2 • พอใช้
+            </strong>
+
+            <span>
+              บอกแหล่งที่มาเพียงบางส่วน
+            </span>
+          </button>
+
+
+          <button
+            type="button"
+            class="teacher-rubric-level level-1"
+            data-score="1"
+          >
+            <strong>
+              1 • ควรปรับปรุง
+            </strong>
+
+            <span>
+              ไม่บอกแหล่งที่มา
+              หรือใช้ข้อมูล/ภาพไม่เหมาะสม
+            </span>
+          </button>
+
+        </div>
+
+      </section>
+
+
+      <!-- =================================================
+           RUBRIC 4
+      ================================================== -->
+
+      <section
+        class="teacher-evolve-rubric-item"
+        data-score-target="evolveScore4"
+      >
+
+        <div class="teacher-evolve-rubric-title">
+
+          <span>
+            ด้านที่ 4
+          </span>
+
+          <strong>
+            รู้สื่อ : สื่อสารอย่างเหมาะสม
+          </strong>
+
+        </div>
+
+
+        <input
+          type="hidden"
+          id="evolveScore4"
+          value=""
+        >
+
+
+        <div class="teacher-rubric-guide">
+
+          <button
+            type="button"
+            class="teacher-rubric-level level-4"
+            data-score="4"
+          >
+            <strong>
+              4 • ดีเยี่ยม
+            </strong>
+
+            <span>
+              อินโฟกราฟิกสื่อสารได้ถูกต้อง
+              ชัดเจน เข้าใจง่าย
+              และนำไปใช้ได้จริง
+            </span>
+          </button>
+
+
+          <button
+            type="button"
+            class="teacher-rubric-level level-3"
+            data-score="3"
+          >
+            <strong>
+              3 • ดี
+            </strong>
+
+            <span>
+              สื่อสารได้ถูกต้อง
+              และเข้าใจง่าย
+            </span>
+          </button>
+
+
+          <button
+            type="button"
+            class="teacher-rubric-level level-2"
+            data-score="2"
+          >
+            <strong>
+              2 • พอใช้
+            </strong>
+
+            <span>
+              สื่อสารได้บางส่วน
+              แต่ยังไม่ชัดเจน
+            </span>
+          </button>
+
+
+          <button
+            type="button"
+            class="teacher-rubric-level level-1"
+            data-score="1"
+          >
+            <strong>
+              1 • ควรปรับปรุง
+            </strong>
+
+            <span>
+              เนื้อหาไม่ชัดเจน
+              หรือไม่ตรงเรื่อง
+            </span>
+          </button>
+
+        </div>
+
+      </section>
+
+
+      <!-- =================================================
+           RESULT
+      ================================================== -->
+
+      <section class="teacher-evolve-score-preview">
+
+        <div>
+
+          <span>
+            คะแนนรวม
+          </span>
+
+          <strong id="evolvePreviewTotal">
+            0 / 16
+          </strong>
+
+        </div>
+
+
+        <div>
+
+          <span>
+            ระดับคุณภาพ
+          </span>
+
+          <strong id="evolvePreviewLevel">
+            -
+          </strong>
+
+        </div>
+
+
+        <div>
+
+          <span>
+            ผลการประเมิน
+          </span>
+
+          <strong id="evolvePreviewResult">
+            -
+          </strong>
+
+        </div>
+
+      </section>
+
+
+      <div
+        id="evolveAssessmentMessage"
+        class="teacher-control-message"
+      ></div>
+
+
+      <div class="teacher-reset-actions">
+
+        <button
+          type="button"
+          id="cancelEvolveAssessmentButton"
+          class="teacher-reset-cancel"
+        >
+          CANCEL
+        </button>
+
+
+        <button
+          type="button"
+          id="saveEvolveAssessmentButton"
+          class="teacher-progress-reset-confirm"
+        >
+          SAVE ASSESSMENT →
+        </button>
+
+      </div>
+
+
+    </section>
+
+  </div>
+
+
+  <!-- =====================================================
+       FOOTER
+  ====================================================== -->
+
+  <footer class="teacher-dashboard-footer">
+
+    <span>
+      E • EVOLVE
+    </span>
+
+    <strong>
+      DARE LEARNING MODEL
+    </strong>
+
+    <span>
+      TEACHER CONTROL
+    </span>
+
+  </footer>
+
+
+  <!-- =====================================================
+       SCRIPTS
+  ====================================================== -->
+
+  <script
+    src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"
+  ></script>
+
+<script src="../js/supabase-config.js"></script>
+
+<script src="../js/teacher-auth.js"></script>
+
+<script src="../js/teacher-info.js?v=20260822-05"></script>
+
+
+</body>
+
+</html>
