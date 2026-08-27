@@ -1535,12 +1535,12 @@ button {
 
   padding: 0 28px;
 
-  color: var(--cyan);
+  color:rgb(255, 166, 0);
 
   border-top:
-    1px solid rgba(0, 216, 255, 0.40);
+    5px solid rgba(246, 245, 242, 0.4);
 
-  font-size: 0.70rem;
+  font-size: 2rem;
 }
 
 .footer-lights {
@@ -8891,4 +8891,157 @@ button {
     flex-direction: column;
   }
 
+}
+/* =========================================================
+   R • REASON : 5 MINUTE TIMER
+========================================================= */
+
+.status-timer {
+    color: var(--green);
+    font-variant-numeric: tabular-nums;
+    letter-spacing: 0.05em;
+}
+
+.status-timer.warning {
+    color: var(--yellow);
+}
+
+.status-timer.danger {
+    color: var(--pink);
+
+    animation:
+        reasonTimerPulse
+        0.8s
+        ease-in-out
+        infinite
+        alternate;
+}
+
+@keyframes reasonTimerPulse {
+
+    from {
+        opacity: 1;
+        transform: scale(1);
+    }
+
+    to {
+        opacity: 0.55;
+        transform: scale(1.04);
+    }
+
+}
+
+
+/* R STATUS = 4 ช่อง */
+
+.final-status-grid {
+    grid-template-columns:
+        repeat(
+            4,
+            minmax(0, 1fr)
+        );
+}
+
+
+/* TABLET */
+
+@media (max-width: 850px) {
+
+    .final-status-grid {
+        grid-template-columns:
+            repeat(
+                2,
+                minmax(0, 1fr)
+            );
+    }
+
+}
+
+
+/* MOBILE */
+
+@media (max-width: 600px) {
+
+    .final-status-grid {
+        grid-template-columns:
+            1fr;
+    }
+
+}
+/* =========================================================
+   TEACHER DASHBOARD : เพิ่มขนาดตัวอักษร
+========================================================= */
+
+/* ตัวอักษรพื้นฐานหน้าครู */
+.teacher-page,
+.teacher-dashboard {
+    font-size: 18px;
+}
+
+
+/* หัวข้อใหญ่ */
+.teacher-page h1,
+.teacher-dashboard h1 {
+    font-size: 32px;
+}
+
+
+/* หัวข้อรอง */
+.teacher-page h2,
+.teacher-dashboard h2 {
+    font-size: 24px;
+}
+
+
+/* ข้อความทั่วไป */
+.teacher-page p,
+.teacher-dashboard p {
+    font-size: 18px;
+    line-height: 1.7;
+}
+
+
+/* ตารางรายชื่อนักเรียน */
+.teacher-page table,
+.teacher-dashboard table {
+    font-size: 18px;
+}
+
+
+/* หัวตาราง */
+.teacher-page th,
+.teacher-dashboard th {
+    font-size: 17px;
+    font-weight: 700;
+}
+
+
+/* ข้อมูลในตาราง */
+.teacher-page td,
+.teacher-dashboard td {
+    font-size: 18px;
+}
+
+
+/* ปุ่ม */
+.teacher-page button,
+.teacher-dashboard button {
+    font-size: 17px;
+}
+
+
+/* ช่องค้นหา / เลือกห้อง */
+.teacher-page input,
+.teacher-page select,
+.teacher-dashboard input,
+.teacher-dashboard select {
+    font-size: 17px;
+}
+
+
+/* คะแนน */
+.teacher-page .score,
+.teacher-dashboard .score {
+    font-size: 19px;
+    font-weight: 700;
 }
