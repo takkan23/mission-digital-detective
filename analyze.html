@@ -1,0 +1,5822 @@
+<!DOCTYPE html>
+<html lang="th">
+
+<head>
+
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <title>
+    Analyze | Mission Digital Detective
+  </title>
+
+  <link
+    rel="preconnect"
+    href="https://fonts.googleapis.com"
+  >
+
+  <link
+    rel="preconnect"
+    href="https://fonts.gstatic.com"
+    crossorigin
+  >
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700;800&display=swap"
+    rel="stylesheet"
+  >
+
+  <link
+    rel="stylesheet"
+    href="css/style.css"
+  >
+
+
+  <style>
+
+    :root {
+
+      --az-bg:
+        #020916;
+
+      --az-panel:
+        #03111f;
+
+      --az-cyan:
+        #00d8ff;
+
+      --az-purple:
+        #8f5cff;
+
+      --az-pink:
+        #ff2e91;
+
+      --az-yellow:
+        #ffd21a;
+
+      --az-green:
+        #2cff8c;
+
+      --az-white:
+        #f1f7fa;
+
+      --az-gray:
+        #879aa5;
+
+    }
+
+
+    * {
+
+      box-sizing:
+        border-box;
+
+    }
+
+
+    html {
+
+      scroll-behavior:
+        smooth;
+
+    }
+
+
+    body {
+
+      margin:
+        0;
+
+      min-height:
+        100vh;
+
+      overflow-x:
+        hidden;
+
+      color:
+        var(--az-white);
+
+      font-family:
+        "Kanit",
+        sans-serif;
+
+      background:
+
+        radial-gradient(
+          circle at 15% 10%,
+          rgba(
+            0,
+            216,
+            255,
+            0.08
+          ),
+          transparent 35%
+        ),
+
+        radial-gradient(
+          circle at 80% 65%,
+          rgba(
+            143,
+            92,
+            255,
+            0.06
+          ),
+          transparent 36%
+        ),
+
+        linear-gradient(
+          180deg,
+          #020a17,
+          #010710
+        );
+
+    }
+
+
+    button,
+    input {
+
+      font-family:
+        inherit;
+
+    }
+
+
+    button {
+
+      cursor:
+        pointer;
+
+    }
+
+
+    .hidden {
+
+      display:
+        none !important;
+
+    }
+
+
+    /* =====================================================
+       BACKGROUND
+    ===================================================== */
+
+    .analyze-bg-grid {
+
+      position:
+        fixed;
+
+      inset:
+        0;
+
+      z-index:
+        0;
+
+      pointer-events:
+        none;
+
+      opacity:
+        0.11;
+
+      background-image:
+
+        linear-gradient(
+          rgba(
+            0,
+            216,
+            255,
+            0.08
+          ) 1px,
+          transparent 1px
+        ),
+
+        linear-gradient(
+          90deg,
+          rgba(
+            0,
+            216,
+            255,
+            0.08
+          ) 1px,
+          transparent 1px
+        );
+
+      background-size:
+        58px 58px;
+
+    }
+
+
+    /* =====================================================
+       PAGE
+    ===================================================== */
+
+    .analyze-page {
+
+      position:
+        relative;
+
+      z-index:
+        1;
+
+      width:
+        min(
+          1540px,
+          calc(
+            100% - 28px
+          )
+        );
+
+      margin:
+        auto;
+
+      padding:
+        14px 0 36px;
+
+    }
+
+
+    /* =====================================================
+       TOP BAR
+    ===================================================== */
+
+    .analyze-topbar {
+
+      display:
+        flex;
+
+      align-items:
+        center;
+
+      justify-content:
+        space-between;
+
+      gap:
+        16px;
+
+      min-height:
+        58px;
+
+      padding:
+        10px 18px;
+
+      border:
+        1px solid
+        rgba(
+          0,
+          216,
+          255,
+          0.20
+        );
+
+      border-radius:
+        10px;
+
+      background:
+        rgba(
+          2,
+          12,
+          23,
+          0.82
+        );
+
+    }
+
+
+    .analyze-back-link {
+
+      color:
+        var(--az-cyan);
+
+      text-decoration:
+        none;
+
+      font-size:
+        0.78rem;
+
+      letter-spacing:
+        0.08em;
+
+    }
+
+
+    .analyze-status {
+
+      display:
+        flex;
+
+      align-items:
+        center;
+
+      gap:
+        8px;
+
+      color:
+        var(--az-green);
+
+      font-size:
+        0.7rem;
+
+      letter-spacing:
+        0.08em;
+
+    }
+
+
+    .analyze-status-dot {
+
+      width:
+        8px;
+
+      height:
+        8px;
+
+      border-radius:
+        50%;
+
+      background:
+        var(--az-green);
+
+      box-shadow:
+        0 0 10px
+        var(--az-green);
+
+    }
+
+
+    /* =====================================================
+       HEADER
+    ===================================================== */
+
+    .analyze-header {
+
+      display:
+        flex;
+
+      align-items:
+        center;
+
+      gap:
+        18px;
+
+      margin-top:
+        14px;
+
+      padding:
+        22px 26px;
+
+      border:
+        1px solid
+        rgba(
+          143,
+          92,
+          255,
+          0.22
+        );
+
+      border-radius:
+        12px;
+
+      background:
+
+        linear-gradient(
+          120deg,
+          rgba(
+            143,
+            92,
+            255,
+            0.055
+          ),
+          rgba(
+            2,
+            12,
+            23,
+            0.90
+          ) 55%,
+          rgba(
+            0,
+            216,
+            255,
+            0.035
+          )
+        );
+
+    }
+
+
+    .analyze-header-number {
+
+      width:
+        62px;
+
+      height:
+        62px;
+
+      display:
+        flex;
+
+      align-items:
+        center;
+
+      justify-content:
+        center;
+
+      flex:
+        0 0 auto;
+
+      border:
+        1px solid
+        rgba(
+          143,
+          92,
+          255,
+          0.55
+        );
+
+      color:
+        var(--az-purple);
+
+      font-size:
+        1.45rem;
+
+      font-weight:
+        800;
+
+    }
+
+
+    .analyze-header-content {
+
+      flex:
+        1;
+
+    }
+
+
+    .analyze-header small {
+
+      color:
+        var(--az-purple);
+
+      font-size:
+        0.68rem;
+
+      letter-spacing:
+        0.12em;
+
+    }
+
+
+    .analyze-header h1 {
+
+      margin:
+        2px 0 4px;
+
+      font-size:
+        clamp(
+          1.8rem,
+          3vw,
+          3rem
+        );
+
+    }
+
+
+    .analyze-header p {
+
+      margin:
+        0;
+
+      max-width:
+        800px;
+
+      color:
+        var(--az-gray);
+
+      line-height:
+        1.7;
+
+    }
+
+
+    .analyze-active-badge {
+
+      padding:
+        8px 13px;
+
+      border:
+        1px solid
+        rgba(
+          44,
+          255,
+          140,
+          0.35
+        );
+
+      color:
+        var(--az-green);
+
+      font-size:
+        0.68rem;
+
+      letter-spacing:
+        0.08em;
+
+      white-space:
+        nowrap;
+
+    }
+
+
+    /* =====================================================
+       KPI
+    ===================================================== */
+
+    .analyze-kpi-grid {
+
+      display:
+        flex;
+
+      gap:
+        18px;
+
+      margin-top:
+        16px;
+
+    }
+
+
+    .analyze-kpi-card {
+
+      flex:
+        1;
+
+      min-height:
+        92px;
+
+      padding:
+        16px 24px;
+
+      border:
+        1px solid
+        rgba(
+          0,
+          216,
+          255,
+          0.4
+        );
+
+      border-radius:
+        10px;
+
+      background:
+
+        linear-gradient(
+          145deg,
+          rgba(
+            3,
+            17,
+            31,
+            0.97
+          ),
+          rgba(
+            2,
+            9,
+            18,
+            0.96
+          )
+        );
+
+    }
+
+
+    .analyze-kpi-card small {
+
+      display:
+        block;
+
+      color:
+        var(--az-cyan);
+
+      font-size:
+        0.68rem;
+
+      letter-spacing:
+        0.07em;
+
+    }
+
+
+    .analyze-kpi-card strong {
+
+      display:
+        block;
+
+      margin-top:
+        4px;
+
+      color:
+        var(--az-yellow);
+
+      font-size:
+        2rem;
+
+    }
+
+
+    /* =====================================================
+       LEARNING PATH
+    ===================================================== */
+
+    .learning-path-panel {
+
+      margin-top:
+        18px;
+
+      padding:
+        18px 20px;
+
+      border:
+        1px solid
+        rgba(
+          0,
+          216,
+          255,
+          0.45
+        );
+
+      border-radius:
+        14px;
+
+      background:
+        rgba(
+          3,
+          17,
+          31,
+          0.96
+        );
+
+    }
+
+
+    .learning-path-header {
+
+      display:
+        flex;
+
+      align-items:
+        flex-end;
+
+      justify-content:
+        space-between;
+
+      gap:
+        16px;
+
+      margin-bottom:
+        14px;
+
+    }
+
+
+    .learning-path-header small {
+
+      color:
+        var(--az-purple);
+
+    }
+
+
+    .learning-path-header h2 {
+
+      margin:
+        2px 0 0;
+
+    }
+
+
+    #currentBaseText {
+
+      color:
+        var(--az-gray);
+
+      font-size:
+        0.8rem;
+
+    }
+
+
+    .learning-path-scroll {
+
+      overflow-x:
+        auto;
+
+    }
+
+
+    .learning-path-grid {
+
+      display:
+        flex;
+
+      min-width:
+        850px;
+
+      border:
+        1px solid
+        rgba(
+          0,
+          216,
+          255,
+          0.22
+        );
+
+      border-radius:
+        10px;
+
+      overflow:
+        hidden;
+
+    }
+
+
+    .learning-path-item {
+
+      flex:
+        1;
+
+      min-height:
+        190px;
+
+      display:
+        flex;
+
+      flex-direction:
+        column;
+
+      align-items:
+        center;
+
+      justify-content:
+        center;
+
+      gap:
+        7px;
+
+      border:
+        0;
+
+      border-right:
+        1px solid
+        rgba(
+          0,
+          216,
+          255,
+          0.18
+        );
+
+      color:
+        white;
+
+      background:
+        transparent;
+
+    }
+
+
+    .learning-path-item:last-child {
+
+      border-right:
+        0;
+
+    }
+
+
+    .learning-base-number {
+
+      width:
+        64px;
+
+      height:
+        64px;
+
+      display:
+        flex;
+
+      align-items:
+        center;
+
+      justify-content:
+        center;
+
+      border-radius:
+        50%;
+
+      background:
+        white;
+
+      color:
+        #09121c;
+
+      font-size:
+        1.7rem;
+
+      font-weight:
+        800;
+
+    }
+
+
+    .learning-path-icon {
+
+      font-size:
+        1.8rem;
+
+    }
+
+
+    .learning-path-item.locked {
+
+      opacity:
+        0.32;
+
+      cursor:
+        not-allowed;
+
+    }
+
+
+    .learning-path-item.active {
+
+      opacity:
+        1;
+
+      background:
+        rgba(
+          143,
+          92,
+          255,
+          0.08
+        );
+
+    }
+
+
+    .learning-path-item.completed {
+
+      opacity:
+        1;
+
+    }
+
+
+    .learning-path-item.completed small {
+
+      color:
+        var(--az-green);
+
+    }
+
+
+    /* =====================================================
+       WORKSPACE
+    ===================================================== */
+
+    .analyze-workspace {
+
+      display:
+        flex;
+
+      align-items:
+        stretch;
+
+      gap:
+        18px;
+
+      margin-top:
+        18px;
+
+    }
+
+
+    .base-info-card,
+    .checkpoint-card,
+    .rules-card {
+
+      border-radius:
+        12px;
+
+      background:
+        rgba(
+          3,
+          17,
+          31,
+          0.97
+        );
+
+    }
+
+
+    .base-info-card {
+
+      flex:
+        0 0 28%;
+
+      padding:
+        20px;
+
+      border:
+        1px solid
+        rgba(
+          0,
+          216,
+          255,
+          0.48
+        );
+
+    }
+
+
+    .checkpoint-card {
+
+      flex:
+        1;
+
+      min-width:
+        0;
+
+      padding:
+        20px;
+
+      border:
+        1px solid
+        rgba(
+          143,
+          92,
+          255,
+          0.50
+        );
+
+    }
+
+
+    .rules-card {
+
+      flex:
+        0 0 23%;
+
+      padding:
+        20px;
+
+      border:
+        1px solid
+        rgba(
+          0,
+          216,
+          255,
+          0.42
+        );
+
+    }
+
+
+    .base-info-label {
+
+      color:
+        var(--az-cyan);
+
+      font-size:
+        0.7rem;
+
+    }
+
+
+    .base-info-header {
+
+      display:
+        flex;
+
+      align-items:
+        center;
+
+      gap:
+        14px;
+
+      margin-top:
+        14px;
+
+    }
+
+
+    .base-info-icon {
+
+      width:
+        76px;
+
+      height:
+        76px;
+
+      display:
+        flex;
+
+      align-items:
+        center;
+
+      justify-content:
+        center;
+
+      flex:
+        0 0 auto;
+
+      border:
+        1px solid
+        var(
+          --base-color,
+          var(--az-cyan)
+        );
+
+      border-radius:
+        50%;
+
+      font-size:
+        2rem;
+
+    }
+
+
+    .base-info-header h2 {
+
+      margin:
+        0;
+
+      color:
+        var(
+          --base-color,
+          var(--az-cyan)
+        );
+
+    }
+
+
+    .base-info-header p {
+
+      margin:
+        4px 0 0;
+
+      color:
+        var(--az-gray);
+
+      line-height:
+        1.5;
+
+    }
+
+
+    .base-info-line,
+    .rules-line {
+
+      height:
+        1px;
+
+      margin:
+        18px 0;
+
+      background:
+        rgba(
+          0,
+          216,
+          255,
+          0.25
+        );
+
+    }
+
+
+    .base-key-list {
+
+      padding:
+        0;
+
+      list-style:
+        none;
+
+    }
+
+
+    .base-key-list li {
+
+      margin:
+        10px 0;
+
+      line-height:
+        1.5;
+
+    }
+
+
+    .base-key-list li::before {
+
+      content:
+        "✓";
+
+      margin-right:
+        8px;
+
+      color:
+        var(--az-green);
+
+    }
+
+
+    .base-quote {
+
+      margin-top:
+        18px;
+
+      padding:
+        14px;
+
+      border:
+        1px solid
+        rgba(
+          143,
+          92,
+          255,
+          0.30
+        );
+
+      color:
+        var(--az-cyan);
+
+      text-align:
+        center;
+
+      line-height:
+        1.6;
+
+    }
+
+
+    /* =====================================================
+       QUESTION
+    ===================================================== */
+
+    .checkpoint-head-top {
+
+      display:
+        flex;
+
+      justify-content:
+        space-between;
+
+      align-items:
+        center;
+
+    }
+
+
+    .checkpoint-brand {
+
+      color:
+        var(--az-purple);
+
+      font-weight:
+        600;
+
+    }
+
+
+    .checkpoint-progress {
+
+      height:
+        7px;
+
+      margin:
+        14px 0 20px;
+
+      overflow:
+        hidden;
+
+      border-radius:
+        10px;
+
+      background:
+        rgba(
+          255,
+          255,
+          255,
+          0.07
+        );
+
+    }
+
+
+    #checkpointProgressBar {
+
+      display:
+        block;
+
+      height:
+        100%;
+
+      background:
+        var(--az-purple);
+
+    }
+
+
+    #checkpointQuestionText {
+
+      line-height:
+        1.55;
+
+    }
+
+
+    .checkpoint-options {
+
+      display:
+        flex;
+
+      flex-direction:
+        column;
+
+      gap:
+        10px;
+
+      margin-top:
+        16px;
+
+    }
+
+
+    .checkpoint-option {
+
+      display:
+        flex;
+
+      align-items:
+        center;
+
+      gap:
+        12px;
+
+      min-height:
+        60px;
+
+      padding:
+        10px 14px;
+
+      border:
+        1px solid
+        rgba(
+          0,
+          216,
+          255,
+          0.35
+        );
+
+      border-radius:
+        8px;
+
+      cursor:
+        pointer;
+
+      background:
+        rgba(
+          2,
+          16,
+          28,
+          0.75
+        );
+
+    }
+
+
+    .checkpoint-option input {
+
+      display:
+        none;
+
+    }
+
+
+    .checkpoint-option-letter {
+
+      width:
+        38px;
+
+      height:
+        38px;
+
+      display:
+        flex;
+
+      align-items:
+        center;
+
+      justify-content:
+        center;
+
+      flex:
+        0 0 auto;
+
+      border:
+        2px solid
+        currentColor;
+
+      border-radius:
+        50%;
+
+      font-weight:
+        700;
+
+    }
+
+
+    .choice-a {
+
+      color:
+        var(--az-cyan);
+
+    }
+
+
+    .choice-b {
+
+      color:
+        var(--az-purple);
+
+    }
+
+
+    .choice-c {
+
+      color:
+        var(--az-pink);
+
+    }
+
+
+    .choice-d {
+
+      color:
+        var(--az-yellow);
+
+    }
+
+
+    .checkpoint-option p {
+
+      margin:
+        0;
+
+      color:
+        #dce5ea;
+
+    }
+
+
+    .checkpoint-option.selected {
+
+      border-color:
+        var(--az-purple);
+
+      background:
+        rgba(
+          143,
+          92,
+          255,
+          0.12
+        );
+
+    }
+
+
+    .checkpoint-option.correct-answer {
+
+      border-color:
+        var(--az-green);
+
+      background:
+        rgba(
+          44,
+          255,
+          140,
+          0.06
+        );
+
+    }
+
+
+    .checkpoint-option.wrong-answer {
+
+      border-color:
+        var(--az-pink);
+
+      background:
+        rgba(
+          255,
+          46,
+          145,
+          0.06
+        );
+
+    }
+
+
+    .checkpoint-feedback {
+
+      margin-top:
+        12px;
+
+      padding:
+        11px 13px;
+
+      border-left:
+        3px solid;
+
+    }
+
+
+    .checkpoint-feedback.correct {
+
+      color:
+        var(--az-green);
+
+      border-color:
+        var(--az-green);
+
+      background:
+        rgba(
+          44,
+          255,
+          140,
+          0.04
+        );
+
+    }
+
+
+    .checkpoint-feedback.wrong {
+
+      color:
+        #ff82a7;
+
+      border-color:
+        var(--az-pink);
+
+      background:
+        rgba(
+          255,
+          46,
+          145,
+          0.04
+        );
+
+    }
+
+
+    .checkpoint-actions {
+
+      display:
+        flex;
+
+      justify-content:
+        space-between;
+
+      gap:
+        12px;
+
+      margin-top:
+        18px;
+
+    }
+
+
+    .checkpoint-prev,
+    .checkpoint-check {
+
+      min-height:
+        48px;
+
+      padding:
+        0 18px;
+
+      border-radius:
+        8px;
+
+    }
+
+
+    .checkpoint-prev {
+
+      border:
+        1px solid
+        rgba(
+          255,
+          255,
+          255,
+          0.22
+        );
+
+      color:
+        white;
+
+      background:
+        transparent;
+
+    }
+
+
+    .checkpoint-check {
+
+      border:
+        0;
+
+      color:
+        white;
+
+      background:
+        linear-gradient(
+          90deg,
+          #7638ff,
+          #a632ff
+        );
+
+      font-weight:
+        700;
+
+    }
+
+
+    /* =====================================================
+       RULES
+    ===================================================== */
+
+    .rules-card h2 {
+
+      margin:
+        0;
+
+      color:
+        var(--az-green);
+
+    }
+
+
+    .rule-item {
+
+      display:
+        flex;
+
+      gap:
+        10px;
+
+      margin-bottom:
+        17px;
+
+    }
+
+
+    .rule-icon {
+
+      width:
+        36px;
+
+      height:
+        36px;
+
+      display:
+        flex;
+
+      align-items:
+        center;
+
+      justify-content:
+        center;
+
+      flex:
+        0 0 auto;
+
+      border:
+        2px solid;
+
+      border-radius:
+        50%;
+
+    }
+
+
+    .rule-correct {
+
+      color:
+        var(--az-green);
+
+    }
+
+
+    .rule-wrong {
+
+      color:
+        var(--az-pink);
+
+    }
+
+
+    .rule-retry {
+
+      color:
+        var(--az-yellow);
+
+    }
+
+
+    .rule-item p {
+
+      margin:
+        0;
+
+      line-height:
+        1.5;
+
+    }
+
+
+    .rule-item strong {
+
+      display:
+        block;
+
+      font-weight:
+        400;
+
+    }
+
+
+    .current-base-score {
+
+      margin-top:
+        24px;
+
+      padding:
+        18px;
+
+      border:
+        1px solid
+        rgba(
+          0,
+          216,
+          255,
+          0.32
+        );
+
+      border-radius:
+        8px;
+
+      text-align:
+        center;
+
+    }
+
+
+    .current-base-score strong {
+
+      display:
+        block;
+
+      margin-top:
+        5px;
+
+      color:
+        var(--az-green);
+
+      font-size:
+        2.4rem;
+
+    }
+
+
+    /* =====================================================
+       BASE COMPLETE
+    ===================================================== */
+
+    .base-complete-panel,
+    .analyze-final-result {
+
+      margin-top:
+        18px;
+
+      padding:
+        40px 25px;
+
+      border:
+        1px solid
+        rgba(
+          44,
+          255,
+          140,
+          0.35
+        );
+
+      border-radius:
+        12px;
+
+      background:
+        rgba(
+          3,
+          17,
+          31,
+          0.96
+        );
+
+      text-align:
+        center;
+
+    }
+
+
+    .base-complete-icon,
+    .final-result-icon {
+
+      width:
+        74px;
+
+      height:
+        74px;
+
+      display:
+        flex;
+
+      align-items:
+        center;
+
+      justify-content:
+        center;
+
+      margin:
+        0 auto 12px;
+
+      border-radius:
+        50%;
+
+      color:
+        #03120b;
+
+      background:
+        var(--az-green);
+
+      font-size:
+        2rem;
+
+      font-weight:
+        800;
+
+    }
+
+
+    .final-result-icon.fail {
+
+      color:
+        white;
+
+      background:
+        var(--az-pink);
+
+    }
+
+
+    .base-complete-score {
+
+      color:
+        var(--az-yellow);
+
+      font-size:
+        2rem;
+
+    }
+
+
+    .next-base-button,
+    .final-action-button {
+
+      min-height:
+        48px;
+
+      padding:
+        0 24px;
+
+      border:
+        0;
+
+      border-radius:
+        8px;
+
+      color:
+        white;
+
+      background:
+        linear-gradient(
+          90deg,
+          #7437ff,
+          #a934ff
+        );
+
+      font-weight:
+        700;
+
+    }
+
+
+    .final-score-large strong {
+
+      color:
+        var(--az-yellow);
+
+      font-size:
+        4rem;
+
+    }
+
+
+    .quality-grid {
+
+      display:
+        flex;
+
+      gap:
+        10px;
+
+      max-width:
+        720px;
+
+      margin:
+        20px auto;
+
+    }
+
+
+    .quality-grid > div {
+
+      flex:
+        1;
+
+      padding:
+        14px;
+
+      border:
+        1px solid
+        rgba(
+          255,
+          255,
+          255,
+          0.09
+        );
+
+    }
+
+
+    .quality-grid small,
+    .quality-grid strong {
+
+      display:
+        block;
+
+    }
+
+
+    .evaluation-pass {
+
+      color:
+        var(--az-green);
+
+    }
+
+
+    .evaluation-fail {
+
+      color:
+        var(--az-pink);
+
+    }
+
+
+    .final-message {
+
+      max-width:
+        760px;
+
+      margin:
+        0 auto 22px;
+
+      color:
+        var(--az-gray);
+
+      line-height:
+        1.7;
+
+    }
+
+
+    /* =====================================================
+       FOOTER
+    ===================================================== */
+
+    .analyze-footer {
+
+      display:
+        flex;
+
+      justify-content:
+        space-between;
+
+      gap:
+        12px;
+
+      margin-top:
+        20px;
+
+      padding:
+        16px 2px;
+
+      border-top:
+        1px solid
+        rgba(
+          0,
+          216,
+          255,
+          0.12
+        );
+
+      color:
+        #536b76;
+
+      font-size:
+        0.7rem;
+
+    }
+
+
+    .analyze-footer strong {
+
+      color:
+        var(--az-purple);
+
+    }
+
+
+    /* =====================================================
+       RESPONSIVE
+    ===================================================== */
+
+    @media (
+      max-width:
+      1000px
+    ) {
+
+      .analyze-workspace {
+
+        flex-direction:
+          column;
+
+      }
+
+
+      .base-info-card,
+      .rules-card {
+
+        flex:
+          1 1 auto;
+
+      }
+
+    }
+
+
+    @media (
+      max-width:
+      700px
+    ) {
+
+      .analyze-kpi-grid {
+
+        flex-direction:
+          column;
+
+      }
+
+
+      .analyze-header {
+
+        align-items:
+          flex-start;
+
+        flex-wrap:
+          wrap;
+
+      }
+
+
+      .quality-grid {
+
+        flex-direction:
+          column;
+
+      }
+
+
+      .checkpoint-actions {
+
+        flex-direction:
+          column-reverse;
+
+      }
+
+
+      .checkpoint-prev,
+      .checkpoint-check {
+
+        width:
+          100%;
+
+      }
+
+
+      .analyze-footer {
+
+        flex-direction:
+          column;
+
+        text-align:
+          center;
+
+      }
+
+    }
+
+  </style>
+
+</head>
+
+
+<body>
+
+  <div class="analyze-bg-grid"></div>
+
+
+  <main class="analyze-page">
+
+
+    <!-- =====================================================
+         TOP BAR
+    ====================================================== -->
+
+    <header class="analyze-topbar">
+
+      <a
+        href="dashboard.html"
+        class="analyze-back-link"
+      >
+        ← MISSION HQ
+      </a>
+
+
+      <div class="analyze-status">
+
+        <span class="analyze-status-dot"></span>
+
+        <span id="analyzeStatusText">
+          ANALYZE ACTIVE
+        </span>
+
+      </div>
+
+    </header>
+
+
+    <!-- =====================================================
+         HEADER
+    ====================================================== -->
+
+    <section class="analyze-header">
+
+      <div class="analyze-header-number">
+        02
+      </div>
+
+
+      <div class="analyze-header-content">
+
+        <small>
+          A • ANALYZE
+        </small>
+
+        <h1>
+          สืบค้นและวิเคราะห์
+        </h1>
+
+        <p>
+          ศึกษาองค์ความรู้จาก Learning Base
+          ตามลำดับและทำ Learning Checkpoint
+          ฐานละ 2 ข้อ รวมทั้งหมด 10 คะแนน
+        </p>
+
+      </div>
+
+
+      <div
+        id="attemptBadge"
+        class="analyze-active-badge"
+      >
+        ATTEMPT 1 / 2
+      </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         KPI
+    ====================================================== -->
+
+    <section class="analyze-kpi-grid">
+
+      <article class="analyze-kpi-card">
+
+        <small>
+          CURRENT SCORE
+        </small>
+
+        <strong>
+
+          <span id="totalScore">
+            0
+          </span>
+
+          / 10
+
+        </strong>
+
+      </article>
+
+
+      <article class="analyze-kpi-card">
+
+        <small>
+          BASE COMPLETE
+        </small>
+
+        <strong>
+
+          <span id="completedBaseCount">
+            0
+          </span>
+
+          / 5
+
+        </strong>
+
+      </article>
+
+
+      <article class="analyze-kpi-card">
+
+        <small>
+          PASS SCORE
+        </small>
+
+        <strong>
+          7 / 10
+        </strong>
+
+      </article>
+
+    </section>
+
+
+    <!-- =====================================================
+         LEARNING PATH
+    ====================================================== -->
+
+    <section class="learning-path-panel">
+
+      <div class="learning-path-header">
+
+        <div>
+
+          <small>
+            LEARNING PATH
+          </small>
+
+          <h2>
+            Learning Base
+          </h2>
+
+        </div>
+
+
+        <span id="currentBaseText">
+          BASE 01 / 05
+        </span>
+
+      </div>
+
+
+      <div class="learning-path-scroll">
+
+        <div class="learning-path-grid">
+
+
+          <button
+            type="button"
+            class="learning-path-item active"
+            data-base="0"
+          >
+
+            <span class="learning-base-number">
+              01
+            </span>
+
+            <strong>
+              รู้ใช้
+            </strong>
+
+            <small>
+              ACTIVE
+            </small>
+
+            <div class="learning-path-icon">
+              🛡️
+            </div>
+
+          </button>
+
+
+          <button
+            type="button"
+            class="learning-path-item locked"
+            data-base="1"
+            disabled
+          >
+
+            <span class="learning-base-number">
+              02
+            </span>
+
+            <strong>
+              รู้คิด
+            </strong>
+
+            <small>
+              LOCKED
+            </small>
+
+            <div class="learning-path-icon">
+              🧠
+            </div>
+
+          </button>
+
+
+          <button
+            type="button"
+            class="learning-path-item locked"
+            data-base="2"
+            disabled
+          >
+
+            <span class="learning-base-number">
+              03
+            </span>
+
+            <strong>
+              รู้สิทธิ
+            </strong>
+
+            <small>
+              LOCKED
+            </small>
+
+            <div class="learning-path-icon">
+              ⚖️
+            </div>
+
+          </button>
+
+
+          <button
+            type="button"
+            class="learning-path-item locked"
+            data-base="3"
+            disabled
+          >
+
+            <span class="learning-base-number">
+              04
+            </span>
+
+            <strong>
+              รู้สื่อ
+            </strong>
+
+            <small>
+              LOCKED
+            </small>
+
+            <div class="learning-path-icon">
+              📱
+            </div>
+
+          </button>
+
+
+          <button
+            type="button"
+            class="learning-path-item locked"
+            data-base="4"
+            disabled
+          >
+
+            <span class="learning-base-number">
+              05
+            </span>
+
+            <strong>
+              รู้ทัน
+            </strong>
+
+            <small>
+              LOCKED
+            </small>
+
+            <div class="learning-path-icon">
+              🔎
+            </div>
+
+          </button>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         WORKSPACE
+    ====================================================== -->
+
+    <section
+      id="analyzeWorkspace"
+      class="analyze-workspace"
+    >
+
+
+      <!-- LEFT -->
+
+      <aside
+        id="baseInfoCard"
+        class="base-info-card"
+      >
+
+        <small
+          id="baseInfoLabel"
+          class="base-info-label"
+        >
+          LEARNING BASE 01
+        </small>
+
+
+        <div class="base-info-header">
+
+          <div
+            id="baseInfoIcon"
+            class="base-info-icon"
+          >
+            🛡️
+          </div>
+
+
+          <div>
+
+            <h2 id="baseInfoName">
+              รู้ใช้
+            </h2>
+
+            <p id="baseInfoDescription"></p>
+
+          </div>
+
+        </div>
+
+
+        <div class="base-info-line"></div>
+
+
+        <strong>
+          ☷ KEY POINTS
+        </strong>
+
+
+        <ul
+          id="baseKeyList"
+          class="base-key-list"
+        ></ul>
+
+
+        <div
+          id="baseQuote"
+          class="base-quote"
+        ></div>
+
+      </aside>
+
+
+      <!-- CENTER -->
+
+      <section class="checkpoint-card">
+
+        <div class="checkpoint-head-top">
+
+          <div class="checkpoint-brand">
+            ▣ LEARNING CHECKPOINT
+          </div>
+
+
+          <div>
+
+            ข้อ
+
+            <strong id="checkpointQuestionNumber">
+              1
+            </strong>
+
+            / 2
+
+          </div>
+
+        </div>
+
+
+        <div class="checkpoint-progress">
+
+          <span id="checkpointProgressBar"></span>
+
+        </div>
+
+
+        <h3 id="checkpointQuestionText"></h3>
+
+
+        <div
+          id="checkpointOptions"
+          class="checkpoint-options"
+        ></div>
+
+
+        <div
+          id="checkpointFeedback"
+          class="checkpoint-feedback hidden"
+        ></div>
+
+
+        <div class="checkpoint-actions">
+
+          <button
+            type="button"
+            id="checkpointPreviousButton"
+            class="checkpoint-prev"
+            disabled
+          >
+            ← ก่อนหน้า
+          </button>
+
+
+          <button
+            type="button"
+            id="checkpointCheckButton"
+            class="checkpoint-check"
+          >
+            ตรวจคำตอบ →
+          </button>
+
+        </div>
+
+      </section>
+
+
+      <!-- RIGHT -->
+
+      <aside class="rules-card">
+
+        <h2>
+          📝 กติกา
+        </h2>
+
+        <div class="rules-line"></div>
+
+
+        <div class="rule-item">
+
+          <div class="rule-icon rule-correct">
+            ✓
+          </div>
+
+          <p>
+
+            ตอบถูกครั้งแรก
+
+            <strong>
+              ได้ 1 คะแนน
+            </strong>
+
+          </p>
+
+        </div>
+
+
+        <div class="rule-item">
+
+          <div class="rule-icon rule-wrong">
+            ×
+          </div>
+
+          <p>
+
+            ตอบผิดครั้งแรก
+
+            <strong>
+              ได้ 0 คะแนน
+            </strong>
+
+          </p>
+
+        </div>
+
+
+        <div class="rule-item">
+
+          <div class="rule-icon rule-retry">
+            ↻
+          </div>
+
+          <p>
+
+            ตอบใหม่ได้จนถูก
+
+            <strong>
+              แต่ข้อนั้นจะไม่ได้คะแนนคืน
+            </strong>
+
+          </p>
+
+        </div>
+
+
+        <div class="current-base-score">
+
+          <small>
+            คะแนนฐานนี้
+          </small>
+
+          <strong>
+
+            <span id="currentBaseScore">
+              0
+            </span>
+
+            / 2
+
+          </strong>
+
+        </div>
+
+      </aside>
+
+    </section>
+
+
+    <!-- =====================================================
+         BASE COMPLETE
+    ====================================================== -->
+
+    <section
+      id="baseCompletePanel"
+      class="base-complete-panel hidden"
+    >
+
+      <div class="base-complete-icon">
+        ✓
+      </div>
+
+      <small>
+        LEARNING BASE COMPLETE
+      </small>
+
+      <h2 id="baseCompleteTitle"></h2>
+
+      <div
+        id="baseCompleteScore"
+        class="base-complete-score"
+      ></div>
+
+      <p>
+        คุณตอบคำถามถูกต้องครบทั้ง 2 ข้อแล้ว
+        ระบบพร้อมเปิด Learning Base ถัดไป
+      </p>
+
+      <button
+        type="button"
+        id="nextBaseButton"
+        class="next-base-button"
+      >
+        ไป Learning Base ถัดไป →
+      </button>
+
+    </section>
+
+
+    <!-- =====================================================
+         FINAL RESULT
+    ====================================================== -->
+
+    <section
+      id="analyzeFinalResult"
+      class="analyze-final-result hidden"
+    >
+
+      <div
+        id="finalResultIcon"
+        class="final-result-icon"
+      >
+        ✓
+      </div>
+
+      <small id="finalAttemptText">
+        ANALYZE RESULT
+      </small>
+
+      <h2>
+        สรุปผล Learning Checkpoint
+      </h2>
+
+
+      <div class="final-score-large">
+
+        <strong id="finalTotalScore">
+          0
+        </strong>
+
+        <span>
+          / 10 คะแนน
+        </span>
+
+      </div>
+
+
+      <div class="quality-grid">
+
+        <div>
+
+          <small>
+            ระดับคุณภาพ
+          </small>
+
+          <strong id="qualityLevel">
+            -
+          </strong>
+
+        </div>
+
+
+        <div>
+
+          <small>
+            ความหมาย
+          </small>
+
+          <strong id="qualityMeaning">
+            -
+          </strong>
+
+        </div>
+
+
+        <div>
+
+          <small>
+            ผลการประเมิน
+          </small>
+
+          <strong id="evaluationResult">
+            -
+          </strong>
+
+        </div>
+
+      </div>
+
+
+      <p
+        id="finalMessage"
+        class="final-message"
+      ></p>
+
+
+      <button
+        type="button"
+        id="finalActionButton"
+        class="final-action-button"
+      >
+        กลับสู่ MISSION HQ →
+      </button>
+
+    </section>
+
+
+    <!-- =====================================================
+         FOOTER
+    ====================================================== -->
+
+    <footer class="analyze-footer">
+
+      <span>
+        A • ANALYZE
+      </span>
+
+      <strong>
+        DARE LEARNING MODEL
+      </strong>
+
+      <span>
+        5 BASES • 10 POINTS
+      </span>
+
+    </footer>
+
+
+  </main>
+
+
+  <!-- =====================================================
+       SUPABASE
+  ====================================================== -->
+
+  <script
+    src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"
+  ></script>
+
+  <script
+    src="js/supabase-config.js?v=20260822-05"
+  ></script>
+
+
+  <!-- =====================================================
+       ANALYZE SYSTEM
+  ====================================================== -->
+
+  <script>
+
+    document.addEventListener(
+      "DOMContentLoaded",
+      async function () {
+
+
+        /* =====================================================
+           1. SESSION
+        ===================================================== */
+
+        const studentId =
+          localStorage.getItem(
+            "studentId"
+          );
+
+
+        const sessionToken =
+          localStorage.getItem(
+            "studentSessionToken"
+          );
+
+
+        const studentLoggedIn =
+          localStorage.getItem(
+            "studentLoggedIn"
+          );
+
+
+        const userRole =
+          localStorage.getItem(
+            "userRole"
+          );
+
+
+        if (
+          studentLoggedIn !== "true"
+          ||
+          userRole !== "student"
+          ||
+          !studentId
+          ||
+          !sessionToken
+        ) {
+
+          window.location.replace(
+            "index.html"
+          );
+
+          return;
+
+        }
+
+
+        /* =====================================================
+           2. LEARNING BASE DATA
+        ===================================================== */
+
+        const bases = [
+
+  /* ===================================================
+     BASE 01 : รู้ใช้
+     ANSWER : B, C
+  =================================================== */
+
+  {
+    number: "01",
+    name: "รู้ใช้",
+    color: "#00d8ff",
+    icon: "🛡️",
+
+    description:
+      "การใช้เทคโนโลยีสารสนเทศอย่างปลอดภัยและมีความรับผิดชอบ",
+
+    keys: [
+      "คิดก่อนแชร์",
+      "ข้อมูลที่ไม่ควรเปิดเผย",
+      "เคารพสิทธิของผู้อื่น",
+      "รับผิดชอบต่อการใช้งานดิจิทัล"
+    ],
+
+    quote:
+      "คิดก่อนแชร์ เพื่อปกป้องตัวเองและเคารพสิทธิของผู้อื่น",
+
+    questions: [
+
+      /* ---------- ข้อ 1 : เฉลย B ---------- */
+
+      {
+        text:
+          "เวลา 20.30 น. มีคนส่งภาพประกาศในกลุ่มห้องว่า “พรุ่งนี้โรงเรียนปรับเวลาเข้าเรียนเป็น 09.30 น.” ภาพใช้ตราโรงเรียนและรูปแบบคล้ายประกาศจริง แต่ไม่มีวันที่ออกประกาศ ขณะเดียวกันเพื่อนต่างห้องบอกว่าได้รับภาพเดียวกัน นักเรียนควรทำอย่างไรเป็นอันดับแรก",
+
+        options: {
+          A:
+            "สอบถามเพื่อนจากหลายห้องว่าได้รับประกาศเดียวกันหรือไม่ แล้วใช้ข้อมูลส่วนใหญ่ประกอบการตัดสินใจ",
+
+          B:
+            "ตรวจสอบประกาศจากช่องทางทางการของโรงเรียน แล้วเปรียบเทียบรายละเอียดกับภาพที่ได้รับก่อนนำไปใช้",
+
+          C:
+            "สอบถามหัวหน้าห้องว่าทราบเรื่องนี้หรือไม่ เพราะหัวหน้าห้องมักได้รับข้อมูลเกี่ยวกับโรงเรียนก่อนนักเรียนทั่วไป",
+
+          D:
+            "รอให้มีการส่งประกาศซ้ำอีกครั้งในกลุ่ม หากข้อมูลยังเหมือนเดิมจึงถือว่ามีความน่าเชื่อถือมากขึ้น"
+        },
+
+        answer: "B"
+      },
+
+
+      /* ---------- ข้อ 2 : เฉลย C ---------- */
+
+      {
+        text:
+          "หลังทำกิจกรรมกลุ่ม เพื่อนส่งภาพถ่ายมาให้เลือกโพสต์ลงเพจห้อง ภาพหนึ่งสวยที่สุดแต่บนโต๊ะด้านหลังเห็นใบรายชื่อที่มีชื่อจริง เลขประจำตัว และเบอร์โทรศัพท์ของนักเรียนบางคน นักเรียนควรจัดการภาพนี้อย่างไร",
+
+        options: {
+          A:
+            "ลดความละเอียดของภาพก่อนโพสต์ เพราะข้อมูลที่อยู่ด้านหลังจะอ่านได้ยากขึ้นและช่วยลดโอกาสที่ผู้อื่นจะนำไปใช้",
+
+          B:
+            "จำกัดผู้ชมให้เฉพาะสมาชิกในห้อง เพราะทุกคนรู้จักกันอยู่แล้วและข้อมูลดังกล่าวเกี่ยวข้องกับนักเรียนในห้อง",
+
+          C:
+            "เลือกภาพอื่นหรือปกปิดข้อมูลให้ไม่สามารถอ่านได้ก่อนเผยแพร่ และตรวจสอบอีกครั้งว่าไม่มีข้อมูลสำคัญหลงเหลือ",
+
+          D:
+            "ตัดเฉพาะเบอร์โทรศัพท์ออกจากภาพ เพราะชื่อและเลขประจำตัวนักเรียนเป็นข้อมูลที่สมาชิกในโรงเรียนสามารถทราบได้"
+        },
+
+        answer: "C"
+      }
+
+    ]
+  },
+
+
+  /* ===================================================
+     BASE 02 : รู้คิด
+     ANSWER : A, D
+  =================================================== */
+
+  {
+    number: "02",
+    name: "รู้คิด",
+    color: "#8f5cff",
+    icon: "🧠",
+
+    description:
+      "การคิดวิเคราะห์ก่อนเชื่อและก่อนแชร์ข้อมูล",
+
+    keys: [
+      "ตรวจสอบแหล่งที่มา",
+      "เปรียบเทียบหลายแหล่ง",
+      "ดูหลักฐานประกอบ",
+      "ตรวจสอบวันเวลาของข้อมูล"
+    ],
+
+    quote:
+      "อย่าเชื่อเพียงเพราะเห็นบนอินเทอร์เน็ต ตรวจสอบก่อนตัดสินใจ",
+
+    questions: [
+
+      /* ---------- ข้อ 3 : เฉลย A ---------- */
+
+      {
+        text:
+          "โพสต์หนึ่งระบุว่า “ตั้งแต่เดือนหน้า นักเรียนอายุต่ำกว่า 15 ปีจะถูกจำกัดการใช้สื่อสังคมออนไลน์วันละ 2 ชั่วโมง” โพสต์มียอดแชร์สูงและมีภาพข้อความที่ดูคล้ายข่าว นักเรียนต้องการทราบว่าข้อมูลนี้จริงหรือไม่ ควรตรวจสอบอย่างไร",
+
+        options: {
+          A:
+            "ค้นหาแหล่งต้นทางของข้อมูล ตรวจสอบวันที่และผู้เผยแพร่ แล้วเปรียบเทียบกับข้อมูลจากหน่วยงานหรือแหล่งข่าวที่เชื่อถือได้",
+
+          B:
+            "อ่านความคิดเห็นใต้โพสต์และดูว่ามีผู้ปกครองหรือครูยืนยันข้อมูลมากน้อยเพียงใด แล้วใช้ความคิดเห็นส่วนใหญ่ประกอบการตัดสิน",
+
+          C:
+            "ค้นหาข้อความสำคัญจากโพสต์ในอินเทอร์เน็ต หากพบหลายเว็บไซต์กล่าวเหมือนกันก็ใช้จำนวนแหล่งข้อมูลช่วยยืนยันความถูกต้อง",
+
+          D:
+            "ตรวจสอบประวัติของบัญชีที่โพสต์ หากเคยเผยแพร่ข่าวถูกต้องหลายครั้งก็สามารถให้น้ำหนักกับข้อมูลครั้งนี้ได้มากขึ้น"
+        },
+
+        answer: "A"
+      },
+
+
+      /* ---------- ข้อ 4 : เฉลย D ---------- */
+
+      {
+        text:
+          "นักเรียนทำอินโฟกราฟิกเรื่องการใช้อินเทอร์เน็ตของวัยรุ่น และพบข้อมูล 3 ชุด ชุดแรกมาจากงานวิจัยเมื่อ 5 ปีก่อน ชุดที่สองเป็นบทความใหม่แต่ไม่บอกแหล่งข้อมูล และชุดที่สามเป็นรายงานปีล่าสุดจากหน่วยงานที่เก็บข้อมูลโดยตรง นักเรียนควรเลือกอย่างไร",
+
+        options: {
+          A:
+            "ใช้ข้อมูลชุดแรกเพราะเป็นงานวิจัยและผ่านกระบวนการศึกษา แม้จะเผยแพร่มานานกว่าข้อมูลอีกสองชุด",
+
+          B:
+            "ใช้ข้อมูลชุดที่สองเพราะเผยแพร่ล่าสุด จึงมีโอกาสสะท้อนพฤติกรรมของวัยรุ่นในปัจจุบันได้ดีกว่าข้อมูลเก่า",
+
+          C:
+            "นำข้อมูลทั้งสามชุดมาเปรียบเทียบและเลือกค่าที่ใกล้เคียงกันที่สุด เพื่อหลีกเลี่ยงการให้น้ำหนักกับแหล่งใดแหล่งหนึ่ง",
+
+          D:
+            "พิจารณาความใหม่ แหล่งที่มา และวิธีเก็บข้อมูลร่วมกัน แล้วเลือกชุดที่ตรวจสอบที่มาและเหมาะกับวัตถุประสงค์มากที่สุด"
+        },
+
+        answer: "D"
+      }
+
+    ]
+  },
+
+
+  /* ===================================================
+     BASE 03 : รู้สิทธิ
+     ANSWER : C, A
+  =================================================== */
+
+  {
+    number: "03",
+    name: "รู้สิทธิ",
+    color: "#ff2e91",
+    icon: "⚖️",
+
+    description:
+      "สิทธิของผู้อื่นและทรัพย์สินทางปัญญา",
+
+    keys: [
+      "เคารพเจ้าของผลงาน",
+      "ตรวจสอบสิทธิในการใช้",
+      "ขออนุญาตเมื่อจำเป็น",
+      "อ้างอิงแหล่งที่มา"
+    ],
+
+    quote:
+      "ผลงานทุกชิ้นมีผู้สร้าง การใช้ข้อมูลจึงต้องเคารพสิทธิของเจ้าของ",
+
+    questions: [
+
+      /* ---------- ข้อ 5 : เฉลย C ---------- */
+
+      {
+        text:
+          "นักเรียนกำลังทำโปสเตอร์ส่งประกวดและพบภาพที่เหมาะสมจากเว็บไซต์หนึ่ง ภาพไม่มีลายน้ำ แต่หน้าเว็บไซต์ระบุชื่อผู้ถ่ายและมีข้อความเกี่ยวกับเงื่อนไขการใช้งาน นักเรียนควรทำอย่างไรจึงเหมาะสมที่สุด",
+
+        options: {
+          A:
+            "บันทึกภาพมาใช้และใส่ชื่อผู้ถ่ายไว้ใต้ภาพ เพราะการระบุชื่อเจ้าของผลงานถือว่าให้เครดิตอย่างเหมาะสมแล้ว",
+
+          B:
+            "ปรับสีและองค์ประกอบของภาพก่อนใช้ พร้อมระบุเว็บไซต์ต้นทาง เพราะผลงานที่แก้ไขแล้วไม่เหมือนต้นฉบับทั้งหมด",
+
+          C:
+            "อ่านเงื่อนไขการใช้งานก่อน ตรวจสอบว่าอนุญาตให้ใช้ในลักษณะใด และปฏิบัติตามข้อกำหนดของเจ้าของผลงาน",
+
+          D:
+            "ค้นหาภาพเดียวกันจากเว็บไซต์อื่น หากพบเว็บไซต์ที่ไม่มีเงื่อนไขกำกับก็เลือกดาวน์โหลดภาพจากเว็บไซต์นั้นแทน"
+        },
+
+        answer: "C"
+      },
+
+
+      /* ---------- ข้อ 6 : เฉลย A ---------- */
+
+      {
+        text:
+          "กลุ่มของนักเรียนชอบอินโฟกราฟิกที่รุ่นพี่เคยทำไว้ จึงต้องการนำโครงสร้างเดิมมาเปลี่ยนสี เปลี่ยนข้อความ และเพิ่มรูปใหม่เพื่อส่งเป็นผลงานของกลุ่ม ข้อใดเป็นแนวทางที่เหมาะสมที่สุด",
+
+        options: {
+          A:
+            "ตรวจสอบสิทธิของผลงานเดิมและขออนุญาตเมื่อจำเป็น พร้อมสร้างส่วนของงานใหม่ด้วยตนเองและระบุที่มาตามความเหมาะสม",
+
+          B:
+            "เปลี่ยนองค์ประกอบของงานให้แตกต่างจากต้นฉบับมากพอ แล้วใช้เป็นผลงานกลุ่มได้เพราะไม่ได้คัดลอกทุกส่วนเหมือนเดิม",
+
+          C:
+            "ใช้โครงสร้างเดิมได้หากรุ่นพี่เผยแพร่ผลงานไว้ในพื้นที่สาธารณะ เพราะเจ้าของยอมให้บุคคลอื่นเห็นและนำไปศึกษาแล้ว",
+
+          D:
+            "ใช้ผลงานเดิมเป็นต้นแบบได้โดยไม่ต้องแจ้งเจ้าของ หากเปลี่ยนข้อความทั้งหมดและไม่ได้ใช้ชื่อของรุ่นพี่ในผลงานใหม่"
+        },
+
+        answer: "A"
+      }
+
+    ]
+  },
+
+
+  /* ===================================================
+     BASE 04 : รู้สื่อ
+     ANSWER : D, B
+  =================================================== */
+
+  {
+    number: "04",
+    name: "รู้สื่อ",
+    color: "#ffd21a",
+    icon: "📱",
+
+    description:
+      "การใช้และเผยแพร่สื่อดิจิทัลอย่างเหมาะสม",
+
+    keys: [
+      "คำนึงถึงบุคคลในสื่อ",
+      "ไม่ล้อเลียนผู้อื่น",
+      "ไม่เผยแพร่ข้อมูลส่วนบุคคล",
+      "คิดถึงผลกระทบก่อนโพสต์"
+    ],
+
+    quote:
+      "ทุกโพสต์สร้างผลกระทบได้ ใช้สื่ออย่างมีความรับผิดชอบ",
+
+    questions: [
+
+      /* ---------- ข้อ 7 : เฉลย D ---------- */
+
+      {
+        text:
+          "นักเรียนถ่ายคลิปเบื้องหลังการทำงานกลุ่มเพื่อโพสต์ในบัญชีห้อง ในช่วงหนึ่งมีเพื่อนพูดผิดแล้วทุกคนหัวเราะ แม้เพื่อนคนนั้นไม่ได้บอกว่าห้ามโพสต์ แต่ยังไม่ได้เห็นคลิปฉบับที่จะเผยแพร่ นักเรียนควรทำอย่างไร",
+
+        options: {
+          A:
+            "ตัดเสียงหัวเราะออกแล้วโพสต์ เพราะจะทำให้คลิปไม่แสดงการล้อเลียนและยังคงบรรยากาศการทำงานกลุ่มไว้ได้",
+
+          B:
+            "โพสต์เฉพาะในบัญชีห้องที่จำกัดผู้ติดตาม เพราะเป็นเหตุการณ์ที่เกิดขึ้นระหว่างสมาชิกกลุ่มและไม่ได้เผยแพร่ต่อสาธารณะ",
+
+          C:
+            "ส่งคลิปให้สมาชิกส่วนใหญ่ในกลุ่มดูก่อน หากทุกคนเห็นว่าไม่เสียหายก็สามารถใช้ความคิดเห็นของกลุ่มตัดสินได้",
+
+          D:
+            "ให้เพื่อนที่อยู่ในช่วงดังกล่าวดูคลิปและพิจารณาความยินยอมก่อน เพราะเจ้าตัวอาจมองผลกระทบของคลิปต่างจากผู้อื่น"
+        },
+
+        answer: "D"
+      },
+
+
+      /* ---------- ข้อ 8 : เฉลย B ---------- */
+
+      {
+        text:
+          "มีภาพตัดต่อเพื่อนในห้องถูกส่งมาในกลุ่มส่วนตัว ภาพไม่ได้ใช้คำหยาบ แต่มีลักษณะที่อาจทำให้เจ้าตัวรู้สึกอาย เพื่อนบางคนบอกว่าไม่เป็นไรเพราะจะไม่ส่งออกนอกกลุ่ม นักเรียนควรพิจารณาอย่างไร",
+
+        options: {
+          A:
+            "พิจารณาว่ากลุ่มมีสมาชิกมากน้อยเพียงใด หากเป็นกลุ่มเล็กและทุกคนรู้จักกัน ความเสี่ยงจากการเผยแพร่จะลดลง",
+
+          B:
+            "พิจารณาว่าเจ้าตัวยินยอมหรือไม่และอาจได้รับผลกระทบอย่างไร แม้เนื้อหาจะถูกส่งอยู่ในกลุ่มที่จำกัดสมาชิก",
+
+          C:
+            "พิจารณาว่าภาพมีข้อความรุนแรงหรือข้อมูลส่วนตัวหรือไม่ หากไม่มีทั้งสองอย่างก็มีความเสี่ยงต่อเจ้าตัวค่อนข้างน้อย",
+
+          D:
+            "พิจารณาความคิดเห็นของสมาชิกในกลุ่ม หากคนส่วนใหญ่เห็นว่าเป็นเรื่องขำขันก็แสดงว่าเจตนาของผู้ส่งไม่ได้ต้องการทำร้าย"
+        },
+
+        answer: "B"
+      }
+
+    ]
+  },
+
+
+  /* ===================================================
+     BASE 05 : รู้ทัน
+     ANSWER : A, C
+  =================================================== */
+
+  {
+    number: "05",
+    name: "รู้ทัน",
+    color: "#2cff8c",
+    icon: "🔎",
+
+    description:
+      "การรู้เท่าทันข้อมูลและเลือกใช้แหล่งข้อมูลที่น่าเชื่อถือ",
+
+    keys: [
+      "เลือกแหล่งข้อมูลที่น่าเชื่อถือ",
+      "ตรวจสอบผู้เผยแพร่",
+      "ตรวจสอบหลักฐาน",
+      "ไม่เชื่อเพียงเพราะมีคนแชร์มาก"
+    ],
+
+    quote:
+      "รู้ทันข้อมูล ตรวจสอบก่อนเชื่อ และตัดสินใจจากหลักฐาน",
+
+    questions: [
+
+      /* ---------- ข้อ 9 : เฉลย A ---------- */
+
+      {
+        text:
+          "ก่อนสอบมีข้อความส่งต่อว่าโรงเรียนเปลี่ยนห้องสอบ นักเรียนพบข้อมูล 3 แห่ง คือโพสต์จากเพจนักเรียนเมื่อ 10 นาทีที่แล้ว ข้อความจากรุ่นพี่ และประกาศในเว็บไซต์โรงเรียนเมื่อ 1 ชั่วโมงที่แล้ว ซึ่งให้ข้อมูลไม่ตรงกัน ควรทำอย่างไร",
+
+        options: {
+          A:
+            "ใช้ประกาศจากช่องทางทางการเป็นหลัก และตรวจสอบว่ามีประกาศฉบับใหม่หรือการแก้ไขข้อมูลเพิ่มเติมจากโรงเรียนหรือไม่",
+
+          B:
+            "ใช้ข้อมูลจากเพจนักเรียนเป็นหลัก เพราะโพสต์ล่าสุดกว่าและอาจได้รับการแจ้งเปลี่ยนแปลงหลังจากประกาศของโรงเรียน",
+
+          C:
+            "สอบถามนักเรียนหลายห้องแล้วใช้ข้อมูลที่คนส่วนใหญ่ได้รับตรงกัน เพราะช่วยยืนยันสถานการณ์ล่าสุดจากผู้ที่เกี่ยวข้อง",
+
+          D:
+            "เก็บข้อมูลจากทั้งสามแหล่งไว้และเลือกข้อมูลที่มีรายละเอียดมากที่สุด เพราะรายละเอียดที่ครบถ้วนช่วยลดความเข้าใจผิด"
+        },
+
+        answer: "A"
+      },
+
+
+      /* ---------- ข้อ 10 : เฉลย C ---------- */
+
+      {
+        text:
+          "อินฟลูเอนเซอร์ด้านการเรียนโพสต์คลิปแนะนำวิธีอ่านหนังสือ พร้อมบอกว่า “ใช้วิธีนี้ 7 วัน คะแนนดีขึ้นแน่นอน” คลิปมียอดชมสูง มีผู้ติดตามจำนวนมาก และมีความคิดเห็นจากผู้ใช้ที่บอกว่าได้ผล นักเรียนควรประเมินข้อมูลนี้อย่างไร",
+
+        options: {
+          A:
+            "ให้น้ำหนักกับประสบการณ์ของผู้ติดตามหลายคน เพราะผลที่เกิดกับผู้ใช้จริงช่วยยืนยันได้ว่าวิธีดังกล่าวมีโอกาสได้ผล",
+
+          B:
+            "ทดลองใช้เป็นเวลา 7 วันก่อน แล้วเปรียบเทียบผลของตนเอง เพราะประสบการณ์ตรงช่วยตัดสินได้ดีกว่าความคิดเห็นของบุคคลอื่น",
+
+          C:
+            "แยกข้อกล่าวอ้างออกจากความคิดเห็น ตรวจสอบหลักฐานที่สนับสนุน และเปรียบเทียบกับข้อมูลจากแหล่งที่น่าเชื่อถือ",
+
+          D:
+            "ตรวจสอบอินฟลูเอนเซอร์รายอื่นที่แนะนำวิธีคล้ายกัน หากหลายคนให้คำแนะนำตรงกันก็เพิ่มความน่าเชื่อถือของวิธีดังกล่าว"
+        },
+
+        answer: "C"
+      }
+
+    ]
+  }
+
+];
+
+
+        /* =====================================================
+           3. SERVER / ATTEMPT STATE
+        ===================================================== */
+
+        let analyzeServerState =
+          null;
+
+
+        let analyzeAttemptNumber =
+          1;
+
+
+        let progressStorageKey =
+          "";
+
+
+        let savingFinalResult =
+          false;
+
+
+        let currentBaseIndex =
+          0;
+
+
+        let currentQuestionIndex =
+          0;
+
+
+        let answerConfirmed =
+          false;
+
+
+        let baseScores =
+          [
+            0,
+            0,
+            0,
+            0,
+            0
+          ];
+
+
+        let baseCompleted =
+          [
+            false,
+            false,
+            false,
+            false,
+            false
+          ];
+
+
+        let questionStates =
+          createInitialQuestionStates();
+
+
+        /* =====================================================
+           4. ELEMENTS
+        ===================================================== */
+
+        const totalScoreEl =
+          document.getElementById(
+            "totalScore"
+          );
+
+
+        const completedBaseCountEl =
+          document.getElementById(
+            "completedBaseCount"
+          );
+
+
+        const currentBaseText =
+          document.getElementById(
+            "currentBaseText"
+          );
+
+
+        const baseInfoCard =
+          document.getElementById(
+            "baseInfoCard"
+          );
+
+
+        const baseInfoLabel =
+          document.getElementById(
+            "baseInfoLabel"
+          );
+
+
+        const baseInfoIcon =
+          document.getElementById(
+            "baseInfoIcon"
+          );
+
+
+        const baseInfoName =
+          document.getElementById(
+            "baseInfoName"
+          );
+
+
+        const baseInfoDescription =
+          document.getElementById(
+            "baseInfoDescription"
+          );
+
+
+        const baseKeyList =
+          document.getElementById(
+            "baseKeyList"
+          );
+
+
+        const baseQuote =
+          document.getElementById(
+            "baseQuote"
+          );
+
+
+        const checkpointQuestionNumber =
+          document.getElementById(
+            "checkpointQuestionNumber"
+          );
+
+
+        const checkpointProgressBar =
+          document.getElementById(
+            "checkpointProgressBar"
+          );
+
+
+        const checkpointQuestionText =
+          document.getElementById(
+            "checkpointQuestionText"
+          );
+
+
+        const checkpointOptions =
+          document.getElementById(
+            "checkpointOptions"
+          );
+
+
+        const checkpointFeedback =
+          document.getElementById(
+            "checkpointFeedback"
+          );
+
+
+        const checkpointPreviousButton =
+          document.getElementById(
+            "checkpointPreviousButton"
+          );
+
+
+        const checkpointCheckButton =
+          document.getElementById(
+            "checkpointCheckButton"
+          );
+
+
+        const currentBaseScore =
+          document.getElementById(
+            "currentBaseScore"
+          );
+
+
+        const analyzeWorkspace =
+          document.getElementById(
+            "analyzeWorkspace"
+          );
+
+
+        const baseCompletePanel =
+          document.getElementById(
+            "baseCompletePanel"
+          );
+
+
+        const baseCompleteTitle =
+          document.getElementById(
+            "baseCompleteTitle"
+          );
+
+
+        const baseCompleteScore =
+          document.getElementById(
+            "baseCompleteScore"
+          );
+
+
+        const nextBaseButton =
+          document.getElementById(
+            "nextBaseButton"
+          );
+
+
+        const analyzeFinalResult =
+          document.getElementById(
+            "analyzeFinalResult"
+          );
+
+
+        const attemptBadge =
+          document.getElementById(
+            "attemptBadge"
+          );
+
+
+        const analyzeStatusText =
+          document.getElementById(
+            "analyzeStatusText"
+          );
+
+
+        const finalAttemptText =
+          document.getElementById(
+            "finalAttemptText"
+          );
+
+
+        const finalActionButton =
+          document.getElementById(
+            "finalActionButton"
+          );
+
+
+        /* =====================================================
+           5. INITIAL QUESTION STATE
+        ===================================================== */
+
+        function createInitialQuestionStates() {
+
+          return bases.map(
+            function () {
+
+              return [
+
+                {
+                  firstAttemptDone:
+                    false,
+
+                  firstAttemptCorrect:
+                    false,
+
+                  correct:
+                    false,
+
+                  selected:
+                    ""
+                },
+
+                {
+                  firstAttemptDone:
+                    false,
+
+                  firstAttemptCorrect:
+                    false,
+
+                  correct:
+                    false,
+
+                  selected:
+                    ""
+                }
+
+              ];
+
+            }
+          );
+
+        }
+
+
+        /* =====================================================
+           6. GET MISSION STATE FROM SERVER
+        ===================================================== */
+
+        async function fetchMissionState() {
+
+          const {
+            data,
+            error
+          } =
+            await supabaseClient.rpc(
+              "get_student_mission_state",
+              {
+
+                p_student_id:
+                  studentId,
+
+                p_session_token:
+                  sessionToken
+
+              }
+            );
+
+
+          if (
+            error
+          ) {
+
+            throw error;
+
+          }
+
+
+          if (
+            !data
+            ||
+            data.length === 0
+          ) {
+
+            throw new Error(
+              "INVALID SESSION"
+            );
+
+          }
+
+
+          return data[0];
+
+        }
+
+
+        /* =====================================================
+           7. VERIFY ACCESS
+        ===================================================== */
+
+        async function verifyAnalyzeAccess() {
+
+          try {
+
+            const progress =
+              await fetchMissionState();
+
+
+            console.log(
+              "ANALYZE ACCESS STATE:",
+              progress
+            );
+
+
+            /* D ต้องเสร็จก่อน */
+
+            if (
+              progress.discover_completed !==
+              true
+            ) {
+
+              alert(
+                "กรุณาทำภารกิจ D • Discover ให้เสร็จก่อนเข้าสู่ A • Analyze"
+              );
+
+              window.location.replace(
+                "dashboard.html"
+              );
+
+              return false;
+
+            }
+
+
+            /* ครูต้องปลดล็อก */
+
+            if (
+              progress.analyze_unlocked !==
+              true
+            ) {
+
+              alert(
+                "ภารกิจ A • Analyze ยังถูกล็อก กรุณารอครูผู้สอนปลดล็อกภารกิจ"
+              );
+
+              window.location.replace(
+                "dashboard.html"
+              );
+
+              return false;
+
+            }
+
+
+            /*
+              ถ้า A จบแล้ว
+              ไม่อนุญาตให้ทำซ้ำ
+            */
+
+            if (
+              progress.analyze_completed ===
+              true
+            ) {
+
+              alert(
+                "คุณทำภารกิจ A • Analyze เสร็จสมบูรณ์แล้ว"
+              );
+
+              window.location.replace(
+                "dashboard.html"
+              );
+
+              return false;
+
+            }
+
+
+            const attempts =
+              Number(
+                progress.analyze_attempts
+                ||
+                0
+              );
+
+
+            if (
+              attempts >= 2
+            ) {
+
+              alert(
+                "คุณใช้สิทธิ์ทำภารกิจ A • Analyze ครบ 2 ครั้งแล้ว"
+              );
+
+              window.location.replace(
+                "dashboard.html"
+              );
+
+              return false;
+
+            }
+
+
+            analyzeServerState =
+              progress;
+
+
+            analyzeAttemptNumber =
+              attempts + 1;
+
+
+            /*
+              แยก Local Progress
+              ของแต่ละรอบออกจากกัน
+            */
+
+            progressStorageKey =
+              "analyzeProgress_"
+              +
+              studentId
+              +
+              "_attempt_"
+              +
+              analyzeAttemptNumber;
+
+
+            attemptBadge.textContent =
+              "ATTEMPT "
+              +
+              analyzeAttemptNumber
+              +
+              " / 2";
+
+
+            analyzeStatusText.textContent =
+              "ANALYZE ACTIVE • ATTEMPT "
+              +
+              analyzeAttemptNumber;
+
+
+            /*
+              ลบ key รุ่นเก่าเท่านั้น
+              ไม่ลบ key รอบปัจจุบัน
+              เพื่อให้ Refresh แล้วยังทำต่อได้
+            */
+
+            localStorage.removeItem(
+              "analyzeProgress_"
+              +
+              studentId
+            );
+
+
+            console.log(
+              "✓ ANALYZE ACCESS GRANTED",
+              {
+                attemptsDone:
+                  attempts,
+
+                currentAttempt:
+                  analyzeAttemptNumber,
+
+                firstScore:
+                  progress.analyze_first_score,
+
+                passed:
+                  progress.analyze_passed
+              }
+            );
+
+
+            return true;
+
+          }
+
+          catch (
+            error
+          ) {
+
+            console.error(
+              "VERIFY ANALYZE ACCESS ERROR:",
+              error
+            );
+
+
+            alert(
+              "ไม่สามารถตรวจสอบสิทธิ์ A • Analyze ได้ กรุณาเข้าสู่ระบบใหม่"
+            );
+
+
+            clearLoginSession();
+
+
+            return false;
+
+          }
+
+        }
+
+
+        /* =====================================================
+           8. TOTAL SCORE
+        ===================================================== */
+
+        function getTotalScore() {
+
+          return baseScores.reduce(
+            function (
+              total,
+              score
+            ) {
+
+              return (
+                total
+                +
+                Number(
+                  score || 0
+                )
+              );
+
+            },
+            0
+          );
+
+        }
+
+
+        /* =====================================================
+           9. UPDATE SCORE BOARD
+        ===================================================== */
+
+        function updateScoreBoard() {
+
+          totalScoreEl.textContent =
+            getTotalScore();
+
+
+          completedBaseCountEl.textContent =
+            baseCompleted
+              .filter(
+                Boolean
+              )
+              .length;
+
+
+          currentBaseScore.textContent =
+            baseScores[
+              currentBaseIndex
+            ];
+
+        }
+
+
+        /* =====================================================
+           10. SAVE WORKING PROGRESS
+        ===================================================== */
+
+        function saveWorkingProgress() {
+
+          if (
+            !progressStorageKey
+          ) {
+
+            return;
+
+          }
+
+
+          const progress = {
+
+            attemptNumber:
+              analyzeAttemptNumber,
+
+            currentBaseIndex:
+              currentBaseIndex,
+
+            currentQuestionIndex:
+              currentQuestionIndex,
+
+            baseScores:
+              baseScores,
+
+            baseCompleted:
+              baseCompleted,
+
+            questionStates:
+              questionStates
+
+          };
+
+
+          localStorage.setItem(
+            progressStorageKey,
+            JSON.stringify(
+              progress
+            )
+          );
+
+        }
+
+
+        /* =====================================================
+           11. LOAD WORKING PROGRESS
+        ===================================================== */
+
+        function loadWorkingProgress() {
+
+          if (
+            !progressStorageKey
+          ) {
+
+            return;
+
+          }
+
+
+          const raw =
+            localStorage.getItem(
+              progressStorageKey
+            );
+
+
+          if (
+            !raw
+          ) {
+
+            return;
+
+          }
+
+
+          try {
+
+            const saved =
+              JSON.parse(
+                raw
+              );
+
+
+            /*
+              ป้องกัน Progress
+              จากคนละรอบ
+            */
+
+            if (
+              Number(
+                saved.attemptNumber
+              )
+              !==
+              analyzeAttemptNumber
+            ) {
+
+              localStorage.removeItem(
+                progressStorageKey
+              );
+
+              return;
+
+            }
+
+
+            if (
+              Array.isArray(
+                saved.baseScores
+              )
+              &&
+              saved.baseScores.length === 5
+            ) {
+
+              baseScores =
+                saved.baseScores;
+
+            }
+
+
+            if (
+              Array.isArray(
+                saved.baseCompleted
+              )
+              &&
+              saved.baseCompleted.length === 5
+            ) {
+
+              baseCompleted =
+                saved.baseCompleted;
+
+            }
+
+
+            if (
+              Array.isArray(
+                saved.questionStates
+              )
+              &&
+              saved.questionStates.length === 5
+            ) {
+
+              questionStates =
+                saved.questionStates;
+
+            }
+
+
+            if (
+              Number.isInteger(
+                saved.currentBaseIndex
+              )
+              &&
+              saved.currentBaseIndex >= 0
+              &&
+              saved.currentBaseIndex < 5
+            ) {
+
+              currentBaseIndex =
+                saved.currentBaseIndex;
+
+            }
+
+
+            if (
+              Number.isInteger(
+                saved.currentQuestionIndex
+              )
+              &&
+              saved.currentQuestionIndex >= 0
+              &&
+              saved.currentQuestionIndex < 2
+            ) {
+
+              currentQuestionIndex =
+                saved.currentQuestionIndex;
+
+            }
+
+          }
+
+          catch (
+            error
+          ) {
+
+            console.warn(
+              "ANALYZE LOCAL PROGRESS ERROR:",
+              error
+            );
+
+
+            localStorage.removeItem(
+              progressStorageKey
+            );
+
+          }
+
+        }
+
+
+        /* =====================================================
+           12. RENDER BASE
+        ===================================================== */
+
+        function renderBase(
+          resetQuestion = true
+        ) {
+
+          const base =
+            bases[
+              currentBaseIndex
+            ];
+
+
+          if (
+            resetQuestion
+          ) {
+
+            currentQuestionIndex =
+              0;
+
+          }
+
+
+          currentBaseText.textContent =
+            "BASE "
+            +
+            base.number
+            +
+            " / 05";
+
+
+          baseInfoCard.style.setProperty(
+            "--base-color",
+            base.color
+          );
+
+
+          baseInfoLabel.textContent =
+            "LEARNING BASE "
+            +
+            base.number;
+
+
+          baseInfoIcon.textContent =
+            base.icon;
+
+
+          baseInfoName.textContent =
+            base.name;
+
+
+          baseInfoDescription.textContent =
+            base.description;
+
+
+          baseKeyList.innerHTML =
+            "";
+
+
+          base.keys.forEach(
+            function (
+              item
+            ) {
+
+              const li =
+                document.createElement(
+                  "li"
+                );
+
+
+              li.textContent =
+                item;
+
+
+              baseKeyList.appendChild(
+                li
+              );
+
+            }
+          );
+
+
+          baseQuote.textContent =
+            "“"
+            +
+            base.quote
+            +
+            "”";
+
+
+          analyzeWorkspace.classList.remove(
+            "hidden"
+          );
+
+
+          baseCompletePanel.classList.add(
+            "hidden"
+          );
+
+
+          analyzeFinalResult.classList.add(
+            "hidden"
+          );
+
+
+          updateLearningPath();
+
+          renderQuestion();
+
+          updateScoreBoard();
+
+          saveWorkingProgress();
+
+        }
+
+
+        /* =====================================================
+           13. UPDATE LEARNING PATH
+        ===================================================== */
+
+        function updateLearningPath() {
+
+          document
+            .querySelectorAll(
+              "[data-base]"
+            )
+            .forEach(
+              function (
+                button,
+                index
+              ) {
+
+                button.classList.remove(
+                  "active",
+                  "locked",
+                  "completed"
+                );
+
+
+                const status =
+                  button.querySelector(
+                    "small"
+                  );
+
+
+                if (
+                  baseCompleted[
+                    index
+                  ]
+                ) {
+
+                  button.classList.add(
+                    "completed"
+                  );
+
+                  button.disabled =
+                    false;
+
+                  status.textContent =
+                    "COMPLETE";
+
+                  return;
+
+                }
+
+
+                if (
+                  index ===
+                  currentBaseIndex
+                ) {
+
+                  button.classList.add(
+                    "active"
+                  );
+
+                  button.disabled =
+                    false;
+
+                  status.textContent =
+                    "ACTIVE";
+
+                  return;
+
+                }
+
+
+                const previousComplete =
+                  index === 0
+                  ||
+                  baseCompleted[
+                    index - 1
+                  ];
+
+
+                if (
+                  previousComplete
+                ) {
+
+                  button.disabled =
+                    false;
+
+                  status.textContent =
+                    "OPEN";
+
+                  return;
+
+                }
+
+
+                button.classList.add(
+                  "locked"
+                );
+
+                button.disabled =
+                  true;
+
+                status.textContent =
+                  "LOCKED";
+
+              }
+            );
+
+        }
+
+
+        /* =====================================================
+           14. RENDER QUESTION
+        ===================================================== */
+
+        function renderQuestion() {
+
+          const base =
+            bases[
+              currentBaseIndex
+            ];
+
+
+          const question =
+            base.questions[
+              currentQuestionIndex
+            ];
+
+
+          const state =
+            questionStates[
+              currentBaseIndex
+            ][
+              currentQuestionIndex
+            ];
+
+
+          answerConfirmed =
+            state.correct ===
+            true;
+
+
+          checkpointQuestionNumber.textContent =
+            currentQuestionIndex + 1;
+
+
+          checkpointProgressBar.style.width =
+            (
+              (
+                currentQuestionIndex + 1
+              )
+              /
+              2
+              *
+              100
+            )
+            +
+            "%";
+
+
+          checkpointQuestionText.textContent =
+            question.text;
+
+
+          checkpointOptions.innerHTML =
+            "";
+
+
+          checkpointFeedback.className =
+            "checkpoint-feedback hidden";
+
+
+          checkpointFeedback.textContent =
+            "";
+
+
+          const choiceClasses = {
+
+            A:
+              "choice-a",
+
+            B:
+              "choice-b",
+
+            C:
+              "choice-c",
+
+            D:
+              "choice-d"
+
+          };
+
+
+          Object.entries(
+            question.options
+          )
+          .forEach(
+            function (
+              [
+                key,
+                optionText
+              ]
+            ) {
+
+              const label =
+                document.createElement(
+                  "label"
+                );
+
+
+              label.className =
+                "checkpoint-option";
+
+
+              label.innerHTML =
+                `
+                  <input
+                    type="radio"
+                    name="checkpointAnswer"
+                    value="${key}"
+                  >
+
+                  <span
+                    class="checkpoint-option-letter ${choiceClasses[key]}"
+                  >
+                    ${key}
+                  </span>
+
+                  <p>
+                    ${optionText}
+                  </p>
+                `;
+
+
+              const radio =
+                label.querySelector(
+                  "input"
+                );
+
+
+              if (
+                state.selected ===
+                key
+              ) {
+
+                radio.checked =
+                  true;
+
+                label.classList.add(
+                  "selected"
+                );
+
+              }
+
+
+              if (
+                state.correct
+                &&
+                key ===
+                question.answer
+              ) {
+
+                label.classList.add(
+                  "correct-answer"
+                );
+
+              }
+
+
+              radio.addEventListener(
+                "change",
+                function () {
+
+                  if (
+                    answerConfirmed
+                  ) {
+
+                    return;
+
+                  }
+
+
+                  checkpointOptions
+                    .querySelectorAll(
+                      ".checkpoint-option"
+                    )
+                    .forEach(
+                      function (
+                        option
+                      ) {
+
+                        option.classList.remove(
+                          "selected"
+                        );
+
+                      }
+                    );
+
+
+                  label.classList.add(
+                    "selected"
+                  );
+
+
+                  state.selected =
+                    key;
+
+
+                  saveWorkingProgress();
+
+                }
+              );
+
+
+              checkpointOptions.appendChild(
+                label
+              );
+
+            }
+          );
+
+
+          checkpointPreviousButton.disabled =
+            currentQuestionIndex === 0;
+
+
+          if (
+            state.correct
+          ) {
+
+            checkpointFeedback.className =
+              "checkpoint-feedback correct";
+
+
+            if (
+              state.firstAttemptCorrect ===
+              true
+            ) {
+
+              checkpointFeedback.textContent =
+                "✓ ถูกต้อง ได้ 1 คะแนน";
+
+            }
+
+            else {
+
+              checkpointFeedback.textContent =
+                "✓ ถูกต้องแล้ว แต่ข้อนี้ได้ 0 คะแนน เพราะตอบผิดในครั้งแรก";
+
+            }
+
+
+            checkpointCheckButton.textContent =
+              currentQuestionIndex === 1
+                ?
+                "จบ Learning Base →"
+                :
+                "ข้อต่อไป →";
+
+          }
+
+          else {
+
+            checkpointCheckButton.textContent =
+              "ตรวจคำตอบ →";
+
+          }
+
+
+          updateScoreBoard();
+
+        }
+
+
+        /* =====================================================
+           15. CHECK ANSWER
+        ===================================================== */
+
+        checkpointCheckButton.addEventListener(
+          "click",
+          function () {
+
+
+            if (
+              answerConfirmed
+            ) {
+
+              if (
+                currentQuestionIndex < 1
+              ) {
+
+                currentQuestionIndex +=
+                  1;
+
+
+                renderQuestion();
+
+                saveWorkingProgress();
+
+                return;
+
+              }
+
+
+              completeCurrentBase();
+
+              return;
+
+            }
+
+
+            const selected =
+              document.querySelector(
+                'input[name="checkpointAnswer"]:checked'
+              );
+
+
+            if (
+              !selected
+            ) {
+
+              alert(
+                "กรุณาเลือกคำตอบก่อน"
+              );
+
+              return;
+
+            }
+
+
+            const question =
+              bases[
+                currentBaseIndex
+              ]
+              .questions[
+                currentQuestionIndex
+              ];
+
+
+            const state =
+              questionStates[
+                currentBaseIndex
+              ][
+                currentQuestionIndex
+              ];
+
+
+            const selectedValue =
+              selected.value;
+
+
+            const selectedLabel =
+              selected.closest(
+                ".checkpoint-option"
+              );
+
+
+            state.selected =
+              selectedValue;
+
+
+            /*
+              FIRST ANSWER
+            */
+
+            if (
+              !state.firstAttemptDone
+            ) {
+
+              state.firstAttemptDone =
+                true;
+
+
+              if (
+                selectedValue ===
+                question.answer
+              ) {
+
+                state.correct =
+                  true;
+
+
+                state.firstAttemptCorrect =
+                  true;
+
+
+                baseScores[
+                  currentBaseIndex
+                ] +=
+                  1;
+
+
+                selectedLabel.classList.add(
+                  "correct-answer"
+                );
+
+
+                showCorrectFeedback(
+                  true
+                );
+
+
+                updateScoreBoard();
+
+                saveWorkingProgress();
+
+                return;
+
+              }
+
+
+              state.firstAttemptCorrect =
+                false;
+
+
+              selectedLabel.classList.add(
+                "wrong-answer"
+              );
+
+
+              showWrongFeedback();
+
+              saveWorkingProgress();
+
+              return;
+
+            }
+
+
+            /*
+              RETRY ANSWER
+            */
+
+            if (
+              selectedValue ===
+              question.answer
+            ) {
+
+              state.correct =
+                true;
+
+
+              selectedLabel.classList.add(
+                "correct-answer"
+              );
+
+
+              showCorrectFeedback(
+                false
+              );
+
+
+              saveWorkingProgress();
+
+              return;
+
+            }
+
+
+            selectedLabel.classList.add(
+              "wrong-answer"
+            );
+
+
+            showWrongFeedback();
+
+            saveWorkingProgress();
+
+          }
+        );
+
+
+        /* =====================================================
+           16. FEEDBACK
+        ===================================================== */
+
+        function showCorrectFeedback(
+          firstAttempt
+        ) {
+
+          answerConfirmed =
+            true;
+
+
+          checkpointFeedback.className =
+            "checkpoint-feedback correct";
+
+
+          checkpointFeedback.textContent =
+            firstAttempt
+              ?
+              "✓ ถูกต้อง ได้ 1 คะแนน"
+              :
+              "✓ ถูกต้องแล้ว แต่ข้อนี้ได้ 0 คะแนน เพราะตอบผิดในครั้งแรก";
+
+
+          checkpointCheckButton.textContent =
+            currentQuestionIndex === 1
+              ?
+              "จบ Learning Base →"
+              :
+              "ข้อต่อไป →";
+
+        }
+
+
+        function showWrongFeedback() {
+
+          checkpointFeedback.className =
+            "checkpoint-feedback wrong";
+
+
+          checkpointFeedback.textContent =
+            "✕ ยังไม่ถูกต้อง ลองพิจารณาคำตอบอีกครั้ง ข้อนี้จะไม่ได้คะแนนแล้ว";
+
+
+          checkpointCheckButton.textContent =
+            "ตรวจคำตอบอีกครั้ง →";
+
+        }
+
+
+        /* =====================================================
+           17. PREVIOUS
+        ===================================================== */
+
+        checkpointPreviousButton.addEventListener(
+          "click",
+          function () {
+
+            if (
+              currentQuestionIndex === 0
+            ) {
+
+              return;
+
+            }
+
+
+            currentQuestionIndex -=
+              1;
+
+
+            renderQuestion();
+
+            saveWorkingProgress();
+
+          }
+        );
+
+
+        /* =====================================================
+           18. COMPLETE BASE
+        ===================================================== */
+
+        function completeCurrentBase() {
+
+          const allCorrect =
+            questionStates[
+              currentBaseIndex
+            ]
+            .every(
+              function (
+                item
+              ) {
+
+                return (
+                  item.correct ===
+                  true
+                );
+
+              }
+            );
+
+
+          if (
+            !allCorrect
+          ) {
+
+            alert(
+              "ต้องตอบให้ถูกครบทั้ง 2 ข้อก่อนจบฐาน"
+            );
+
+            return;
+
+          }
+
+
+          baseCompleted[
+            currentBaseIndex
+          ] =
+            true;
+
+
+          updateScoreBoard();
+
+          updateLearningPath();
+
+
+          analyzeWorkspace.classList.add(
+            "hidden"
+          );
+
+
+          baseCompletePanel.classList.remove(
+            "hidden"
+          );
+
+
+          const base =
+            bases[
+              currentBaseIndex
+            ];
+
+
+          baseCompleteTitle.textContent =
+            "ผ่าน Learning Base "
+            +
+            base.number
+            +
+            " : "
+            +
+            base.name;
+
+
+          baseCompleteScore.textContent =
+            "คะแนนฐานนี้ "
+            +
+            baseScores[
+              currentBaseIndex
+            ]
+            +
+            " / 2";
+
+
+          nextBaseButton.textContent =
+            currentBaseIndex ===
+            bases.length - 1
+              ?
+              "ดูผลคะแนนรวม →"
+              :
+              "ไป Learning Base ถัดไป →";
+
+
+          saveWorkingProgress();
+
+
+          baseCompletePanel.scrollIntoView(
+            {
+              behavior:
+                "smooth",
+
+              block:
+                "start"
+            }
+          );
+
+        }
+
+
+        /* =====================================================
+           19. NEXT BASE
+        ===================================================== */
+
+        nextBaseButton.addEventListener(
+          "click",
+          async function () {
+
+            if (
+              currentBaseIndex <
+              bases.length - 1
+            ) {
+
+              currentBaseIndex +=
+                1;
+
+
+              currentQuestionIndex =
+                0;
+
+
+              renderBase(
+                false
+              );
+
+
+              return;
+
+            }
+
+
+            await showFinalResult();
+
+          }
+        );
+
+
+        /* =====================================================
+           20. BASE NAVIGATION
+        ===================================================== */
+
+        document
+          .querySelectorAll(
+            "[data-base]"
+          )
+          .forEach(
+            function (
+              button
+            ) {
+
+              button.addEventListener(
+                "click",
+                function () {
+
+                  if (
+                    button.disabled
+                  ) {
+
+                    return;
+
+                  }
+
+
+                  const index =
+                    Number(
+                      button.dataset.base
+                    );
+
+
+                  if (
+                    index > 0
+                    &&
+                    !baseCompleted[
+                      index - 1
+                    ]
+                  ) {
+
+                    return;
+
+                  }
+
+
+                  currentBaseIndex =
+                    index;
+
+
+                  currentQuestionIndex =
+                    0;
+
+
+                  renderBase(
+                    false
+                  );
+
+                }
+              );
+
+            }
+          );
+
+
+        /* =====================================================
+           21. QUALITY
+        ===================================================== */
+
+        function getQualityResult(
+          score
+        ) {
+
+          if (
+            score >= 9
+          ) {
+
+            return {
+
+              level:
+                4,
+
+              meaning:
+                "ดีเยี่ยม",
+
+              passed:
+                true
+
+            };
+
+          }
+
+
+          if (
+            score >= 7
+          ) {
+
+            return {
+
+              level:
+                3,
+
+              meaning:
+                "ดี",
+
+              passed:
+                true
+
+            };
+
+          }
+
+
+          if (
+            score >= 5
+          ) {
+
+            return {
+
+              level:
+                2,
+
+              meaning:
+                "พอใช้",
+
+              passed:
+                false
+
+            };
+
+          }
+
+
+          return {
+
+            level:
+              1,
+
+            meaning:
+              "ควรปรับปรุง",
+
+            passed:
+              false
+
+          };
+
+        }
+
+
+        /* =====================================================
+           22. SAVE A RESULT
+        ===================================================== */
+
+        async function saveAnalyzeResult(
+          score
+        ) {
+
+          try {
+
+            const {
+              data,
+              error
+            } =
+              await supabaseClient.rpc(
+                "save_analyze_result",
+                {
+
+                  p_student_id:
+                    studentId,
+
+                  p_session_token:
+                    sessionToken,
+
+                  p_score:
+                    score
+
+                }
+              );
+
+
+            if (
+              error
+            ) {
+
+              throw error;
+
+            }
+
+
+            if (
+              !data
+              ||
+              data.length === 0
+            ) {
+
+              throw new Error(
+                "ไม่พบผลการบันทึกจาก Supabase"
+              );
+
+            }
+
+
+            const result =
+              data[0];
+
+
+            if (
+              result.saved !==
+              true
+            ) {
+
+              throw new Error(
+                result.quality_text
+                ||
+                "SAVE FAILED"
+              );
+
+            }
+
+
+            return result;
+
+          }
+
+          catch (
+            error
+          ) {
+
+            console.error(
+              "SAVE ANALYZE RESULT ERROR:",
+              error
+            );
+
+
+            return null;
+
+          }
+
+        }
+
+
+        /* =====================================================
+           23. FINAL RESULT
+        ===================================================== */
+
+        async function showFinalResult() {
+
+          if (
+            savingFinalResult
+          ) {
+
+            return;
+
+          }
+
+
+          savingFinalResult =
+            true;
+
+
+          const score =
+            getTotalScore();
+
+
+          const quality =
+            getQualityResult(
+              score
+            );
+
+
+          analyzeWorkspace.classList.add(
+            "hidden"
+          );
+
+
+          baseCompletePanel.classList.add(
+            "hidden"
+          );
+
+
+          analyzeFinalResult.classList.remove(
+            "hidden"
+          );
+
+
+          document
+            .getElementById(
+              "finalTotalScore"
+            )
+            .textContent =
+              score;
+
+
+          document
+            .getElementById(
+              "qualityLevel"
+            )
+            .textContent =
+              quality.level;
+
+
+          document
+            .getElementById(
+              "qualityMeaning"
+            )
+            .textContent =
+              quality.meaning;
+
+
+          const evaluation =
+            document.getElementById(
+              "evaluationResult"
+            );
+
+
+          const icon =
+            document.getElementById(
+              "finalResultIcon"
+            );
+
+
+          const message =
+            document.getElementById(
+              "finalMessage"
+            );
+
+
+          finalAttemptText.textContent =
+            "ANALYZE ATTEMPT "
+            +
+            analyzeAttemptNumber
+            +
+            " / 2";
+
+
+          /*
+            ระหว่างบันทึก
+          */
+
+          evaluation.textContent =
+            "กำลังบันทึก...";
+
+
+          evaluation.className =
+            "";
+
+
+          message.textContent =
+            "ระบบกำลังบันทึกคะแนนลงฐานข้อมูล กรุณารอสักครู่";
+
+
+          finalActionButton.disabled =
+            true;
+
+
+          const savedResult =
+            await saveAnalyzeResult(
+              score
+            );
+
+
+          /*
+            SAVE FAILED
+          */
+
+          if (
+            !savedResult
+          ) {
+
+            evaluation.textContent =
+              "บันทึกไม่สำเร็จ";
+
+
+            evaluation.className =
+              "evaluation-fail";
+
+
+            icon.textContent =
+              "!";
+
+
+            icon.classList.add(
+              "fail"
+            );
+
+
+            message.textContent =
+              "คะแนนของคุณยังไม่ได้บันทึกลงฐานข้อมูล กรุณากดปุ่มด้านล่างเพื่อลองบันทึกอีกครั้ง";
+
+
+            finalActionButton.disabled =
+              false;
+
+
+            finalActionButton.textContent =
+              "ลองบันทึกคะแนนอีกครั้ง";
+
+
+            finalActionButton.onclick =
+              async function () {
+
+                await showFinalResult();
+
+              };
+
+
+            savingFinalResult =
+              false;
+
+
+            return;
+
+          }
+
+
+          /*
+            หลัง Server บันทึกสำเร็จ
+            ให้ Server เป็นข้อมูลจริง
+          */
+
+          let freshState =
+            null;
+
+
+          try {
+
+            freshState =
+              await fetchMissionState();
+
+          }
+
+          catch (
+            error
+          ) {
+
+            console.error(
+              "REFRESH ANALYZE STATE ERROR:",
+              error
+            );
+
+          }
+
+
+          localStorage.setItem(
+            "analyzeTotalScore",
+            String(
+              savedResult.score
+            )
+          );
+
+
+          localStorage.setItem(
+            "analyzeQualityLevel",
+            String(
+              savedResult.quality_level
+            )
+          );
+
+
+          localStorage.setItem(
+            "analyzeQualityText",
+            savedResult.quality_text
+          );
+
+
+          localStorage.setItem(
+            "analyzePassed",
+            savedResult.passed
+              ?
+              "true"
+              :
+              "false"
+          );
+
+
+          /*
+            รอบนี้ส่งเสร็จแล้ว
+            ล้างเฉพาะ working progress รอบนี้
+          */
+
+          localStorage.removeItem(
+            progressStorageKey
+          );
+
+
+          /*
+            PASS
+          */
+
+          if (
+            savedResult.passed ===
+            true
+          ) {
+
+            evaluation.textContent =
+              "ผ่าน";
+
+
+            evaluation.className =
+              "evaluation-pass";
+
+
+            icon.textContent =
+              "✓";
+
+
+            icon.classList.remove(
+              "fail"
+            );
+
+
+            message.textContent =
+              "คุณได้คะแนน "
+              +
+              savedResult.score
+              +
+              " จาก 10 คะแนน ระดับคุณภาพ "
+              +
+              savedResult.quality_level
+              +
+              " ("
+              +
+              savedResult.quality_text
+              +
+              ") ผ่านเกณฑ์การประเมิน และทำภารกิจ A • Analyze เสร็จสมบูรณ์แล้ว";
+
+
+            finalActionButton.textContent =
+              "กลับสู่ MISSION HQ →";
+
+          }
+
+
+          /*
+            FAIL ครั้งที่ 1
+            ยังเหลือสิทธิ์ครั้งที่ 2
+          */
+
+          else if (
+            freshState
+            &&
+            freshState.analyze_completed !==
+            true
+            &&
+            Number(
+              freshState.analyze_attempts
+            ) === 1
+          ) {
+
+            evaluation.textContent =
+              "ยังไม่ผ่าน";
+
+
+            evaluation.className =
+              "evaluation-fail";
+
+
+            icon.textContent =
+              "!";
+
+
+            icon.classList.add(
+              "fail"
+            );
+
+
+            message.textContent =
+              "ครั้งที่ 1 คุณได้ "
+              +
+              savedResult.score
+              +
+              " จาก 10 คะแนน ยังไม่ถึงเกณฑ์ผ่าน 7 คะแนน ระบบได้บันทึกคะแนนครั้งแรกไว้แล้ว และคุณยังมีสิทธิ์ทำ A • Analyze อีก 1 ครั้ง";
+
+
+            finalActionButton.textContent =
+              "กลับสู่ MISSION HQ เพื่อทำครั้งที่ 2 →";
+
+          }
+
+
+          /*
+            FAIL ครั้งที่ 2
+            จบ A แล้ว
+          */
+
+          else {
+
+            evaluation.textContent =
+              "ไม่ผ่านเกณฑ์";
+
+
+            evaluation.className =
+              "evaluation-fail";
+
+
+            icon.textContent =
+              "!";
+
+
+            icon.classList.add(
+              "fail"
+            );
+
+
+            message.textContent =
+              "ครั้งที่ 2 คุณได้ "
+              +
+              savedResult.score
+              +
+              " จาก 10 คะแนน ยังไม่ถึงเกณฑ์ผ่าน 7 คะแนน และใช้สิทธิ์ครบ 2 ครั้งแล้ว ระบบบันทึกคะแนนครั้งที่ 2 เป็นคะแนนสุดท้ายของภารกิจ A • Analyze";
+
+
+            finalActionButton.textContent =
+              "กลับสู่ MISSION HQ →";
+
+          }
+
+
+          finalActionButton.disabled =
+            false;
+
+
+          finalActionButton.onclick =
+            function () {
+
+              window.location.replace(
+                "dashboard.html"
+              );
+
+            };
+
+
+          analyzeFinalResult.scrollIntoView(
+            {
+              behavior:
+                "smooth",
+
+              block:
+                "start"
+            }
+          );
+
+
+          savingFinalResult =
+            false;
+
+        }
+
+
+        /* =====================================================
+           24. CLEAR SESSION
+        ===================================================== */
+
+        function clearLoginSession() {
+
+          localStorage.removeItem(
+            "userRole"
+          );
+
+
+          localStorage.removeItem(
+            "studentLoggedIn"
+          );
+
+
+          localStorage.removeItem(
+            "studentId"
+          );
+
+
+          localStorage.removeItem(
+            "studentNumber"
+          );
+
+
+          localStorage.removeItem(
+            "studentName"
+          );
+
+
+          localStorage.removeItem(
+            "className"
+          );
+
+
+          localStorage.removeItem(
+            "loginTime"
+          );
+
+
+          localStorage.removeItem(
+            "studentSessionToken"
+          );
+
+
+          sessionStorage.clear();
+
+
+          window.location.replace(
+            "index.html"
+          );
+
+        }
+
+
+        /* =====================================================
+           25. START
+        ===================================================== */
+
+        const allowed =
+          await verifyAnalyzeAccess();
+
+
+        if (
+          !allowed
+        ) {
+
+          return;
+
+        }
+
+
+        /*
+          โหลด Progress
+          เฉพาะรอบปัจจุบัน
+        */
+
+        loadWorkingProgress();
+
+
+        updateScoreBoard();
+
+        updateLearningPath();
+
+
+        renderBase(
+          false
+        );
+
+
+        /* =====================================================
+           26. REALTIME TEACHER LOCK
+        ===================================================== */
+
+        console.log(
+          "START ANALYZE ACCESS REALTIME:",
+          studentId
+        );
+
+
+        let analyzeLockHandled =
+          false;
+
+
+        const analyzeAccessChannel =
+          supabaseClient
+            .channel(
+              "student-analyze-access-"
+              +
+              studentId
+            )
+
+            .on(
+              "postgres_changes",
+
+              {
+
+                event:
+                  "UPDATE",
+
+                schema:
+                  "public",
+
+                table:
+                  "student_progress",
+
+                filter:
+                  "student_id=eq."
+                  +
+                  studentId
+
+              },
+
+              async function (
+                payload
+              ) {
+
+                console.log(
+                  "ANALYZE ACCESS CHANGED:",
+                  payload
+                );
+
+
+                try {
+
+                  const progress =
+                    await fetchMissionState();
+
+
+                  /*
+                    ครู LOCK A
+                  */
+
+                  if (
+                    progress.analyze_unlocked !==
+                    true
+                  ) {
+
+                    if (
+                      analyzeLockHandled
+                    ) {
+
+                      return;
+
+                    }
+
+
+                    analyzeLockHandled =
+                      true;
+
+
+                    /*
+                      ไม่ลบ progress
+                      นักเรียนกลับมาทำต่อได้
+                    */
+
+                    alert(
+                      "ครูผู้สอนได้ล็อกภารกิจ A • Analyze แล้ว กรุณารอครูปลดล็อกภารกิจอีกครั้ง"
+                    );
+
+
+                    window.location.replace(
+                      "dashboard.html"
+                    );
+
+                  }
+
+                }
+
+                catch (
+                  error
+                ) {
+
+                  console.error(
+                    "ANALYZE REALTIME CHECK ERROR:",
+                    error
+                  );
+
+                }
+
+              }
+            )
+
+            .subscribe(
+              function (
+                status
+              ) {
+
+                console.log(
+                  "ANALYZE REALTIME STATUS:",
+                  status
+                );
+
+              }
+            );
+
+
+        /* =====================================================
+           27. CLEANUP REALTIME
+        ===================================================== */
+
+        window.addEventListener(
+          "beforeunload",
+          function () {
+
+            if (
+              analyzeAccessChannel
+            ) {
+
+              supabaseClient
+                .removeChannel(
+                  analyzeAccessChannel
+                );
+
+            }
+
+          }
+        );
+
+
+      }
+    );
+
+  </script>
+
+
+</body>
+
+</html>

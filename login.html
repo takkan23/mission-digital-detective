@@ -1,0 +1,1282 @@
+<!DOCTYPE html>
+<html lang="th">
+
+<head>
+
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <title>
+    Login | Mission Digital Detective
+  </title>
+
+  <link
+    rel="preconnect"
+    href="https://fonts.googleapis.com"
+  >
+
+  <link
+    rel="preconnect"
+    href="https://fonts.gstatic.com"
+    crossorigin
+  >
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700;800&display=swap"
+    rel="stylesheet"
+  >
+
+  <link
+    rel="stylesheet"
+    href="css/style.css"
+  >
+
+
+  <style>
+
+    * {
+      box-sizing: border-box;
+    }
+
+
+    body {
+
+      margin: 0;
+
+      min-height: 100vh;
+
+      display: grid;
+
+      place-items: center;
+
+      padding: 20px;
+
+      color: #f5fbff;
+
+      font-family: "Kanit", sans-serif;
+
+      background:
+        radial-gradient(
+          circle at 50% 15%,
+          rgba(0,216,255,.12),
+          transparent 30%
+        ),
+        radial-gradient(
+          circle at 85% 80%,
+          rgba(255,46,145,.08),
+          transparent 35%
+        ),
+        linear-gradient(
+          180deg,
+          #020b18,
+          #010710
+        );
+
+      overflow-x: hidden;
+    }
+
+
+    .login-grid-bg {
+
+      position: fixed;
+
+      inset: 0;
+
+      pointer-events: none;
+
+      opacity: .08;
+
+      background-image:
+        linear-gradient(
+          rgba(0,216,255,.08) 1px,
+          transparent 1px
+        ),
+        linear-gradient(
+          90deg,
+          rgba(0,216,255,.08) 1px,
+          transparent 1px
+        );
+
+      background-size: 54px 54px;
+    }
+
+
+    .login-shell {
+
+      position: relative;
+
+      z-index: 1;
+
+      width:
+        min(
+          1180px,
+          100%
+        );
+
+      display: grid;
+
+      grid-template-columns:
+        minmax(0,1.05fr)
+        minmax(360px,.75fr);
+
+      overflow: hidden;
+
+      border:
+        1px solid
+        rgba(0,216,255,.35);
+
+      border-radius: 18px;
+
+      background:
+        rgba(2,12,23,.94);
+
+      box-shadow:
+        0 0 50px
+        rgba(0,216,255,.08);
+    }
+
+
+    /* =====================================================
+       LEFT
+    ====================================================== */
+
+    .login-visual {
+
+      position: relative;
+
+      min-height: 650px;
+
+      display: flex;
+
+      flex-direction: column;
+
+      justify-content: space-between;
+
+      padding:
+        44px 46px;
+
+      overflow: hidden;
+
+      border-right:
+        1px solid
+        rgba(0,216,255,.20);
+
+      background:
+        linear-gradient(
+          145deg,
+          rgba(0,216,255,.025),
+          rgba(143,92,255,.025)
+        );
+    }
+
+
+    .system-status {
+
+      display: flex;
+
+      align-items: center;
+
+      gap: 9px;
+
+      font-size: .75rem;
+
+      letter-spacing: .08em;
+    }
+
+
+    .status-dot {
+
+      width: 10px;
+      height: 10px;
+
+      border-radius: 50%;
+
+      background: #39ff73;
+
+      box-shadow:
+        0 0 12px
+        #39ff73;
+    }
+
+
+    .system-status strong {
+      color: #39ff73;
+    }
+
+
+    .login-radar {
+
+      position: absolute;
+
+      top: 42px;
+      right: 55px;
+
+      width: 255px;
+      height: 255px;
+
+      border:
+        1px solid
+        rgba(0,216,255,.45);
+
+      border-radius: 50%;
+
+      opacity: .8;
+    }
+
+
+    .login-radar::before,
+    .login-radar::after {
+
+      content: "";
+
+      position: absolute;
+
+      border-radius: 50%;
+
+      border: 1px solid;
+    }
+
+
+    .login-radar::before {
+
+      inset: 34px;
+
+      border-color:
+        rgba(255,46,145,.42);
+    }
+
+
+    .login-radar::after {
+
+      inset: 73px;
+
+      border-color:
+        rgba(255,210,26,.42);
+    }
+
+
+    .radar-cross-x,
+    .radar-cross-y {
+
+      position: absolute;
+
+      background:
+        rgba(0,216,255,.30);
+    }
+
+
+    .radar-cross-x {
+
+      top: 50%;
+      left: 0;
+
+      width: 100%;
+      height: 1px;
+    }
+
+
+    .radar-cross-y {
+
+      left: 50%;
+      top: 0;
+
+      width: 1px;
+      height: 100%;
+    }
+
+
+    .robot {
+
+      position: absolute;
+
+      inset: 0;
+
+      display: grid;
+
+      place-items: center;
+
+      font-size: 4rem;
+    }
+
+
+    .login-brand {
+
+      position: relative;
+
+      z-index: 2;
+
+      margin-top: 165px;
+    }
+
+
+    .login-brand small {
+
+      color: #00d8ff;
+
+      font-size: .78rem;
+
+      letter-spacing: .12em;
+    }
+
+
+    .login-brand h1 {
+
+      margin:
+        10px 0 8px;
+
+      font-size:
+        clamp(
+          3rem,
+          6vw,
+          5.4rem
+        );
+
+      line-height: .95;
+
+      letter-spacing: -.03em;
+    }
+
+
+    .login-brand h1 span {
+
+      display: block;
+
+      color: #00d8ff;
+    }
+
+
+    .login-brand p {
+
+      max-width: 650px;
+
+      color: #9caeb7;
+
+      line-height: 1.7;
+    }
+
+
+    .dare-row {
+
+      display: grid;
+
+      grid-template-columns:
+        repeat(4,1fr);
+
+      margin-top: 28px;
+
+      border:
+        1px solid
+        rgba(0,216,255,.28);
+
+      border-radius: 12px;
+
+      overflow: hidden;
+    }
+
+
+    .dare-item {
+
+      padding:
+        18px 12px;
+
+      text-align: center;
+
+      border-right:
+        1px solid
+        rgba(0,216,255,.16);
+    }
+
+
+    .dare-item:last-child {
+      border-right: 0;
+    }
+
+
+    .dare-item strong {
+
+      display: block;
+
+      font-size: 2rem;
+    }
+
+
+    .dare-item:nth-child(1) strong {
+      color: #00d8ff;
+    }
+
+
+    .dare-item:nth-child(2) strong {
+      color: #8f5cff;
+    }
+
+
+    .dare-item:nth-child(3) strong {
+      color: #ff2e91;
+    }
+
+
+    .dare-item:nth-child(4) strong {
+      color: #ffd21a;
+    }
+
+
+    .dare-item span {
+
+      display: block;
+
+      margin-top: 2px;
+
+      font-size: .75rem;
+
+      color: #d5e0e5;
+    }
+
+
+    .dare-item small {
+
+      display: block;
+
+      margin-top: 2px;
+
+      color: #6d828c;
+
+      font-size: .62rem;
+    }
+
+
+    /* =====================================================
+       RIGHT
+    ====================================================== */
+
+    .login-panel {
+
+      display: flex;
+
+      align-items: center;
+
+      padding:
+        42px 34px;
+    }
+
+
+    .login-card {
+
+      width: 100%;
+    }
+
+
+    .login-card small {
+
+      color: #00d8ff;
+
+      font-size: .72rem;
+
+      letter-spacing: .1em;
+    }
+
+
+    .login-card h2 {
+
+      margin:
+        4px 0 4px;
+
+      font-size:
+        2rem;
+    }
+
+
+    .login-card > p {
+
+      margin:
+        0 0 24px;
+
+      color: #879aa5;
+    }
+
+
+    .login-type {
+
+      display: grid;
+
+      grid-template-columns:
+        1fr 1fr;
+
+      gap: 8px;
+
+      margin-bottom: 23px;
+    }
+
+
+    .type-button {
+
+      min-height: 66px;
+
+      border:
+        1px solid
+        rgba(255,255,255,.13);
+
+      border-radius: 9px;
+
+      color: #8e9ca4;
+
+      background:
+        transparent;
+
+      font-family: inherit;
+
+      font-size: .95rem;
+
+      cursor: pointer;
+    }
+
+
+    .type-button.active {
+
+      color: #00d8ff;
+
+      border-color: #00d8ff;
+
+      background:
+        rgba(0,216,255,.05);
+    }
+
+
+    .field {
+
+      margin-bottom: 16px;
+    }
+
+
+    .field label {
+
+      display: block;
+
+      margin-bottom: 6px;
+
+      color: #00d8ff;
+
+      font-size: .72rem;
+
+      letter-spacing: .05em;
+    }
+
+
+    .field label span {
+
+      margin-left: 5px;
+
+      color: #96a7af;
+
+      font-weight: 300;
+    }
+
+
+    .field-control {
+
+      position: relative;
+    }
+
+
+    .field-control select,
+    .field-control input {
+
+      width: 100%;
+      height: 52px;
+
+      padding:
+        0 45px 0 14px;
+
+      border:
+        1px solid
+        rgba(255,255,255,.17);
+
+      border-radius: 8px;
+
+      outline: 0;
+
+      color: white;
+
+      background:
+        rgba(1,9,18,.86);
+
+      font-family: inherit;
+    }
+
+
+    .field-control select:focus,
+    .field-control input:focus {
+
+      border-color: #00d8ff;
+
+      box-shadow:
+        0 0 0 3px
+        rgba(0,216,255,.05);
+    }
+
+
+    .toggle-password {
+
+      position: absolute;
+
+      top: 50%;
+      right: 13px;
+
+      transform:
+        translateY(-50%);
+
+      border: 0;
+
+      color: #93a4ac;
+
+      background: transparent;
+
+      cursor: pointer;
+    }
+
+
+    .first-access {
+
+      display: flex;
+
+      align-items: center;
+      justify-content: space-between;
+
+      gap: 10px;
+
+      margin-top: 6px;
+
+      padding:
+        12px 14px;
+
+      border:
+        1px solid
+        rgba(0,216,255,.22);
+
+      border-radius: 8px;
+
+      background:
+        rgba(0,216,255,.025);
+
+      font-size: .72rem;
+    }
+
+
+    .first-access span {
+      color: #92a5ae;
+    }
+
+
+    .first-access strong {
+
+      color: #ffd21a;
+
+      font-size: 1.1rem;
+    }
+
+
+    .login-button {
+
+      width: 100%;
+      min-height: 54px;
+
+      margin-top: 18px;
+
+      border: 0;
+
+      border-radius: 8px;
+
+      color: #021018;
+
+      background:
+        linear-gradient(
+          90deg,
+          #00d8ff,
+          #27bfff
+        );
+
+      font-family: inherit;
+
+      font-size: 1rem;
+
+      font-weight: 800;
+
+      cursor: pointer;
+    }
+
+
+    .login-button:disabled {
+
+      opacity: .55;
+
+      cursor: wait;
+    }
+
+
+    .login-message {
+
+      min-height: 24px;
+
+      margin-top: 12px;
+
+      color: #ff7d9e;
+
+      font-size: .76rem;
+
+      text-align: center;
+    }
+
+
+    /* =====================================================
+       RESPONSIVE
+    ====================================================== */
+
+    @media (max-width: 900px) {
+
+      .login-shell {
+        grid-template-columns: 1fr;
+      }
+
+
+      .login-visual {
+
+        min-height: 520px;
+
+        border-right: 0;
+
+        border-bottom:
+          1px solid
+          rgba(0,216,255,.18);
+      }
+
+    }
+
+
+    @media (max-width: 600px) {
+
+      body {
+        padding: 8px;
+      }
+
+
+      .login-visual {
+
+        min-height: 430px;
+
+        padding:
+          28px 20px;
+      }
+
+
+      .login-radar {
+
+        width: 190px;
+        height: 190px;
+
+        top: 35px;
+        right: 20px;
+      }
+
+
+      .login-brand {
+        margin-top: 135px;
+      }
+
+
+      .login-brand h1 {
+        font-size: 3rem;
+      }
+
+
+      .dare-row {
+        grid-template-columns:
+          repeat(2,1fr);
+      }
+
+
+      .login-panel {
+        padding:
+          30px 18px;
+      }
+
+    }
+
+  </style>
+
+</head>
+
+
+<body>
+
+  <div class="login-grid-bg"></div>
+
+
+  <main class="login-shell">
+
+
+    <!-- =====================================================
+         LEFT
+    ====================================================== -->
+
+    <section class="login-visual">
+
+      <div class="system-status">
+
+        <span class="status-dot"></span>
+
+        SYSTEM STATUS:
+
+        <strong>
+          ONLINE
+        </strong>
+
+      </div>
+
+
+      <div class="login-radar">
+
+        <span class="radar-cross-x"></span>
+        <span class="radar-cross-y"></span>
+
+        <div class="robot">
+          🤖
+        </div>
+
+      </div>
+
+
+      <div class="login-brand">
+
+        <small>
+          DIGITAL INVESTIGATION SYSTEM
+        </small>
+
+        <h1>
+
+          MISSION<br>
+
+          DIGITAL
+
+          <span>
+            DETECTIVE
+          </span>
+
+        </h1>
+
+        <p>
+          คิดก่อนเชื่อ • ตรวจสอบก่อนแชร์ •
+          ใช้เทคโนโลยีอย่างปลอดภัยและมีความรับผิดชอบ
+        </p>
+
+
+        <div class="dare-row">
+
+          <div class="dare-item">
+
+            <strong>
+              D
+            </strong>
+
+            <span>
+              DISCOVER
+            </span>
+
+            <small>
+              ค้นพบและตระหนักรู้
+            </small>
+
+          </div>
+
+
+          <div class="dare-item">
+
+            <strong>
+              A
+            </strong>
+
+            <span>
+              ANALYZE
+            </span>
+
+            <small>
+              สืบค้นและวิเคราะห์
+            </small>
+
+          </div>
+
+
+          <div class="dare-item">
+
+            <strong>
+              R
+            </strong>
+
+            <span>
+              REASON
+            </span>
+
+            <small>
+              ใช้เหตุผลและตัดสินใจ
+            </small>
+
+          </div>
+
+
+          <div class="dare-item">
+
+            <strong>
+              E
+            </strong>
+
+            <span>
+              EVOLVE
+            </span>
+
+            <small>
+              สร้างสรรค์และพัฒนา
+            </small>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         LOGIN PANEL
+    ====================================================== -->
+
+    <section class="login-panel">
+
+      <div class="login-card">
+
+        <small>
+          IDENTITY VERIFICATION
+        </small>
+
+        <h2>
+          MISSION ACCESS
+        </h2>
+
+        <p>
+          เลือกประเภทผู้ใช้งานและยืนยันตัวตน
+        </p>
+
+
+        <!-- USER TYPE -->
+
+        <div class="login-type">
+
+          <button
+            type="button"
+            class="type-button active"
+            id="studentTypeButton"
+          >
+            👤 นักเรียน
+          </button>
+
+
+          <button
+            type="button"
+            class="type-button"
+            id="teacherTypeButton"
+          >
+            👨‍🏫 ครูผู้สอน
+          </button>
+
+        </div>
+
+
+        <!-- =================================================
+             STUDENT LOGIN
+        ================================================== -->
+
+        <div id="studentLoginPanel">
+
+
+          <div class="field">
+
+            <label for="classroom">
+
+              01 CLASSROOM
+
+              <span>
+                ห้องเรียน
+              </span>
+
+            </label>
+
+
+            <div class="field-control">
+
+              <select id="classroom">
+
+                <option value="">
+                  กำลังโหลดห้องเรียน...
+                </option>
+
+              </select>
+
+            </div>
+
+          </div>
+
+
+          <div class="field">
+
+            <label for="studentId">
+
+              02 DETECTIVE ID
+
+              <span>
+                รหัสนักเรียน
+              </span>
+
+            </label>
+
+
+            <div class="field-control">
+
+              <input
+                type="text"
+                id="studentId"
+                inputmode="numeric"
+                autocomplete="username"
+                placeholder="กรอกรหัสนักเรียน"
+              >
+
+            </div>
+
+          </div>
+
+
+          <div class="field">
+
+            <label for="studentPassword">
+
+              03 ACCESS CODE
+
+              <span>
+                รหัสผ่าน
+              </span>
+
+            </label>
+
+
+            <div class="field-control">
+
+              <input
+                type="password"
+                id="studentPassword"
+                autocomplete="current-password"
+                placeholder="กรอกรหัสผ่าน"
+              >
+
+
+              <button
+                type="button"
+                id="togglePassword"
+                class="toggle-password"
+                aria-label="แสดงหรือซ่อนรหัสผ่าน"
+              >
+                👁
+              </button>
+
+            </div>
+
+          </div>
+
+
+          <div class="first-access">
+
+            <span>
+              FIRST ACCESS<br>
+              นักเรียนที่เข้าสู่ระบบครั้งแรก
+            </span>
+
+            <strong>
+              🔒 123456
+            </strong>
+
+          </div>
+
+
+          <button
+            type="button"
+            id="studentLoginButton"
+            class="login-button"
+          >
+            ENTER MISSION →
+          </button>
+
+
+          <div
+            id="studentLoginMessage"
+            class="login-message"
+          ></div>
+
+        </div>
+
+
+        <!-- =================================================
+             TEACHER PANEL
+             ตอนนี้ให้ลิงก์ไปหน้า teacher เดิมก่อน
+        ================================================== -->
+
+        <div
+          id="teacherLoginPanel"
+          style="display:none"
+        >
+
+          <p style="color:#93a5ad; line-height:1.7;">
+
+            ระบบครูผู้สอนจะเชื่อมกับ Teacher Control
+            ในขั้นตอนถัดไป
+
+          </p>
+
+
+          <button
+            type="button"
+            class="login-button"
+            onclick="window.location.href='teacher/dashboard.html'"
+          >
+            ENTER TEACHER CONTROL →
+          </button>
+
+        </div>
+
+
+      </div>
+
+    </section>
+
+  </main>
+
+
+  <!-- =====================================================
+       SCRIPT ORDER สำคัญ
+  ====================================================== -->
+
+  <script
+    src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"
+  ></script>
+
+  <script
+    src="js/supabase-config.js"
+  ></script>
+
+  <script
+    src="js/login.js"
+  ></script>
+
+
+  <script>
+
+    /* =====================================================
+       UI ONLY
+    ====================================================== */
+
+    const studentTypeButton =
+      document.getElementById(
+        "studentTypeButton"
+      );
+
+
+    const teacherTypeButton =
+      document.getElementById(
+        "teacherTypeButton"
+      );
+
+
+    const studentLoginPanel =
+      document.getElementById(
+        "studentLoginPanel"
+      );
+
+
+    const teacherLoginPanel =
+      document.getElementById(
+        "teacherLoginPanel"
+      );
+
+
+    studentTypeButton.addEventListener(
+      "click",
+      function () {
+
+        studentTypeButton.classList.add(
+          "active"
+        );
+
+        teacherTypeButton.classList.remove(
+          "active"
+        );
+
+        studentLoginPanel.style.display =
+          "block";
+
+        teacherLoginPanel.style.display =
+          "none";
+
+      }
+    );
+
+
+    teacherTypeButton.addEventListener(
+      "click",
+      function () {
+
+        teacherTypeButton.classList.add(
+          "active"
+        );
+
+        studentTypeButton.classList.remove(
+          "active"
+        );
+
+        teacherLoginPanel.style.display =
+          "block";
+
+        studentLoginPanel.style.display =
+          "none";
+
+      }
+    );
+
+
+    /* PASSWORD EYE */
+
+    document
+      .getElementById(
+        "togglePassword"
+      )
+      .addEventListener(
+        "click",
+        function () {
+
+          const input =
+            document.getElementById(
+              "studentPassword"
+            );
+
+
+          input.type =
+            input.type === "password"
+              ? "text"
+              : "password";
+
+        }
+      );
+
+  </script>
+
+</body>
+
+</html>

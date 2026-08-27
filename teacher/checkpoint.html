@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html lang="th">
+
+<head>
+
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <title>
+    Analyze | Teacher Control
+  </title>
+
+  <link
+    rel="preconnect"
+    href="https://fonts.googleapis.com"
+  >
+
+  <link
+    rel="preconnect"
+    href="https://fonts.gstatic.com"
+    crossorigin
+  >
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700;800&display=swap"
+    rel="stylesheet"
+  >
+
+  <link
+    rel="stylesheet"
+    href="../css/teacher.css"
+  >
+
+</head>
+
+
+<body class="teacher-page">
+
+
+  <!-- =====================================================
+       TOP BAR
+  ====================================================== -->
+
+  <header class="teacher-topbar">
+
+    <div class="teacher-brand">
+
+      <div class="teacher-brand-icon">
+        A
+      </div>
+
+      <div>
+
+        <div class="teacher-brand-small">
+          MISSION DIGITAL DETECTIVE
+        </div>
+
+        <div class="teacher-brand-title">
+          TEACHER SUCHAREE POONPAL
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <div class="teacher-top-actions">
+
+      <span class="teacher-online">
+        ● SYSTEM ONLINE
+      </span>
+
+      <a
+        href="dashboard.html"
+        class="teacher-back-button"
+      >
+        ← DASHBOARD
+      </a>
+
+    </div>
+
+  </header>
+
+
+  <!-- =====================================================
+       DARE NAVIGATION
+  ====================================================== -->
+
+  <nav class="teacher-dare-nav">
+
+    <a
+      href="discover.html"
+      class="teacher-dare-nav-link"
+      data-page="discover"
+    >
+
+      <span class="teacher-dare-nav-code">
+        D
+      </span>
+
+      <span>
+        DISCOVER
+      </span>
+
+    </a>
+
+
+    <a
+      href="checkpoint.html"
+      class="teacher-dare-nav-link active"
+      data-page="analyze"
+    >
+
+      <span class="teacher-dare-nav-code">
+        A
+      </span>
+
+      <span>
+        ANALYZE
+      </span>
+
+    </a>
+
+
+    <a
+      href="final.html"
+      class="teacher-dare-nav-link"
+      data-page="reason"
+    >
+
+      <span class="teacher-dare-nav-code">
+        R
+      </span>
+
+      <span>
+        REASON
+      </span>
+
+    </a>
+
+
+    <a
+      href="info.html"
+      class="teacher-dare-nav-link"
+      data-page="evolve"
+    >
+
+      <span class="teacher-dare-nav-code">
+        E
+      </span>
+
+      <span>
+        EVOLVE
+      </span>
+
+    </a>
+
+
+    <a
+      href="summary.html"
+      class="
+        teacher-dare-nav-link
+        teacher-dare-nav-summary
+      "
+      data-page="summary"
+    >
+
+      <span class="teacher-dare-nav-code">
+        Σ
+      </span>
+
+      <span>
+        SUMMARY
+      </span>
+
+    </a>
+
+  </nav>
+
+
+  <!-- =====================================================
+       HEADER
+  ====================================================== -->
+
+  <section class="teacher-analyze-header">
+
+    <div>
+
+      <div class="teacher-section-label">
+        A • ANALYZE
+      </div>
+
+      <h1>
+        วิเคราะห์ Learning Base
+      </h1>
+
+      <p>
+        ติดตามผลการทำกิจกรรมวิเคราะห์ของนักเรียน
+        คะแนนเต็ม 10 คะแนน
+        นักเรียนผ่านเกณฑ์เมื่อได้คะแนนตั้งแต่ 7 คะแนนขึ้นไป
+      </p>
+
+    </div>
+
+
+    <div class="teacher-analyze-badge">
+      10 POINTS
+    </div>
+
+  </section>
+
+
+  <!-- =====================================================
+       MISSION CONTROL
+  ====================================================== -->
+
+  <section
+    class="
+      teacher-mission-control
+      teacher-mission-control-a
+    "
+  >
+
+    <div class="teacher-mission-control-head">
+
+      <div>
+
+        <span>
+          MISSION CONTROL
+        </span>
+
+        <h2>
+          ควบคุมการเปิด A • Analyze
+        </h2>
+
+        <p>
+          ครูสามารถปลดล็อก Analyze
+          ให้ทั้งห้องพร้อมกัน
+          หรือปลดล็อกให้นักเรียนเป็นรายบุคคล
+        </p>
+
+      </div>
+
+
+      <div class="teacher-mission-control-state">
+        TEACHER CONTROLLED
+      </div>
+
+    </div>
+
+
+    <div class="teacher-mission-control-actions">
+
+      <div class="teacher-control-selected-class">
+
+        <span>
+          ห้องที่เลือก
+        </span>
+
+        <strong id="analyzeControlClassName">
+          กรุณาเลือกห้องเรียน
+        </strong>
+
+      </div>
+
+
+      <button
+        type="button"
+        id="unlockAnalyzeClassButton"
+        class="teacher-control-unlock"
+      >
+        🔓 UNLOCK A ทั้งห้อง
+      </button>
+
+
+      <button
+        type="button"
+        id="lockAnalyzeClassButton"
+        class="teacher-control-lock"
+      >
+        🔒 LOCK A ทั้งห้อง
+      </button>
+
+    </div>
+
+
+    <div
+      id="analyzeControlMessage"
+      class="teacher-control-message"
+    ></div>
+
+  </section>
+
+
+  <!-- =====================================================
+       FILTER
+  ====================================================== -->
+
+  <section class="teacher-info-filter">
+
+    <select id="analyzeClassFilter">
+
+      <option value="">
+        ทุกห้องเรียน
+      </option>
+
+    </select>
+
+
+    <select id="analyzeStatusFilter">
+
+      <option value="">
+        ทุกสถานะ
+      </option>
+
+      <option value="passed">
+        ผ่านเกณฑ์
+      </option>
+
+      <option value="failed">
+        ไม่ผ่านเกณฑ์
+      </option>
+
+      <option value="pending">
+        ยังไม่ส่ง
+      </option>
+
+    </select>
+
+
+    <input
+      id="analyzeStudentSearch"
+      type="text"
+      placeholder="ค้นหาชื่อ รหัสนักเรียน หรือเลขที่..."
+    >
+
+
+    <button
+      type="button"
+      id="analyzeRefreshButton"
+      class="teacher-dashboard-refresh"
+    >
+      ↻ REFRESH
+    </button>
+
+  </section>
+
+
+  <!-- =====================================================
+       SUMMARY
+  ====================================================== -->
+
+  <section class="teacher-analyze-summary">
+
+    <article class="teacher-info-stat">
+
+      <span>
+        นักเรียนทั้งหมด
+      </span>
+
+      <strong id="analyzeTotalStudents">
+        0
+      </strong>
+
+    </article>
+
+
+    <article class="teacher-info-stat">
+
+      <span>
+        ผ่านเกณฑ์
+      </span>
+
+      <strong
+        id="analyzePassedStudents"
+        class="teacher-green"
+      >
+        0
+      </strong>
+
+    </article>
+
+
+    <article class="teacher-info-stat">
+
+      <span>
+        ไม่ผ่านเกณฑ์
+      </span>
+
+      <strong
+        id="analyzeFailedStudents"
+        class="teacher-pink"
+      >
+        0
+      </strong>
+
+    </article>
+
+
+    <article class="teacher-info-stat">
+
+      <span>
+        ยังไม่ส่ง
+      </span>
+
+      <strong
+        id="analyzePendingStudents"
+        class="teacher-yellow"
+      >
+        0
+      </strong>
+
+    </article>
+
+
+    <article class="teacher-info-stat">
+
+      <span>
+        คะแนนเฉลี่ย
+      </span>
+
+      <strong
+        id="analyzeAverageScore"
+        class="teacher-purple-text"
+      >
+        0.00
+      </strong>
+
+    </article>
+
+  </section>
+
+
+  <!-- =====================================================
+       SCORE PROGRESS
+  ====================================================== -->
+
+  <section class="teacher-analyze-progress-card">
+
+    <div class="teacher-discover-progress-head">
+
+      <div>
+
+        <span>
+          ANALYZE RESULT
+        </span>
+
+        <strong>
+          นักเรียนที่ผ่านเกณฑ์
+        </strong>
+
+      </div>
+
+
+      <div id="analyzeProgressCount">
+        0 / 0
+      </div>
+
+    </div>
+
+
+    <div class="teacher-discover-track">
+
+      <div
+        id="analyzeMainProgressBar"
+        class="
+          teacher-discover-fill
+          teacher-analyze-progress-fill
+        "
+      ></div>
+
+    </div>
+
+  </section>
+
+
+  <!-- =====================================================
+       STUDENT TABLE
+  ====================================================== -->
+
+  <section class="teacher-analyze-table-panel">
+
+    <div class="teacher-panel-title">
+
+      <div>
+
+        <span>
+          ANALYZE RESULTS
+        </span>
+
+        <h2>
+          ผลการวิเคราะห์รายบุคคล
+        </h2>
+
+      </div>
+
+
+      <div id="analyzeStudentCount">
+        0 คน
+      </div>
+
+    </div>
+
+
+    <div class="teacher-discover-table-wrap">
+
+      <table class="teacher-discover-table">
+
+        <thead>
+
+          <tr>
+
+            <th>
+              เลขที่
+            </th>
+
+            <th>
+              รหัสนักเรียน
+            </th>
+
+            <th>
+              ชื่อ - นามสกุล
+            </th>
+
+            <th>
+              ห้อง
+            </th>
+
+            <th>
+              ACCESS
+            </th>
+
+            <th>
+              คะแนน
+            </th>
+
+            <th>
+              ผลการประเมิน
+            </th>
+
+            <th>
+              สถานะ
+            </th>
+
+          </tr>
+
+        </thead>
+
+
+        <tbody id="analyzeStudentTableBody">
+
+          <tr>
+
+            <td
+              colspan="8"
+              class="teacher-table-message"
+            >
+              กำลังโหลดข้อมูล...
+            </td>
+
+          </tr>
+
+        </tbody>
+
+      </table>
+
+    </div>
+
+  </section>
+
+
+  <!-- =====================================================
+       NOTE
+  ====================================================== -->
+
+  <section class="teacher-discover-note">
+
+    <div class="teacher-discover-note-icon">
+      i
+    </div>
+
+    <div>
+
+      <strong>
+        การประเมิน A • ANALYZE
+      </strong>
+
+      <p>
+        กิจกรรม Analyze มีคะแนนเต็ม 10 คะแนน
+        นักเรียนผ่านเกณฑ์เมื่อได้คะแนนตั้งแต่ 7 คะแนนขึ้นไป
+        การทำ Discover สำเร็จไม่ได้ทำให้ Analyze เปิดอัตโนมัติ
+        ครูผู้สอนต้องปลดล็อกภารกิจให้ทั้งห้อง
+        หรือปลดล็อกให้นักเรียนเป็นรายบุคคล
+      </p>
+
+    </div>
+
+  </section>
+
+
+  <!-- =====================================================
+       FOOTER
+  ====================================================== -->
+
+  <footer class="teacher-dashboard-footer">
+
+    <span>
+      A • ANALYZE
+    </span>
+
+    <strong>
+      DARE LEARNING MODEL
+    </strong>
+
+    <span>
+      TEACHER CONTROL
+    </span>
+
+  </footer>
+
+
+  <!-- =====================================================
+       SCRIPTS
+  ====================================================== -->
+
+  <script
+    src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"
+  ></script>
+
+  <script src="../js/supabase-config.js"></script>
+
+  <script src="../js/teacher-auth.js"></script>
+
+<script
+  src="../js/teacher-checkpoint.js?v=20260822-01"
+></script>
+
+
+</body>
+
+</html>
