@@ -342,13 +342,13 @@ document.addEventListener(
           "controlEvolve",
 
         buttonOpen:
-          "ENTER INFO MISSION →",
+          "START REFLECTION →",
 
         buttonComplete:
           "✓ COMPLETED",
 
         buttonLocked:
-          "🔒 INFO MISSION LOCKED"
+          "🔒 REFLECTION LOCKED"
 
       }
 
@@ -421,6 +421,99 @@ document.addEventListener(
               ||
               !control
             ) {
+
+              return;
+
+            }
+
+
+            /* ===============================================
+               E • EVOLVE — REFLECTION → ASSIGNMENT
+               ใช้สถานะย่อยเพื่อให้นักเรียนทำ Reflection
+               ในชั้นเรียนก่อน แล้วกลับมาส่งงานภายหลัง
+            =============================================== */
+
+            if (
+              mission === "evolve"
+              &&
+              state.completed !== true
+              &&
+              state.unlocked === true
+            ) {
+
+              card.classList.remove(
+                "locked",
+                "completed"
+              );
+
+              card.classList.add(
+                "active"
+              );
+
+              button.disabled =
+                false;
+
+              status.className =
+                "hq-mission-status";
+
+              if (
+                state.submitted === true
+              ) {
+
+                status.textContent =
+                  "WAITING";
+
+                button.textContent =
+                  "ดูสถานะการส่งงาน →";
+
+                button.dataset.page =
+                  "info-mission.html";
+
+                control.textContent =
+                  "WAITING";
+
+                control.className =
+                  "control-open";
+
+              }
+              else if (
+                state.reflectionCompleted === true
+              ) {
+
+                status.textContent =
+                  "ASSIGNMENT";
+
+                button.textContent =
+                  "ส่ง INFO MISSION →";
+
+                button.dataset.page =
+                  "info-mission.html";
+
+                control.textContent =
+                  "ASSIGNMENT";
+
+                control.className =
+                  "control-open";
+
+              }
+              else {
+
+                status.textContent =
+                  "ACTIVE";
+
+                button.textContent =
+                  "START REFLECTION →";
+
+                button.dataset.page =
+                  "reflection.html";
+
+                control.textContent =
+                  "REFLECT";
+
+                control.className =
+                  "control-open";
+
+              }
 
               return;
 
@@ -1139,10 +1232,31 @@ async function loadFinalResult() {
           true;
 
 
+const localReflectionCompleted =
+  localStorage.getItem(
+    "evolveReflectionCompleted_"
+    +
+    student.studentId
+  ) === "true"
+  ||
+  !!localStorage.getItem(
+    "evolveReflection_"
+    +
+    student.studentId
+  );
+
 missionState.evolve = {
 
   unlocked:
     evolveAutoUnlocked,
+
+  reflectionCompleted:
+    progress.reflection_completed === true
+    ||
+    localReflectionCompleted,
+
+  submitted:
+    progress.evolve_submitted === true,
 
   completed:
     progress.evolve_completed ===

@@ -90,6 +90,12 @@ document.addEventListener(
       );
 
 
+    const reflectionStudents =
+      document.getElementById(
+        "evolveReflectionStudents"
+      );
+
+
     const waitingStudents =
       document.getElementById(
         "evolveWaitingStudents"
@@ -344,30 +350,38 @@ document.addEventListener(
        LOAD STUDENTS
     ===================================================== */
 
-    async function loadStudents() {
+    async function loadStudents(
+      options = {}
+    ) {
 
+      const silent =
+        options.silent === true;
 
-      refreshButton.disabled =
-        true;
+      if (
+        !silent
+      ) {
 
+        refreshButton.disabled =
+          true;
 
-      refreshButton.textContent =
-        "LOADING...";
+        refreshButton.textContent =
+          "LOADING...";
 
+        tableBody.innerHTML =
+          `
+            <tr>
 
-      tableBody.innerHTML =
-        `
-          <tr>
+              <td
+                colspan="11"
+                class="teacher-table-message"
+              >
+                กำลังโหลดข้อมูล Evolve...
+              </td>
 
-            <td
-              colspan="11"
-              class="teacher-table-message"
-            >
-              กำลังโหลดข้อมูล Evolve...
-            </td>
+            </tr>
+          `;
 
-          </tr>
-        `;
+      }
 
 
       try {
@@ -497,37 +511,47 @@ document.addEventListener(
         );
 
 
-        tableBody.innerHTML =
-          `
-            <tr>
+        if (
+          !silent
+        ) {
 
-              <td
-                colspan="11"
-                class="teacher-table-message"
-                style="
-                  color:#ff5ca8 !important;
-                "
-              >
-                ไม่สามารถโหลดข้อมูล Evolve ได้
-              </td>
+          tableBody.innerHTML =
+            `
+              <tr>
 
-            </tr>
-          `;
+                <td
+                  colspan="11"
+                  class="teacher-table-message"
+                  style="
+                    color:#ff5ca8 !important;
+                  "
+                >
+                  ไม่สามารถโหลดข้อมูล Evolve ได้
+                </td>
 
+              </tr>
+            `;
 
-        resetSummary();
+          resetSummary();
+
+        }
 
       }
 
       finally {
 
 
-        refreshButton.disabled =
-          false;
+        if (
+          !silent
+        ) {
 
+          refreshButton.disabled =
+            false;
 
-        refreshButton.textContent =
-          "↻ REFRESH";
+          refreshButton.textContent =
+            "↻ REFRESH";
+
+        }
 
       }
 
@@ -700,6 +724,16 @@ document.addEventListener(
 
 
       if (
+        student.reflection_completed ===
+        true
+      ) {
+
+        return "reflection";
+
+      }
+
+
+      if (
         student.evolve_unlocked ===
         true
       ) {
@@ -823,6 +857,22 @@ document.addEventListener(
         .length;
 
 
+      const reflected =
+        current.filter(
+          function (
+            student
+          ) {
+
+            return (
+              student.reflection_completed ===
+              true
+            );
+
+          }
+        )
+        .length;
+
+
       const waiting =
         current.filter(
           function (
@@ -932,6 +982,16 @@ document.addEventListener(
 
 
       if (
+        reflectionStudents
+      ) {
+
+        reflectionStudents.textContent =
+          reflected;
+
+      }
+
+
+      if (
         waitingStudents
       ) {
 
@@ -1011,6 +1071,16 @@ document.addEventListener(
       ) {
 
         unlockedStudents.textContent =
+          "0";
+
+      }
+
+
+      if (
+        reflectionStudents
+      ) {
+
+        reflectionStudents.textContent =
           "0";
 
       }
@@ -1304,11 +1374,21 @@ document.addEventListener(
               </span>
             `
             :
-            `
-              <span class="teacher-yellow">
-                ยังไม่ส่ง
-              </span>
-            `;
+            (
+              student.reflection_completed === true
+              ?
+              `
+                <span class="teacher-cyan">
+                  ✓ Reflection • รอส่งงาน
+                </span>
+              `
+              :
+              `
+                <span class="teacher-yellow">
+                  ยังไม่ Reflection
+                </span>
+              `
+            );
 
 
           /* =============================================
@@ -2617,6 +2697,104 @@ const submissionData =
       );
 
     }
+
+
+    /* =====================================================
+       REALTIME • REFLECTION / EVOLVE
+       รับ Broadcast จากหน้าฝั่งนักเรียน และมี fallback
+       ทุก 5 วินาทีโดยไม่กระพริบตาราง
+    ===================================================== */
+
+    let evolveRealtimeTimer =
+      null;
+
+    let evolveRealtimeChannel =
+      null;
+
+    async function refreshEvolveSilent() {
+
+      try {
+        await loadStudents(
+          { silent: true }
+        );
+      }
+      catch (error) {
+        console.warn(
+          "Silent Evolve refresh error:",
+          error
+        );
+      }
+
+    }
+
+    try {
+
+      evolveRealtimeChannel =
+        supabaseClient
+        .channel(
+          "mission-live-results"
+        )
+        .on(
+          "broadcast",
+          {
+            event:
+              "student-result-updated"
+          },
+          function (
+            message
+          ) {
+
+            const stage =
+              message?.payload?.stage;
+
+            if (
+              stage === "reflection"
+              ||
+              stage === "evolve"
+            ) {
+              refreshEvolveSilent();
+            }
+
+          }
+        )
+        .subscribe();
+
+    }
+    catch (error) {
+      console.warn(
+        "Evolve Realtime subscribe error:",
+        error
+      );
+    }
+
+    evolveRealtimeTimer =
+      window.setInterval(
+        refreshEvolveSilent,
+        5000
+      );
+
+    window.addEventListener(
+      "beforeunload",
+      function () {
+
+        if (
+          evolveRealtimeTimer
+        ) {
+          window.clearInterval(
+            evolveRealtimeTimer
+          );
+        }
+
+        if (
+          evolveRealtimeChannel
+        ) {
+          supabaseClient.removeChannel(
+            evolveRealtimeChannel
+          );
+        }
+
+      }
+    );
 
 
     /* =====================================================

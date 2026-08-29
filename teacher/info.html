@@ -218,9 +218,10 @@
 
       <p>
         เมื่อนักเรียนผ่าน D • Discover,
-        A • Analyze และ R • Reason
-        ครบทั้ง 3 ขั้น
+        A • Analyze และ R • Reason ครบทั้ง 3 ขั้น
         ระบบจะปลดล็อก E ให้อัตโนมัติ
+        โดยนักเรียนทำ Reflection ในชั้นเรียนก่อน
+        แล้วจึงกลับมาส่ง Infographic นอกเวลาเรียน
       </p>
 
     </div>
@@ -260,6 +261,10 @@
 
       <option value="ready">
         พร้อมทำ E
+      </option>
+
+      <option value="reflection">
+        Reflection แล้ว • รอส่งงาน
       </option>
 
       <option value="submitted">
@@ -322,6 +327,22 @@
     <strong
       id="evolveUnlockedStudents"
       class="teacher-green"
+    >
+      0
+    </strong>
+
+  </article>
+
+
+  <article class="teacher-info-stat">
+
+    <span>
+      Reflection แล้ว
+    </span>
+
+    <strong
+      id="evolveReflectionStudents"
+      class="teacher-yellow"
     >
       0
     </strong>
@@ -1126,7 +1147,7 @@
 
 <script src="../js/teacher-auth.js"></script>
 
-<script src="../js/teacher-info.js?v=20260822-05"></script>
+<script src="../js/teacher-info.js?v=20260829-evolve-reflection-01"></script>
 
 
 </body>
