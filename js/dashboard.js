@@ -1,3 +1,4 @@
+// Dashboard criteria v20260829-criteria-02: 85-100 ดีเยี่ยม, 70-84 ดี, 55-69 พอใช้, <55 ควรปรับปรุง
 /* =========================================================
    MISSION DIGITAL DETECTIVE
    STUDENT DASHBOARD
