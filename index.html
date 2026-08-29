@@ -29,7 +29,7 @@
 
   <link
     rel="stylesheet"
-    href="css/style.css"
+    href="css/style.css?v=20260829-index-ui-01"
   >
 </head>
 
@@ -170,7 +170,10 @@
           </span>
 
         </h1>
-
+<!-- ชื่อ Mission ภาษาไทย -->
+<h2 class="mission-thai-title">
+  ภารกิจนักสืบดิจิทัล พิชิตภัยออนไลน์
+</h2>
 
         <p>
 
@@ -511,21 +514,16 @@
 
 
               <select
-                <select
-  id="classroom"
-  required
->
-
-  <option
-    value=""
-    selected
-    disabled
-  >
-    กำลังโหลดห้องเรียน...
-  </option>
-
-</select>
-
+                id="classroom"
+                required
+              >
+                <option
+                  value=""
+                  selected
+                  disabled
+                >
+                  กำลังโหลดห้องเรียน...
+                </option>
               </select>
 
             </div>
@@ -562,7 +560,9 @@
 
               <input
                 id="studentId"
+                name="student_id"
                 type="text"
+                autocomplete="section-student username"
                 inputmode="numeric"
                 placeholder="กรอกรหัสนักเรียน"
                 required
@@ -603,7 +603,9 @@
 
               <input
                 id="studentPassword"
+                name="student_password"
                 type="password"
+                autocomplete="section-student current-password"
                 placeholder="กรอกรหัสผ่าน"
                 required
               >
@@ -738,7 +740,9 @@
 
               <input
                 id="teacherUsername"
+                name="teacher_username"
                 type="text"
+                autocomplete="section-teacher username"
                 placeholder="Username สำหรับครู"
                 required
               >
@@ -777,7 +781,9 @@
 
               <input
                 id="teacherPassword"
+                name="teacher_password"
                 type="password"
+                autocomplete="section-teacher current-password"
                 placeholder="Password สำหรับครู"
                 required
               >

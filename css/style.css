@@ -1285,6 +1285,26 @@ button {
   color: #778591;
 }
 
+/* Keep Chrome/Edge autofill consistent with the dark mission UI.
+   Without this, the browser paints saved credentials with a white/light background. */
+.field-shell input:-webkit-autofill,
+.field-shell input:-webkit-autofill:hover,
+.field-shell input:-webkit-autofill:focus,
+.field-shell input:-webkit-autofill:active {
+  -webkit-text-fill-color: #dfe6eb !important;
+  caret-color: #dfe6eb;
+  -webkit-box-shadow: 0 0 0 1000px #071522 inset !important;
+  box-shadow: 0 0 0 1000px #071522 inset !important;
+  border-radius: 0;
+  transition: background-color 9999s ease-out 0s;
+}
+
+.field-shell input:autofill {
+  color: #dfe6eb !important;
+  background: #071522 !important;
+  box-shadow: 0 0 0 1000px #071522 inset !important;
+}
+
 .field-shell select {
   appearance: none;
 }
@@ -1871,10 +1891,13 @@ button {
 @media (prefers-reduced-motion: reduce) {
 
   .online-dot,
-  .radar-sweep,
   .radar-point,
   .neon-beam::before {
     animation: none;
+  }
+
+  .radar-sweep {
+    animation: radarSpin 4s linear infinite !important;
   }
 
 }
