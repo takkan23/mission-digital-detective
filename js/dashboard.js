@@ -947,8 +947,54 @@ async function loadFinalResult() {
 
 
     /* =================================================
-       QUALITY
+       QUALITY + EVALUATION
+       ใช้เกณฑ์เดียวกับหน้าสรุปผลรายบุคคลของครู
+
+       85–100  = ระดับ 4 ดีเยี่ยม / ผ่าน
+       70–84   = ระดับ 3 ดี / ผ่าน
+       55–69   = ระดับ 2 พอใช้ / ไม่ผ่าน
+       ต่ำกว่า 55 = ระดับ 1 ควรปรับปรุง / ไม่ผ่าน
     ================================================= */
+
+    let qualityText =
+      "ควรปรับปรุง";
+
+    let evaluationText =
+      "ไม่ผ่านการประเมิน";
+
+
+    if (
+      percentage >= 85
+    ) {
+
+      qualityText =
+        "ดีเยี่ยม";
+
+      evaluationText =
+        "ผ่านการประเมิน";
+
+    } else if (
+      percentage >= 70
+    ) {
+
+      qualityText =
+        "ดี";
+
+      evaluationText =
+        "ผ่านการประเมิน";
+
+    } else if (
+      percentage >= 55
+    ) {
+
+      qualityText =
+        "พอใช้";
+
+      evaluationText =
+        "ไม่ผ่านการประเมิน";
+
+    }
+
 
     const finalQuality =
       document.getElementById(
@@ -961,16 +1007,10 @@ async function loadFinalResult() {
     ) {
 
       finalQuality.textContent =
-        result.quality_text
-        ||
-        "-";
+        qualityText;
 
     }
 
-
-    /* =================================================
-       EVALUATION
-    ================================================= */
 
     const finalEvaluation =
       document.getElementById(
@@ -983,9 +1023,7 @@ async function loadFinalResult() {
     ) {
 
       finalEvaluation.textContent =
-        result.evaluation_text
-        ||
-        "-";
+        evaluationText;
 
     }
 
