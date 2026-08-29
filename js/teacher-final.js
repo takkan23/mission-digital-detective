@@ -209,18 +209,30 @@ document.addEventListener(
     }
 
 
-    async function loadStudents() {
+    async function loadStudents(
+      options = {}
+    ) {
 
 
-      refreshButton.disabled =
-        true;
+      const silent =
+        options
+        &&
+        options.silent === true;
 
 
-      refreshButton.textContent =
-        "LOADING...";
+      if (
+        !silent
+      ) {
+
+        refreshButton.disabled =
+          true;
 
 
-      tableBody.innerHTML =
+        refreshButton.textContent =
+          "LOADING...";
+
+
+        tableBody.innerHTML =
         `
           <tr>
             <td
@@ -231,6 +243,8 @@ document.addEventListener(
             </td>
           </tr>
         `;
+
+      }
 
 
       try {
@@ -323,33 +337,45 @@ students =
         );
 
 
-        tableBody.innerHTML =
-          `
-            <tr>
-              <td
-                colspan="8"
-                class="teacher-table-message"
-                style="color:#ff2e91 !important;"
-              >
-                ไม่สามารถโหลดข้อมูล Reason ได้
-              </td>
-            </tr>
-          `;
+        if (
+          !silent
+        ) {
+
+          tableBody.innerHTML =
+            `
+              <tr>
+                <td
+                  colspan="8"
+                  class="teacher-table-message"
+                  style="color:#ff2e91 !important;"
+                >
+                  ไม่สามารถโหลดข้อมูล Reason ได้
+                </td>
+              </tr>
+            `;
 
 
-        resetSummary();
+          resetSummary();
+
+        }
 
       }
 
       finally {
 
 
-        refreshButton.disabled =
-          false;
+        if (
+          !silent
+        ) {
+
+          refreshButton.disabled =
+            false;
 
 
-        refreshButton.textContent =
-          "↻ REFRESH";
+          refreshButton.textContent =
+            "↻ REFRESH";
+
+        }
 
       }
 
@@ -1468,26 +1494,79 @@ const average =
     }
 
 /* =====================================================
-   REALTIME REASON UPDATE
-   อัปเดตคะแนน/สถานะ R อัตโนมัติ
+   LIVE R • REASON UPDATE
+   1) รับ Broadcast จากหน้าผู้เรียนทันที
+   2) ฟัง student_progress เผื่อ Postgres Realtime อนุญาต
+   3) มี silent fallback ทุก 5 วินาที ไม่ต้องกด F5
 ===================================================== */
 
 let reasonRealtimeTimer =
   null;
 
 
+function scheduleReasonLiveRefresh(
+  delay = 120
+) {
+
+  clearTimeout(
+    reasonRealtimeTimer
+  );
+
+
+  reasonRealtimeTimer =
+    setTimeout(
+      function () {
+
+        loadStudents({
+          silent: true
+        });
+
+      },
+      delay
+    );
+
+}
+
+
 const reasonRealtimeChannel =
   supabaseClient
     .channel(
-      "teacher-reason-realtime"
+      "mission-live-results"
     )
-
     .on(
-      "postgres_changes",
-
+      "broadcast",
       {
         event:
-          "UPDATE",
+          "student-result-updated"
+      },
+      function (message) {
+
+        const payload =
+          message
+          &&
+          message.payload
+          ?
+          message.payload
+          :
+          {};
+
+
+        if (
+          payload.stage ===
+          "reason"
+        ) {
+
+          scheduleReasonLiveRefresh();
+
+        }
+
+      }
+    )
+    .on(
+      "postgres_changes",
+      {
+        event:
+          "*",
 
         schema:
           "public",
@@ -1495,46 +1574,17 @@ const reasonRealtimeChannel =
         table:
           "student_progress"
       },
+      function () {
 
-      function (
-        payload
-      ) {
-
-        console.log(
-          "REASON PROGRESS CHANGED:",
-          payload
-        );
-
-
-        clearTimeout(
-          reasonRealtimeTimer
-        );
-
-
-        reasonRealtimeTimer =
-          setTimeout(
-            async function () {
-
-              console.log(
-                "AUTO REFRESH REASON"
-              );
-
-              await loadStudents();
-
-            },
-            300
-          );
+        scheduleReasonLiveRefresh();
 
       }
     )
-
     .subscribe(
-      function (
-        status
-      ) {
+      function (status) {
 
         console.log(
-          "TEACHER REASON REALTIME STATUS:",
+          "TEACHER REASON LIVE STATUS:",
           status
         );
 
@@ -1542,13 +1592,43 @@ const reasonRealtimeChannel =
     );
 
 
+const reasonLiveFallback =
+  setInterval(
+    function () {
+
+      if (
+        document.visibilityState ===
+        "visible"
+      ) {
+
+        scheduleReasonLiveRefresh(
+          0
+        );
+
+      }
+
+    },
+    5000
+  );
+
+
 /* =====================================================
-   CLEANUP REALTIME
+   CLEANUP LIVE
 ===================================================== */
 
 window.addEventListener(
   "beforeunload",
   function () {
+
+    clearTimeout(
+      reasonRealtimeTimer
+    );
+
+
+    clearInterval(
+      reasonLiveFallback
+    );
+
 
     if (
       reasonRealtimeChannel
@@ -1563,6 +1643,7 @@ window.addEventListener(
 
   }
 );
+
     await loadStudents();
 
 

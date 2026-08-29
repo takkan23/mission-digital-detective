@@ -248,18 +248,30 @@ document.addEventListener(
        LOAD STUDENTS
     ===================================================== */
 
-    async function loadStudents() {
+    async function loadStudents(
+      options = {}
+    ) {
 
 
-      refreshButton.disabled =
-        true;
+      const silent =
+        options
+        &&
+        options.silent === true;
 
 
-      refreshButton.textContent =
-        "LOADING...";
+      if (
+        !silent
+      ) {
+
+        refreshButton.disabled =
+          true;
 
 
-      tableBody.innerHTML =
+        refreshButton.textContent =
+          "LOADING...";
+
+
+        tableBody.innerHTML =
         `
           <tr>
 
@@ -272,6 +284,8 @@ document.addEventListener(
 
           </tr>
         `;
+
+      }
 
 
       try {
@@ -382,37 +396,49 @@ document.addEventListener(
         );
 
 
-        tableBody.innerHTML =
-          `
-            <tr>
+        if (
+          !silent
+        ) {
 
-              <td
-                colspan="8"
-                class="teacher-table-message"
-                style="
-                  color:#ff2e91 !important;
-                "
-              >
-                ไม่สามารถโหลดข้อมูล Analyze ได้
-              </td>
+          tableBody.innerHTML =
+            `
+              <tr>
 
-            </tr>
-          `;
+                <td
+                  colspan="8"
+                  class="teacher-table-message"
+                  style="
+                    color:#ff2e91 !important;
+                  "
+                >
+                  ไม่สามารถโหลดข้อมูล Analyze ได้
+                </td>
+
+              </tr>
+            `;
 
 
-        resetSummary();
+          resetSummary();
+
+        }
 
       }
 
       finally {
 
 
-        refreshButton.disabled =
-          false;
+        if (
+          !silent
+        ) {
+
+          refreshButton.disabled =
+            false;
 
 
-        refreshButton.textContent =
-          "↻ REFRESH";
+          refreshButton.textContent =
+            "↻ REFRESH";
+
+        }
 
       }
 
@@ -1650,6 +1676,154 @@ const average =
       );
 
     }
+
+
+    /* =====================================================
+       LIVE A • ANALYZE UPDATE
+       1) รับ Broadcast จากหน้าผู้เรียนทันที
+       2) ฟัง student_progress เผื่อ Postgres Realtime อนุญาต
+       3) มี silent fallback ทุก 5 วินาที ไม่ต้องกด F5
+    ===================================================== */
+
+    let analyzeLiveTimer =
+      null;
+
+
+    function scheduleAnalyzeLiveRefresh(
+      delay = 120
+    ) {
+
+      clearTimeout(
+        analyzeLiveTimer
+      );
+
+
+      analyzeLiveTimer =
+        setTimeout(
+          function () {
+
+            loadStudents({
+              silent: true
+            });
+
+          },
+          delay
+        );
+
+    }
+
+
+    const analyzeLiveChannel =
+      supabaseClient
+        .channel(
+          "mission-live-results"
+        )
+        .on(
+          "broadcast",
+          {
+            event:
+              "student-result-updated"
+          },
+          function (message) {
+
+            const payload =
+              message
+              &&
+              message.payload
+              ?
+              message.payload
+              :
+              {};
+
+
+            if (
+              payload.stage ===
+              "analyze"
+            ) {
+
+              scheduleAnalyzeLiveRefresh();
+
+            }
+
+          }
+        )
+        .on(
+          "postgres_changes",
+          {
+            event:
+              "*",
+
+            schema:
+              "public",
+
+            table:
+              "student_progress"
+          },
+          function () {
+
+            scheduleAnalyzeLiveRefresh();
+
+          }
+        )
+        .subscribe(
+          function (status) {
+
+            console.log(
+              "TEACHER ANALYZE LIVE STATUS:",
+              status
+            );
+
+          }
+        );
+
+
+    const analyzeLiveFallback =
+      setInterval(
+        function () {
+
+          if (
+            document.visibilityState ===
+            "visible"
+          ) {
+
+            scheduleAnalyzeLiveRefresh(
+              0
+            );
+
+          }
+
+        },
+        5000
+      );
+
+
+    window.addEventListener(
+      "beforeunload",
+      function () {
+
+        clearTimeout(
+          analyzeLiveTimer
+        );
+
+
+        clearInterval(
+          analyzeLiveFallback
+        );
+
+
+        if (
+          analyzeLiveChannel
+        ) {
+
+          supabaseClient
+            .removeChannel(
+              analyzeLiveChannel
+            );
+
+        }
+
+      }
+    );
 
 
     /* =====================================================

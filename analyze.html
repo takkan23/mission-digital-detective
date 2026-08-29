@@ -2771,7 +2771,7 @@
   ></script>
 
   <script
-    src="js/supabase-config.js?v=20260822-05"
+    src="js/supabase-config.js?v=20260829-realtime-01"
   ></script>
 
 
@@ -2831,6 +2831,100 @@
           return;
 
         }
+
+
+        /* =====================================================
+           LIVE RESULT SIGNAL TO TEACHER
+           ใช้ Realtime Broadcast เป็นสัญญาณให้หน้าครูโหลด
+           ข้อมูลจริงใหม่ผ่าน RPC (ไม่ส่งคะแนนใน Broadcast)
+        ===================================================== */
+
+        let teacherLiveChannelReady =
+          false;
+
+
+        const teacherLiveChannel =
+          supabaseClient
+            .channel(
+              "mission-live-results"
+            )
+            .subscribe(
+              function (status) {
+
+                teacherLiveChannelReady =
+                  status ===
+                  "SUBSCRIBED";
+
+              }
+            );
+
+
+        async function notifyTeacherLive(
+          stage
+        ) {
+
+          if (
+            !teacherLiveChannel
+            ||
+            !teacherLiveChannelReady
+          ) {
+
+            return;
+
+          }
+
+
+          try {
+
+            await teacherLiveChannel.send({
+              type:
+                "broadcast",
+
+              event:
+                "student-result-updated",
+
+              payload: {
+                stage:
+                  stage,
+
+                student_id:
+                  studentId,
+
+                changed_at:
+                  Date.now()
+              }
+            });
+
+          }
+          catch (error) {
+
+            console.warn(
+              "LIVE RESULT SIGNAL ERROR:",
+              error
+            );
+
+          }
+
+        }
+
+
+        window.addEventListener(
+          "beforeunload",
+          function () {
+
+            if (
+              teacherLiveChannel
+            ) {
+
+              supabaseClient
+                .removeChannel(
+                  teacherLiveChannel
+                );
+
+            }
+
+          }
+        );
 
 
         /* =====================================================
@@ -5139,6 +5233,12 @@
               );
 
             }
+
+
+            /* แจ้งหน้าครูทันทีหลัง Supabase บันทึกสำเร็จ */
+            await notifyTeacherLive(
+              "analyze"
+            );
 
 
             return result;
