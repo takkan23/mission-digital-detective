@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Reflection | Mission Digital Detective</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    :root{--bg:#020816;--panel:rgba(4,18,33,.90);--cyan:#00d8ff;--purple:#8f5cff;--pink:#ff2e91;--yellow:#ffd21a;--green:#2cff8c;--text:#f5f9fc;--muted:#90a6b3;--line:rgba(0,216,255,.18)}
+    *{box-sizing:border-box} body{margin:0;min-height:100vh;font-family:"Kanit",sans-serif;color:var(--text);background:radial-gradient(circle at 15% 10%,rgba(143,92,255,.16),transparent 28%),radial-gradient(circle at 85% 15%,rgba(0,216,255,.12),transparent 28%),linear-gradient(180deg,rgba(2,8,22,.94),rgba(1,6,16,.98)),url("images/background.png") center/cover fixed;}
+    .grid{position:fixed;inset:0;pointer-events:none;background-image:linear-gradient(rgba(0,216,255,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(0,216,255,.035) 1px,transparent 1px);background-size:40px 40px;mask-image:linear-gradient(to bottom,black,transparent)}
+    .wrap{width:min(1120px,calc(100% - 32px));margin:0 auto;padding:24px 0 56px;position:relative;z-index:1}
+    .topbar{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:18px}.back{color:var(--cyan);text-decoration:none;font-weight:700;letter-spacing:.04em}.live{display:flex;align-items:center;gap:8px;color:var(--green);font-size:.88rem;font-weight:700}.dot{width:9px;height:9px;border-radius:50%;background:var(--green);box-shadow:0 0 14px var(--green)}
+    .hero{display:grid;grid-template-columns:auto 1fr auto;gap:22px;align-items:center;padding:26px;border:1px solid var(--line);background:linear-gradient(135deg,rgba(4,18,33,.94),rgba(7,14,30,.88));box-shadow:0 18px 50px rgba(0,0,0,.28);border-radius:22px}.num{width:78px;height:78px;border-radius:20px;display:grid;place-items:center;font-size:2rem;font-weight:800;color:#071019;background:linear-gradient(135deg,var(--yellow),#fff2a7);box-shadow:0 0 30px rgba(255,210,26,.18)}.hero small{color:var(--yellow);font-weight:800;letter-spacing:.14em}.hero h1{margin:4px 0 8px;font-size:clamp(1.65rem,3vw,2.45rem)}.hero p{margin:0;color:var(--muted);line-height:1.75}.badge{border:1px solid rgba(255,210,26,.4);color:var(--yellow);padding:10px 14px;border-radius:999px;font-size:.82rem;font-weight:800;white-space:nowrap}
+    .steps{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin:18px 0}.step{padding:16px 18px;border:1px solid rgba(255,255,255,.08);background:rgba(4,17,31,.74);border-radius:16px;color:var(--muted)}.step strong{display:block;color:var(--text);margin-top:2px}.step.active{border-color:rgba(255,210,26,.45);box-shadow:inset 0 0 24px rgba(255,210,26,.06)}.step.active strong{color:var(--yellow)}
+    .notice{margin:18px 0;padding:16px 18px;border-left:3px solid var(--cyan);background:rgba(0,216,255,.06);border-radius:0 14px 14px 0;color:#cfe8f2;line-height:1.7}.notice b{color:var(--cyan)}
+    .panel{padding:26px;border:1px solid var(--line);border-radius:22px;background:var(--panel);box-shadow:0 18px 50px rgba(0,0,0,.24)}.panel-head{display:flex;gap:14px;align-items:flex-start;margin-bottom:20px}.panel-icon{width:48px;height:48px;border-radius:14px;display:grid;place-items:center;background:rgba(255,210,26,.1);border:1px solid rgba(255,210,26,.25);color:var(--yellow);font-size:1.35rem}.panel small{color:var(--yellow);font-weight:700;letter-spacing:.12em}.panel h2{margin:4px 0 0}.question{padding:18px;border:1px solid rgba(255,255,255,.08);border-radius:16px;background:rgba(0,0,0,.13);margin:14px 0}.question label{display:block;font-weight:600;line-height:1.65;margin-bottom:10px}.question span{color:var(--yellow);font-weight:800;margin-right:6px}.question textarea{width:100%;min-height:116px;resize:vertical;border:1px solid rgba(0,216,255,.22);border-radius:12px;background:#020b16;color:var(--text);font-family:inherit;font-size:1rem;padding:14px;outline:none;line-height:1.6}.question textarea:focus{border-color:var(--cyan);box-shadow:0 0 0 3px rgba(0,216,255,.07)}.hint{margin-top:8px;color:var(--muted);font-size:.85rem}.counter{text-align:right;color:var(--muted);font-size:.78rem;margin-top:5px}
+    .actions{display:flex;align-items:center;justify-content:space-between;gap:14px;margin-top:20px;flex-wrap:wrap}.save-note{color:var(--muted);font-size:.86rem}.btn{border:0;border-radius:12px;padding:13px 20px;font-family:inherit;font-weight:800;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;justify-content:center;gap:8px}.btn-primary{background:linear-gradient(135deg,var(--yellow),#fff0a0);color:#071019;box-shadow:0 10px 24px rgba(255,210,26,.14)}.btn-secondary{background:rgba(0,216,255,.08);border:1px solid rgba(0,216,255,.28);color:var(--cyan)}.btn:disabled{opacity:.55;cursor:not-allowed}
+    .done{display:none;text-align:center;padding:36px 24px;border:1px solid rgba(44,255,140,.32);border-radius:22px;background:linear-gradient(180deg,rgba(4,28,27,.92),rgba(3,15,26,.94));box-shadow:0 18px 50px rgba(0,0,0,.24)}.done.show{display:block}.ring{width:78px;height:78px;border-radius:50%;display:grid;place-items:center;margin:0 auto 14px;border:2px solid var(--green);color:var(--green);font-size:2rem;box-shadow:0 0 28px rgba(44,255,140,.16)}.done small{color:var(--green);font-weight:800;letter-spacing:.12em}.done h2{margin:7px 0 8px;font-size:1.8rem}.done p{color:var(--muted);line-height:1.75;max-width:720px;margin:0 auto 20px}.done-actions{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}.server-status{margin-top:14px;font-size:.83rem;color:var(--muted)}.server-status.ok{color:var(--green)}.server-status.warn{color:var(--yellow)}
+    .loading{min-height:65vh;display:grid;place-items:center;text-align:center;color:var(--cyan)}.loading strong{font-size:1.15rem}.loading span{display:block;color:var(--muted);margin-top:6px}
+    .hidden{display:none!important}
+    @media(max-width:760px){.hero{grid-template-columns:auto 1fr}.badge{grid-column:1/-1;justify-self:start}.steps{grid-template-columns:1fr}.panel{padding:18px}.question{padding:14px}.actions{align-items:stretch}.btn{width:100%}}
+  </style>
+</head>
+<body>
+  <div class="grid"></div>
+  <div id="accessLoading" class="loading"><div><strong>กำลังตรวจสอบสิทธิ์ E • EVOLVE...</strong><span>ตรวจสอบความสำเร็จของ D • A • R</span></div></div>
+  <main id="page" class="wrap hidden">
+    <header class="topbar"><a class="back" href="dashboard.html">← MISSION HQ</a><div class="live"><span class="dot"></span> EVOLVE ACTIVE</div></header>
+    <section class="hero">
+      <div class="num">04</div>
+      <div><small>E • EVOLVE — REFLECTION</small><h1>สะท้อนผลการเรียนรู้</h1><p>ทบทวนสิ่งที่ได้เรียนรู้จาก Mission Digital Detective ก่อนนำความรู้ไปต่อยอดเป็นชิ้นงานนอกเวลาเรียน</p></div>
+      <div class="badge">IN-CLASS REFLECTION</div>
+    </section>
+    <section class="steps">
+      <div class="step active"><small>STEP 01</small><strong>REFLECT</strong>สะท้อนสิ่งที่ได้เรียนรู้ในชั้นเรียน</div>
+      <div class="step"><small>STEP 02</small><strong>ASSIGNMENT</strong>สร้างและส่ง Infographic นอกเวลาเรียน</div>
+    </section>
+    <div class="notice"><b>ภารกิจในชั้นเรียนช่วงสุดท้าย</b> — ไม่มีคำตอบตายตัว ให้เขียนจากสิ่งที่นักเรียนคิดและเรียนรู้จริงจากสถานการณ์ที่ได้วิเคราะห์</div>
+
+    <section id="reflectionFormPanel" class="panel">
+      <div class="panel-head"><div class="panel-icon">✦</div><div><small>LEARNING REFLECTION</small><h2>คิดย้อนกลับ • เชื่อมโยง • วางแผนนำไปใช้</h2></div></div>
+      <form id="reflectionForm">
+        <div class="question"><label for="reflection1"><span>01</span> วันนี้ฉันได้เรียนรู้อะไรที่สำคัญที่สุดเกี่ยวกับการใช้เทคโนโลยีสารสนเทศอย่างปลอดภัยและมีความรับผิดชอบ</label><textarea id="reflection1" minlength="20" maxlength="600" required placeholder="เขียนสิ่งที่ได้เรียนรู้ด้วยคำของตนเอง..."></textarea><div class="counter"><b id="c1">0</b>/600</div></div>
+        <div class="question"><label for="reflection2"><span>02</span> จากสถานการณ์ที่ได้วิเคราะห์ มีสิ่งใดที่ทำให้ฉันเปลี่ยนวิธีคิดหรือการตัดสินใจ เพราะเหตุใด</label><textarea id="reflection2" minlength="20" maxlength="600" required placeholder="ยกตัวอย่างสิ่งที่ทำให้วิธีคิดของเราเปลี่ยนไป..."></textarea><div class="counter"><b id="c2">0</b>/600</div></div>
+        <div class="question"><label for="reflection3"><span>03</span> หลังจากวันนี้ ฉันจะนำความรู้ไปปรับใช้กับการใช้เทคโนโลยีของตนเองอย่างไร</label><textarea id="reflection3" minlength="20" maxlength="600" required placeholder="ฉันจะ..."></textarea><div class="counter"><b id="c3">0</b>/600</div></div>
+        <div class="actions"><div class="save-note">Reflection จะถูกเก็บแยกจากชิ้นงาน เพื่อให้นักเรียนกลับมาส่งงานภายหลังได้</div><button id="saveButton" class="btn btn-primary" type="submit">บันทึก REFLECTION →</button></div>
+      </form>
+    </section>
+
+    <section id="donePanel" class="done">
+      <div class="ring">✓</div><small>IN-CLASS LEARNING COMPLETE</small><h2>Reflection สำเร็จแล้ว</h2>
+      <p>การเรียนรู้ในชั้นเรียนวันนี้เสร็จสมบูรณ์แล้ว ภารกิจต่อยอดคือสร้าง Infographic เรื่อง “แนวทางการใช้เทคโนโลยีสารสนเทศอย่างปลอดภัยและมีความรับผิดชอบ” และกลับมาส่งผ่านเว็บไซต์ภายในเวลาที่ครูกำหนด</p>
+      <div class="done-actions"><a class="btn btn-secondary" href="dashboard.html">กลับ MISSION HQ</a><a class="btn btn-primary" href="info-mission.html">ดูภารกิจต่อยอด →</a></div>
+      <div id="serverStatus" class="server-status"></div>
+    </section>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/supabase-config.js"></script>
+  <script>
+  document.addEventListener("DOMContentLoaded", async function(){
+    const studentId=localStorage.getItem("studentId");
+    const sessionToken=localStorage.getItem("studentSessionToken");
+    const logged=localStorage.getItem("studentLoggedIn");
+    const role=localStorage.getItem("userRole");
+    if(logged!=="true"||role!=="student"||!studentId||!sessionToken){ window.location.replace("index.html"); return; }
+    const loading=document.getElementById("accessLoading"), page=document.getElementById("page"), formPanel=document.getElementById("reflectionFormPanel"), donePanel=document.getElementById("donePanel"), status=document.getElementById("serverStatus"), saveButton=document.getElementById("saveButton");
+    const key="evolveReflection_"+studentId;
+
+    function setCounter(id,cid){ const el=document.getElementById(id), c=document.getElementById(cid); const sync=()=>c.textContent=el.value.length; el.addEventListener("input",sync); sync(); }
+    setCounter("reflection1","c1"); setCounter("reflection2","c2"); setCounter("reflection3","c3");
+
+    async function verify(){
+      try{
+        const {data,error}=await supabaseClient.rpc("get_student_mission_state",{p_student_id:studentId,p_session_token:sessionToken});
+        if(error) throw error;
+        if(!data||!data.length) return null;
+        const p=data[0];
+        if(p.discover_completed!==true||p.analyze_completed!==true||p.reason_completed!==true){ alert("กรุณาทำ D • Discover, A • Analyze และ R • Reason ให้สำเร็จก่อนเข้าสู่ Reflection"); window.location.replace("dashboard.html"); return null; }
+        return p;
+      }catch(e){ console.error("Reflection access error",e); alert("ไม่สามารถตรวจสอบสิทธิ์ Reflection ได้ กรุณาลองใหม่"); window.location.replace("dashboard.html"); return null; }
+    }
+
+    async function loadServerReflection(){
+      try{
+        const {data,error}=await supabaseClient.rpc("get_evolve_reflection_v2",{p_student_id:studentId,p_session_token:sessionToken});
+        if(error) throw error;
+        if(Array.isArray(data)&&data.length&&data[0].saved===true){ return data[0]; }
+      }catch(e){ console.warn("Reflection RPC not available / load failed",e); }
+      return null;
+    }
+
+    function normalize(r){ return {reflection1:r.reflection_1||r.reflection1||"",reflection2:r.reflection_2||r.reflection2||"",reflection3:r.reflection_3||r.reflection3||"",savedAt:r.updated_at||r.savedAt||new Date().toISOString()}; }
+    function fill(r){ const n=normalize(r); document.getElementById("reflection1").value=n.reflection1; document.getElementById("reflection2").value=n.reflection2; document.getElementById("reflection3").value=n.reflection3; ["reflection1","reflection2","reflection3"].forEach(id=>document.getElementById(id).dispatchEvent(new Event("input"))); }
+    function showDone(serverSaved){ formPanel.classList.add("hidden"); donePanel.classList.add("show"); if(serverSaved){ status.textContent="✓ บันทึก Reflection ลง Supabase แล้ว สามารถกลับมาส่งงานจากอุปกรณ์อื่นได้"; status.className="server-status ok"; } else { status.textContent="บันทึกไว้ในอุปกรณ์นี้แล้ว • หากต้องการใช้งานข้ามอุปกรณ์ ให้ติดตั้งไฟล์ SQL ที่แนบมากับชุดเว็บ"; status.className="server-status warn"; } }
+    async function notifyTeacher(){ try{ const ch=supabaseClient.channel("mission-live-results"); await ch.subscribe(); await ch.send({type:"broadcast",event:"student-result-updated",payload:{stage:"reflection",student_id:studentId,updated_at:new Date().toISOString()}}); setTimeout(()=>supabaseClient.removeChannel(ch),800); }catch(e){ console.warn("broadcast",e); } }
+
+    const progress=await verify(); if(!progress) return;
+    loading.classList.add("hidden"); page.classList.remove("hidden");
+
+    let restored=false;
+    const server=await loadServerReflection();
+    if(server){ const n=normalize(server); localStorage.setItem(key,JSON.stringify(n)); fill(n); restored=true; showDone(true); }
+    else { try{ const raw=localStorage.getItem(key); if(raw){ const n=JSON.parse(raw); fill(n); restored=true; if(progress.reflection_completed===true) showDone(false); } }catch(e){} }
+
+    document.getElementById("reflectionForm").addEventListener("submit",async function(ev){
+      ev.preventDefault(); if(!this.checkValidity()){ this.reportValidity(); return; }
+      const payload={reflection1:document.getElementById("reflection1").value.trim(),reflection2:document.getElementById("reflection2").value.trim(),reflection3:document.getElementById("reflection3").value.trim(),savedAt:new Date().toISOString()};
+      if(payload.reflection1.length<20||payload.reflection2.length<20||payload.reflection3.length<20){ alert("กรุณาเขียน Reflection แต่ละข้ออย่างน้อย 20 ตัวอักษร"); return; }
+      localStorage.setItem(key,JSON.stringify(payload)); saveButton.disabled=true; const old=saveButton.textContent; saveButton.textContent="กำลังบันทึก...";
+      let serverSaved=false;
+      try{
+        const {data,error}=await supabaseClient.rpc("save_evolve_reflection_v2",{p_student_id:studentId,p_session_token:sessionToken,p_reflection_1:payload.reflection1,p_reflection_2:payload.reflection2,p_reflection_3:payload.reflection3});
+        if(error) throw error;
+        if(Array.isArray(data)&&data.length&&data[0].saved===true) serverSaved=true;
+      }catch(e){ console.warn("Reflection saved locally only",e); }
+      localStorage.setItem("evolveReflectionCompleted_"+studentId,"true"); await notifyTeacher(); showDone(serverSaved); saveButton.disabled=false; saveButton.textContent=old;
+    });
+  });
+  </script>
+</body>
+</html>

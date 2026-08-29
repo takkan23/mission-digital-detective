@@ -1751,6 +1751,7 @@
 
 
       <a
+        id="reasonContinueButton"
         href="dashboard.html"
         class="return-dashboard"
       >
@@ -2326,7 +2327,7 @@ document.addEventListener(
       false;
 /* =====================================================
    R • REASON TIMER
-   5 MINUTES
+   10 MINUTES
 ===================================================== */
 
 const REASON_TIME_LIMIT =
@@ -3895,6 +3896,38 @@ localStorage.removeItem(
           savedResult
         );
 
+        const reasonContinueButton =
+          document.getElementById(
+            "reasonContinueButton"
+          );
+
+        if (
+          reasonContinueButton
+        ) {
+
+          if (
+            savedResult.passed === true
+          ) {
+
+            reasonContinueButton.href =
+              "reflection.html";
+
+            reasonContinueButton.textContent =
+              "ไป E • REFLECTION →";
+
+          }
+          else {
+
+            reasonContinueButton.href =
+              "dashboard.html";
+
+            reasonContinueButton.textContent =
+              "กลับสู่ MISSION HQ →";
+
+          }
+
+        }
+
 
       }
 
@@ -3909,6 +3942,20 @@ localStorage.removeItem(
           "ผลคะแนนแสดงแล้ว แต่ยังบันทึก Supabase ไม่สำเร็จ"
         );
 
+        const reasonContinueButton =
+          document.getElementById(
+            "reasonContinueButton"
+          );
+
+        if (
+          reasonContinueButton
+        ) {
+          reasonContinueButton.href =
+            "dashboard.html";
+          reasonContinueButton.textContent =
+            "กลับสู่ MISSION HQ →";
+        }
+
       }
 
 if (
@@ -3916,7 +3963,7 @@ if (
 ) {
 
     message.textContent +=
-        " — หมดเวลา 5 นาที ระบบประเมินจากคำตอบที่ทำเสร็จภายในเวลาที่กำหนด";
+        " — หมดเวลา 10 นาที ระบบประเมินจากคำตอบที่ทำเสร็จภายในเวลาที่กำหนด";
 
 }
       finalResultPanel.scrollIntoView(
@@ -4018,7 +4065,7 @@ finalCurrentScore.textContent =
     score;
 
 
-/* เริ่มจับเวลา 5 นาที */
+/* เริ่มจับเวลา 10 นาที */
 startReasonTimer();
 
 
