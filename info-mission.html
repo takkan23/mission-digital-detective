@@ -61,6 +61,16 @@ document.addEventListener("DOMContentLoaded",async function(){
  const progress=await verify();if(!progress)return;loading.classList.add("hidden");page.classList.remove("hidden");
  if(progress.evolve_completed===true){show(complete);if(progress.evolve_score!==undefined&&progress.evolve_score!==null){document.getElementById("scoreBox").classList.remove("hidden");document.getElementById("teacherScore").textContent=progress.evolve_score;}return;}
  if(progress.evolve_submitted===true){show(waiting);return;}
+
+ /* Supabase เป็นสถานะหลัก: ถ้าครู RESET E แล้ว ห้าม localStorage เก่าข้าม Reflection */
+ if(progress.reflection_completed!==true){
+   localStorage.removeItem(reflectionKey);
+   localStorage.removeItem("evolveReflectionCompleted_"+studentId);
+   alert("กรุณาบันทึก Reflection ก่อนเข้าสู่ภารกิจส่งงาน");
+   window.location.replace("reflection.html");
+   return;
+ }
+
  reflection=await getServerReflection()||getLocalReflection();
  if(!reflection||!reflection.reflection1||!reflection.reflection2||!reflection.reflection3){alert("กรุณาบันทึก Reflection ก่อนเข้าสู่ภารกิจส่งงาน");window.location.replace("reflection.html");return;}
  ["workTitle","workLink","workSources","workDescription"].forEach(id=>document.getElementById(id).addEventListener("input",saveDraft));restoreDraft();

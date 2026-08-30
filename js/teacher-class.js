@@ -2213,6 +2213,54 @@ if (
 
 
         /* =============================================
+           CLEAR E • REFLECTION V2
+
+           Reflection รุ่นใหม่เก็บแยกใน
+           evolve_reflections_v2 จึงต้องลบพร้อม RESET
+        ============================================= */
+
+        const {
+          data: reflectionResetData,
+          error: reflectionResetError
+        } = await supabaseClient.rpc(
+          "teacher_clear_evolve_reflection_v2",
+          {
+            p_session_token:
+              teacherSessionToken,
+
+            p_student_id:
+              selectedStudent.student_id
+          }
+        );
+
+
+        if (
+          reflectionResetError
+        ) {
+
+          throw reflectionResetError;
+
+        }
+
+
+        if (
+          !reflectionResetData
+          ||
+          reflectionResetData.length === 0
+          ||
+          reflectionResetData[0].success !== true
+        ) {
+
+          throw new Error(
+            reflectionResetData?.[0]?.message
+            ||
+            "REFLECTION RESET FAILED"
+          );
+
+        }
+
+
+        /* =============================================
            SUCCESS
         ============================================= */
 

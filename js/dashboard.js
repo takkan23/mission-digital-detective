@@ -1271,18 +1271,32 @@ async function loadFinalResult() {
           true;
 
 
-const localReflectionCompleted =
-  localStorage.getItem(
+/* =================================================
+   REFLECTION RESET SYNC
+
+   Supabase student_progress เป็นสถานะหลักเสมอ
+   ถ้าครู RESET แล้ว reflection_completed = false
+   ให้ล้าง localStorage เก่าของนักเรียนทันที
+================================================= */
+
+const serverReflectionCompleted =
+  progress.reflection_completed === true;
+
+if (!serverReflectionCompleted) {
+
+  localStorage.removeItem(
     "evolveReflectionCompleted_"
     +
     student.studentId
-  ) === "true"
-  ||
-  !!localStorage.getItem(
+  );
+
+  localStorage.removeItem(
     "evolveReflection_"
     +
     student.studentId
   );
+
+}
 
 missionState.evolve = {
 
@@ -1290,9 +1304,7 @@ missionState.evolve = {
     evolveAutoUnlocked,
 
   reflectionCompleted:
-    progress.reflection_completed === true
-    ||
-    localReflectionCompleted,
+    serverReflectionCompleted,
 
   submitted:
     progress.evolve_submitted === true,
