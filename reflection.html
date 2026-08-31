@@ -68,8 +68,11 @@
     const logged=localStorage.getItem("studentLoggedIn");
     const role=localStorage.getItem("userRole");
     if(logged!=="true"||role!=="student"||!studentId||!sessionToken){ window.location.replace("index.html"); return; }
+
     const loading=document.getElementById("accessLoading"), page=document.getElementById("page"), formPanel=document.getElementById("reflectionFormPanel"), donePanel=document.getElementById("donePanel"), status=document.getElementById("serverStatus"), saveButton=document.getElementById("saveButton");
     const key="evolveReflection_"+studentId;
+    const completedKey="evolveReflectionCompleted_"+studentId;
+    const pendingKey="evolveReflectionPending_"+studentId;
 
     function setCounter(id,cid){ const el=document.getElementById(id), c=document.getElementById(cid); const sync=()=>c.textContent=el.value.length; el.addEventListener("input",sync); sync(); }
     setCounter("reflection1","c1"); setCounter("reflection2","c2"); setCounter("reflection3","c3");
@@ -90,67 +93,82 @@
         const {data,error}=await supabaseClient.rpc("get_evolve_reflection_v2",{p_student_id:studentId,p_session_token:sessionToken});
         if(error) throw error;
         if(Array.isArray(data)&&data.length&&data[0].saved===true){ return data[0]; }
-      }catch(e){ console.warn("Reflection RPC not available / load failed",e); }
+      }catch(e){ console.warn("Reflection RPC load failed",e); }
       return null;
+    }
+
+    async function saveServerReflection(payload){
+      const {data,error}=await supabaseClient.rpc("save_evolve_reflection_v2",{
+        p_student_id:studentId,
+        p_session_token:sessionToken,
+        p_reflection_1:payload.reflection1,
+        p_reflection_2:payload.reflection2,
+        p_reflection_3:payload.reflection3
+      });
+      if(error) throw error;
+      if(!Array.isArray(data)||!data.length||data[0].saved!==true){
+        throw new Error(data?.[0]?.message||"REFLECTION SAVE FAILED");
+      }
+      return data[0];
     }
 
     function normalize(r){ return {reflection1:r.reflection_1||r.reflection1||"",reflection2:r.reflection_2||r.reflection2||"",reflection3:r.reflection_3||r.reflection3||"",savedAt:r.updated_at||r.savedAt||new Date().toISOString()}; }
     function fill(r){ const n=normalize(r); document.getElementById("reflection1").value=n.reflection1; document.getElementById("reflection2").value=n.reflection2; document.getElementById("reflection3").value=n.reflection3; ["reflection1","reflection2","reflection3"].forEach(id=>document.getElementById(id).dispatchEvent(new Event("input"))); }
-    function showDone(serverSaved){ formPanel.classList.add("hidden"); donePanel.classList.add("show"); if(serverSaved){ status.textContent="✓ บันทึก Reflection ลง Supabase แล้ว สามารถกลับมาส่งงานจากอุปกรณ์อื่นได้"; status.className="server-status ok"; } else { status.textContent="บันทึกไว้ในอุปกรณ์นี้แล้ว • หากต้องการใช้งานข้ามอุปกรณ์ ให้ติดตั้งไฟล์ SQL ที่แนบมากับชุดเว็บ"; status.className="server-status warn"; } }
+    function showDone(){ formPanel.classList.add("hidden"); donePanel.classList.add("show"); status.textContent="✓ บันทึก Reflection ลง Supabase แล้ว สามารถเข้าสู่ภารกิจต่อยอดและกลับมาจากอุปกรณ์อื่นได้"; status.className="server-status ok"; }
+    function showPending(message){ formPanel.classList.remove("hidden"); donePanel.classList.remove("show"); status.textContent=message||"ยังบันทึก Reflection ลงระบบไม่สำเร็จ กรุณากดบันทึกอีกครั้ง"; status.className="server-status warn"; }
     async function notifyTeacher(){ try{ const ch=supabaseClient.channel("mission-live-results"); await ch.subscribe(); await ch.send({type:"broadcast",event:"student-result-updated",payload:{stage:"reflection",student_id:studentId,updated_at:new Date().toISOString()}}); setTimeout(()=>supabaseClient.removeChannel(ch),800); }catch(e){ console.warn("broadcast",e); } }
 
     const progress=await verify(); if(!progress) return;
     loading.classList.add("hidden"); page.classList.remove("hidden");
 
-    /* =====================================================
-       RESET SYNC
-       ถ้า Supabase แจ้งว่า Reflection ยังไม่เสร็จ
-       แปลว่าครูอาจ RESET แล้ว ให้ล้างข้อมูล local เก่า
-    ===================================================== */
-    const completedKey="evolveReflectionCompleted_"+studentId;
-
-    if(progress.reflection_completed!==true){
+    /* ถ้าครู RESET จริง ให้ล้างข้อมูลเก่า แต่ถ้าเป็น Reflection ที่รอ sync ให้เก็บไว้เพื่อ retry */
+    const pending=localStorage.getItem(pendingKey)==="true";
+    if(progress.reflection_completed!==true && !pending){
       localStorage.removeItem(key);
       localStorage.removeItem(completedKey);
     }
 
-    let restored=false;
-    const server = progress.reflection_completed===true
-      ? await loadServerReflection()
-      : null;
-
+    const server = await loadServerReflection();
     if(server){
       const n=normalize(server);
       localStorage.setItem(key,JSON.stringify(n));
       localStorage.setItem(completedKey,"true");
+      localStorage.removeItem(pendingKey);
       fill(n);
-      restored=true;
-      showDone(true);
+      showDone();
+      return;
     }
-    else if(progress.reflection_completed===true){
-      try{
-        const raw=localStorage.getItem(key);
-        if(raw){
-          const n=JSON.parse(raw);
-          fill(n);
-          restored=true;
-          showDone(false);
-        }
-      }catch(e){}
-    }
+
+    /* ถ้ามี draft ที่บันทึกไม่สำเร็จ ให้คืนข้อความให้นักเรียน ไม่ทำหาย */
+    try{
+      const raw=localStorage.getItem(key);
+      if(raw){ fill(JSON.parse(raw)); if(pending) showPending("พบ Reflection ที่ยังรอบันทึกลงระบบ กรุณากด “บันทึก Reflection” อีกครั้ง"); }
+    }catch(e){}
 
     document.getElementById("reflectionForm").addEventListener("submit",async function(ev){
       ev.preventDefault(); if(!this.checkValidity()){ this.reportValidity(); return; }
       const payload={reflection1:document.getElementById("reflection1").value.trim(),reflection2:document.getElementById("reflection2").value.trim(),reflection3:document.getElementById("reflection3").value.trim(),savedAt:new Date().toISOString()};
       if(payload.reflection1.length<20||payload.reflection2.length<20||payload.reflection3.length<20){ alert("กรุณาเขียน Reflection แต่ละข้ออย่างน้อย 20 ตัวอักษร"); return; }
-      localStorage.setItem(key,JSON.stringify(payload)); saveButton.disabled=true; const old=saveButton.textContent; saveButton.textContent="กำลังบันทึก...";
-      let serverSaved=false;
+
+      localStorage.setItem(key,JSON.stringify(payload));
+      localStorage.setItem(pendingKey,"true");
+      localStorage.removeItem(completedKey);
+      saveButton.disabled=true; const old=saveButton.textContent; saveButton.textContent="กำลังบันทึก...";
+
       try{
-        const {data,error}=await supabaseClient.rpc("save_evolve_reflection_v2",{p_student_id:studentId,p_session_token:sessionToken,p_reflection_1:payload.reflection1,p_reflection_2:payload.reflection2,p_reflection_3:payload.reflection3});
-        if(error) throw error;
-        if(Array.isArray(data)&&data.length&&data[0].saved===true) serverSaved=true;
-      }catch(e){ console.warn("Reflection saved locally only",e); }
-      localStorage.setItem("evolveReflectionCompleted_"+studentId,"true"); await notifyTeacher(); showDone(serverSaved); saveButton.disabled=false; saveButton.textContent=old;
+        const saved=await saveServerReflection(payload);
+        localStorage.setItem(key,JSON.stringify(normalize({...payload,updated_at:saved.updated_at}))); 
+        localStorage.setItem(completedKey,"true");
+        localStorage.removeItem(pendingKey);
+        await notifyTeacher();
+        showDone();
+      }catch(e){
+        console.error("Save Reflection failed",e);
+        showPending("บันทึกคำตอบไว้ในเครื่องแล้ว แต่ยังส่งขึ้นระบบไม่สำเร็จ กรุณาตรวจสอบอินเทอร์เน็ตแล้วกดบันทึกอีกครั้ง");
+        alert("ยังบันทึก Reflection ลงระบบไม่สำเร็จ กรุณาลองอีกครั้ง ข้อมูลที่พิมพ์ไว้ยังไม่หาย");
+      }finally{
+        saveButton.disabled=false; saveButton.textContent=old;
+      }
     });
   });
   </script>

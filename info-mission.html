@@ -49,30 +49,53 @@ document.addEventListener("DOMContentLoaded",async function(){
  const studentId=localStorage.getItem("studentId"), sessionToken=localStorage.getItem("studentSessionToken"), logged=localStorage.getItem("studentLoggedIn"), role=localStorage.getItem("userRole");
  if(logged!=="true"||role!=="student"||!studentId||!sessionToken){window.location.replace("index.html");return;}
  const loading=document.getElementById("accessLoading"),page=document.getElementById("page"),workspace=document.getElementById("workspace"),waiting=document.getElementById("waitingPanel"),complete=document.getElementById("completePanel"),form=document.getElementById("infographicForm"),submit=document.getElementById("submitButton"),draftText=document.getElementById("draftText");
- const reflectionKey="evolveReflection_"+studentId,draftKey="evolveDraft_"+studentId;
+ const reflectionKey="evolveReflection_"+studentId,draftKey="evolveDraft_"+studentId,completedKey="evolveReflectionCompleted_"+studentId,pendingKey="evolveReflectionPending_"+studentId;
  let reflection=null;
  function show(el){workspace.classList.add("hidden");waiting.classList.remove("show");complete.classList.remove("show");el.classList.add("show");}
  async function verify(){try{const {data,error}=await supabaseClient.rpc("get_student_mission_state",{p_student_id:studentId,p_session_token:sessionToken});if(error)throw error;if(!data||!data.length)return null;const p=data[0];if(p.discover_completed!==true||p.analyze_completed!==true||p.reason_completed!==true){alert("กรุณาทำ D • A • R ให้สำเร็จก่อนเข้าสู่ภารกิจต่อยอด");window.location.replace("dashboard.html");return null;}return p;}catch(e){console.error(e);alert("ไม่สามารถตรวจสอบสิทธิ์ Evolve ได้");window.location.replace("dashboard.html");return null;}}
  async function getServerReflection(){try{const {data,error}=await supabaseClient.rpc("get_evolve_reflection_v2",{p_student_id:studentId,p_session_token:sessionToken});if(error)throw error;if(Array.isArray(data)&&data.length&&data[0].saved===true)return {reflection1:data[0].reflection_1||"",reflection2:data[0].reflection_2||"",reflection3:data[0].reflection_3||""};}catch(e){console.warn("Reflection server lookup unavailable",e);}return null;}
  function getLocalReflection(){try{const raw=localStorage.getItem(reflectionKey);return raw?JSON.parse(raw):null;}catch(e){return null;}}
+ async function syncLocalReflection(local){
+   if(!local||!local.reflection1||!local.reflection2||!local.reflection3)return false;
+   try{
+     const {data,error}=await supabaseClient.rpc("save_evolve_reflection_v2",{p_student_id:studentId,p_session_token:sessionToken,p_reflection_1:String(local.reflection1).trim(),p_reflection_2:String(local.reflection2).trim(),p_reflection_3:String(local.reflection3).trim()});
+     if(error)throw error;
+     if(Array.isArray(data)&&data.length&&data[0].saved===true){localStorage.setItem(completedKey,"true");localStorage.removeItem(pendingKey);return true;}
+   }catch(e){console.error("Reflection resync failed",e);}
+   return false;
+ }
  function saveDraft(){localStorage.setItem(draftKey,JSON.stringify({title:document.getElementById("workTitle").value,link:document.getElementById("workLink").value,sources:document.getElementById("workSources").value,description:document.getElementById("workDescription").value}));draftText.textContent="DRAFT SAVED : "+new Date().toLocaleTimeString("th-TH",{hour:"2-digit",minute:"2-digit"});}
  function restoreDraft(){try{const d=JSON.parse(localStorage.getItem(draftKey)||"null");if(!d)return;document.getElementById("workTitle").value=d.title||"";document.getElementById("workLink").value=d.link||"";document.getElementById("workSources").value=d.sources||"";document.getElementById("workDescription").value=d.description||"";}catch(e){}}
  async function notifyTeacher(){try{const ch=supabaseClient.channel("mission-live-results");await ch.subscribe();await ch.send({type:"broadcast",event:"student-result-updated",payload:{stage:"evolve",student_id:studentId,updated_at:new Date().toISOString()}});setTimeout(()=>supabaseClient.removeChannel(ch),800);}catch(e){console.warn(e);}}
- const progress=await verify();if(!progress)return;loading.classList.add("hidden");page.classList.remove("hidden");
+
+ let progress=await verify();if(!progress)return;loading.classList.add("hidden");page.classList.remove("hidden");
  if(progress.evolve_completed===true){show(complete);if(progress.evolve_score!==undefined&&progress.evolve_score!==null){document.getElementById("scoreBox").classList.remove("hidden");document.getElementById("teacherScore").textContent=progress.evolve_score;}return;}
  if(progress.evolve_submitted===true){show(waiting);return;}
 
- /* Supabase เป็นสถานะหลัก: ถ้าครู RESET E แล้ว ห้าม localStorage เก่าข้าม Reflection */
- if(progress.reflection_completed!==true){
-   localStorage.removeItem(reflectionKey);
-   localStorage.removeItem("evolveReflectionCompleted_"+studentId);
-   alert("กรุณาบันทึก Reflection ก่อนเข้าสู่ภารกิจส่งงาน");
+ /* หา Reflection จาก Supabase ก่อน */
+ reflection=await getServerReflection();
+
+ /* ถ้า server state ยังไม่อัปเดต แต่เครื่องนี้มี Reflection ให้ลอง sync ซ้ำอัตโนมัติ */
+ if(!reflection){
+   const local=getLocalReflection();
+   if(local){
+     const synced=await syncLocalReflection(local);
+     if(synced){
+       reflection=await getServerReflection()||local;
+       progress=await verify()||progress;
+     }
+   }
+ }
+
+ /* ถ้ายังไม่มี Reflection จริง จึงค่อยกลับไปทำ Reflection และไม่ลบคำตอบทิ้ง */
+ if(!reflection||!reflection.reflection1||!reflection.reflection2||!reflection.reflection3){
+   alert("กรุณาบันทึก Reflection ให้สำเร็จก่อนเข้าสู่ภารกิจส่งงาน");
    window.location.replace("reflection.html");
    return;
  }
 
- reflection=await getServerReflection()||getLocalReflection();
- if(!reflection||!reflection.reflection1||!reflection.reflection2||!reflection.reflection3){alert("กรุณาบันทึก Reflection ก่อนเข้าสู่ภารกิจส่งงาน");window.location.replace("reflection.html");return;}
+ localStorage.setItem(completedKey,"true");
+ localStorage.removeItem(pendingKey);
  ["workTitle","workLink","workSources","workDescription"].forEach(id=>document.getElementById(id).addEventListener("input",saveDraft));restoreDraft();
  form.addEventListener("submit",async function(ev){ev.preventDefault();if(!form.checkValidity()){form.reportValidity();return;}if(document.getElementById("copyrightConfirm").checked!==true){alert("กรุณายืนยันการตรวจสอบลิขสิทธิ์และแหล่งข้อมูล");return;}
    const work={title:document.getElementById("workTitle").value.trim(),link:document.getElementById("workLink").value.trim(),sources:document.getElementById("workSources").value.trim(),description:document.getElementById("workDescription").value.trim()};
