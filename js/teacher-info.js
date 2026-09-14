@@ -5,7 +5,7 @@
 ========================================================= */
 
 console.log(
-  "### TEACHER EVOLVE V4 LOADED ###"
+  "### TEACHER EVOLVE V5 RUBRIC LOADED ###"
 );
 
 
@@ -1647,6 +1647,185 @@ document.addEventListener(
 
 
     /* =====================================================
+       EVOLVE RUBRIC • คศ.3
+       เกณฑ์ 4 ด้าน ด้านละ 1–4 คะแนน รวม 16 คะแนน
+       ปรับเฉพาะข้อความเกณฑ์ ไม่เปลี่ยนโครงสร้างคะแนน/ฐานข้อมูล
+    ===================================================== */
+
+    const evolveRubricCriteria = {
+      evolveScore1: {
+        title: "1. รู้ใช้ : ใช้เทคโนโลยีอย่างปลอดภัย",
+        levels: {
+          4: "ระบุวิธีใช้เทคโนโลยีอย่างปลอดภัยได้ 3 วิธีขึ้นไป ถูกต้องและเหมาะสม",
+          3: "ระบุได้ 2 วิธี ถูกต้องและเหมาะสม",
+          2: "ระบุได้ 1 วิธี หรือมีบางส่วนที่ยังไม่ชัดเจน",
+          1: "ระบุไม่ได้ หรือข้อมูลไม่ถูกต้อง"
+        }
+      },
+      evolveScore2: {
+        title: "2. รู้คิด : ใช้อย่างรับผิดชอบ",
+        levels: {
+          4: "ระบุสิ่งที่ควรทำ สิ่งที่ไม่ควรทำ และผลกระทบต่อตนเองหรือผู้อื่นได้ครบถ้วน",
+          3: "ระบุสิ่งที่ควรทำและไม่ควรทำ พร้อมกล่าวถึงผลกระทบได้บางส่วน",
+          2: "ระบุได้เฉพาะสิ่งที่ควรทำหรือไม่ควรทำ แต่ยังไม่กล่าวถึงผลกระทบ",
+          1: "ระบุไม่ได้ หรือเสนอแนวทางที่ไม่เหมาะสม"
+        }
+      },
+      evolveScore3: {
+        title: "3. รู้สิทธิ : เคารพสิทธิของผู้อื่น",
+        levels: {
+          4: "ใช้ข้อมูล/ภาพเหมาะสม และระบุแหล่งที่มาครบถ้วน",
+          3: "ใช้ข้อมูล/ภาพเหมาะสม และระบุแหล่งที่มาบางส่วน",
+          2: "ใช้ข้อมูล/ภาพเหมาะสม แต่ไม่ระบุแหล่งที่มา",
+          1: "ใช้ข้อมูล/ภาพไม่เหมาะสม หรือละเมิดสิทธิของผู้อื่น"
+        }
+      },
+      evolveScore4: {
+        title: "4. รู้สื่อ : สื่อสารอย่างเหมาะสม",
+        levels: {
+          4: "เนื้อหาถูกต้อง ตรงประเด็น ชัดเจน เข้าใจง่าย และนำไปใช้ได้",
+          3: "เนื้อหาถูกต้องและตรงประเด็น สื่อสารเข้าใจง่าย",
+          2: "เนื้อหาถูกต้องบางส่วน แต่ยังไม่ชัดเจนหรือจัดลำดับไม่เหมาะสม",
+          1: "เนื้อหาไม่ตรงประเด็น หรือมีข้อมูลสำคัญไม่ถูกต้อง"
+        }
+      }
+    };
+
+
+    function applyEvolveRubricContent() {
+
+      document
+        .querySelectorAll(
+          ".teacher-evolve-rubric-item"
+        )
+        .forEach(
+          function (item) {
+
+            const targetId =
+              item.dataset.scoreTarget;
+
+            const criterion =
+              evolveRubricCriteria[
+                targetId
+              ];
+
+            if (
+              !criterion
+            ) {
+              return;
+            }
+
+            /* อัปเดตชื่อหัวข้อถ้ามี element สำหรับหัวข้อ */
+            const titleElement =
+              item.querySelector(
+                "[data-rubric-title], .teacher-evolve-rubric-title, .teacher-rubric-title, h3, h4"
+              );
+
+            if (
+              titleElement
+            ) {
+              titleElement.textContent =
+                criterion.title;
+            }
+
+            /* อัปเดตข้อความระดับคะแนนตาม data-score=1..4 */
+            item
+              .querySelectorAll(
+                ".teacher-rubric-level"
+              )
+              .forEach(
+                function (button) {
+
+                  const score =
+                    Number(
+                      button.dataset.score
+                    );
+
+                  const description =
+                    criterion.levels[
+                      score
+                    ];
+
+                  if (
+                    !description
+                  ) {
+                    return;
+                  }
+
+                  const levelName =
+                    getQualityName(
+                      score
+                    );
+
+                  const labelElement =
+                    button.querySelector(
+                      "[data-rubric-label], .teacher-rubric-label, strong, b"
+                    );
+
+                  const descriptionElement =
+                    button.querySelector(
+                      "[data-rubric-description], .teacher-rubric-description, p, small"
+                    );
+
+                  if (
+                    labelElement
+                    &&
+                    descriptionElement
+                    &&
+                    labelElement !==
+                    descriptionElement
+                  ) {
+                    labelElement.textContent =
+                      score
+                      +
+                      " • "
+                      +
+                      levelName;
+
+                    descriptionElement.textContent =
+                      description;
+                  }
+                  else {
+                    /* fallback สำหรับ HTML เดิมที่ปุ่มไม่มี element แยก */
+                    button.textContent =
+                      score
+                      +
+                      " • "
+                      +
+                      levelName
+                      +
+                      " — "
+                      +
+                      description;
+                  }
+
+                  button.setAttribute(
+                    "aria-label",
+                    criterion.title
+                    +
+                    " ระดับ "
+                    +
+                    score
+                    +
+                    " "
+                    +
+                    levelName
+                    +
+                    ": "
+                    +
+                    description
+                  );
+
+                }
+              );
+
+          }
+        );
+
+    }
+
+
+    /* =====================================================
        RUBRIC CLICK SETUP
     ===================================================== */
 
@@ -2800,6 +2979,9 @@ const submissionData =
     /* =====================================================
        START
     ===================================================== */
+
+    applyEvolveRubricContent();
+
 
     setupRubricButtons();
 
