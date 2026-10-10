@@ -1986,6 +1986,812 @@ document.addEventListener(
 
 
     /* =====================================================
+       REFLECTION VIEW + EXPORT
+       READ-ONLY FEATURE • ไม่แก้ข้อมูลเดิมในฐานข้อมูล
+    ===================================================== */
+
+    const reflectionQuestions = [
+      "วันนี้ฉันได้เรียนรู้อะไรที่สำคัญที่สุดเกี่ยวกับการใช้เทคโนโลยีสารสนเทศอย่างปลอดภัยและมีความรับผิดชอบ",
+      "จากสถานการณ์ที่ได้วิเคราะห์ มีสิ่งใดที่ทำให้ฉันเปลี่ยนวิธีคิดหรือการตัดสินใจ เพราะเหตุใด",
+      "หลังจากวันนี้ ฉันจะนำความรู้ไปปรับใช้กับการใช้เทคโนโลยีของตนเองอย่างไร"
+    ];
+
+
+    function formatReflectionDate(
+      value
+    ) {
+
+      if (
+        !value
+      ) {
+        return "-";
+      }
+
+
+      const date =
+        new Date(
+          value
+        );
+
+
+      if (
+        Number.isNaN(
+          date.getTime()
+        )
+      ) {
+        return String(
+          value
+        );
+      }
+
+
+      return date.toLocaleString(
+        "th-TH",
+        {
+          dateStyle: "medium",
+          timeStyle: "short"
+        }
+      );
+
+    }
+
+
+    function ensureReflectionFeatureUI() {
+
+      if (
+        !document.getElementById(
+          "teacherReflectionFeatureStyles"
+        )
+      ) {
+
+        const style =
+          document.createElement(
+            "style"
+          );
+
+        style.id =
+          "teacherReflectionFeatureStyles";
+
+        style.textContent = `
+          .teacher-reflection-panel{
+            margin:18px 0;
+            padding:18px;
+            border:1px solid rgba(0,216,255,.28);
+            border-radius:16px;
+            background:rgba(0,216,255,.045);
+          }
+          .teacher-reflection-head{
+            display:flex;
+            justify-content:space-between;
+            align-items:flex-start;
+            gap:12px;
+            margin-bottom:14px;
+          }
+          .teacher-reflection-head small{
+            display:block;
+            color:#00d8ff;
+            font-weight:800;
+            letter-spacing:.08em;
+          }
+          .teacher-reflection-head h3{
+            margin:4px 0 0;
+            color:#f5fbff;
+            font-size:1.05rem;
+          }
+          .teacher-reflection-status{
+            color:#91a5b2;
+            font-size:.78rem;
+            text-align:right;
+          }
+          .teacher-reflection-item{
+            margin-top:12px;
+            padding:13px 14px;
+            border:1px solid rgba(255,255,255,.08);
+            border-radius:12px;
+            background:rgba(2,11,22,.68);
+          }
+          .teacher-reflection-item strong{
+            display:block;
+            color:#ffd21a;
+            font-size:.82rem;
+            line-height:1.55;
+            margin-bottom:7px;
+          }
+          .teacher-reflection-answer{
+            margin:0;
+            color:#dce8ed;
+            white-space:pre-wrap;
+            line-height:1.7;
+            word-break:break-word;
+          }
+          .teacher-reflection-empty{
+            color:#91a5b2;
+            font-style:italic;
+          }
+          #exportEvolveReflectionButton{
+            white-space:nowrap;
+          }
+        `;
+
+        document.head.appendChild(
+          style
+        );
+
+      }
+
+
+      let panel =
+        document.getElementById(
+          "teacherEvolveReflectionPanel"
+        );
+
+
+      if (
+        !panel
+      ) {
+
+        panel =
+          document.createElement(
+            "section"
+          );
+
+        panel.id =
+          "teacherEvolveReflectionPanel";
+
+        panel.className =
+          "teacher-reflection-panel";
+
+        panel.innerHTML = `
+          <div class="teacher-reflection-head">
+            <div>
+              <small>LEARNING REFLECTION</small>
+              <h3>คำตอบสะท้อนความคิดของนักเรียน</h3>
+            </div>
+            <div id="teacherReflectionStatus" class="teacher-reflection-status">กำลังรอข้อมูล...</div>
+          </div>
+          <div class="teacher-reflection-item">
+            <strong>01 ${reflectionQuestions[0]}</strong>
+            <p id="teacherReflectionAnswer1" class="teacher-reflection-answer teacher-reflection-empty">-</p>
+          </div>
+          <div class="teacher-reflection-item">
+            <strong>02 ${reflectionQuestions[1]}</strong>
+            <p id="teacherReflectionAnswer2" class="teacher-reflection-answer teacher-reflection-empty">-</p>
+          </div>
+          <div class="teacher-reflection-item">
+            <strong>03 ${reflectionQuestions[2]}</strong>
+            <p id="teacherReflectionAnswer3" class="teacher-reflection-answer teacher-reflection-empty">-</p>
+          </div>
+        `;
+
+
+        const firstRubricItem =
+          modal.querySelector(
+            ".teacher-evolve-rubric-item"
+          );
+
+
+        if (
+          firstRubricItem
+          &&
+          firstRubricItem.parentElement
+        ) {
+
+          firstRubricItem.parentElement.insertBefore(
+            panel,
+            firstRubricItem
+          );
+
+        }
+
+        else {
+
+          const modalCard =
+            modal.querySelector(
+              ".teacher-evolve-assessment-modal"
+            );
+
+          if (
+            modalCard
+          ) {
+            modalCard.appendChild(
+              panel
+            );
+          }
+
+        }
+
+      }
+
+
+      let exportButton =
+        document.getElementById(
+          "exportEvolveReflectionButton"
+        );
+
+
+      if (
+        !exportButton
+      ) {
+
+        exportButton =
+          document.createElement(
+            "button"
+          );
+
+        exportButton.type =
+          "button";
+
+        exportButton.id =
+          "exportEvolveReflectionButton";
+
+        exportButton.textContent =
+          "⇩ EXPORT REFLECTION";
+
+        exportButton.className =
+          refreshButton.className
+          ||
+          "teacher-evolve-assess-button";
+
+
+        if (
+          refreshButton.parentElement
+        ) {
+
+          refreshButton.insertAdjacentElement(
+            "afterend",
+            exportButton
+          );
+
+        }
+
+
+        exportButton.addEventListener(
+          "click",
+          exportEvolveReflectionsCSV
+        );
+
+      }
+
+
+      return panel;
+
+    }
+
+
+    function setReflectionPanelLoading() {
+
+      ensureReflectionFeatureUI();
+
+      const status =
+        document.getElementById(
+          "teacherReflectionStatus"
+        );
+
+      if (
+        status
+      ) {
+        status.textContent =
+          "กำลังโหลด Reflection...";
+      }
+
+
+      [1, 2, 3].forEach(
+        function (
+          index
+        ) {
+
+          const answer =
+            document.getElementById(
+              "teacherReflectionAnswer" + index
+            );
+
+          if (
+            answer
+          ) {
+            answer.textContent =
+              "กำลังโหลด...";
+            answer.classList.add(
+              "teacher-reflection-empty"
+            );
+          }
+
+        }
+      );
+
+    }
+
+
+    function renderStudentReflection(
+      row
+    ) {
+
+      ensureReflectionFeatureUI();
+
+      const values = [
+        row?.reflection_1 || "",
+        row?.reflection_2 || "",
+        row?.reflection_3 || ""
+      ];
+
+      const hasReflection =
+        values.some(
+          function (
+            value
+          ) {
+            return String(
+              value
+              ||
+              ""
+            ).trim() !== "";
+          }
+        );
+
+
+      const status =
+        document.getElementById(
+          "teacherReflectionStatus"
+        );
+
+      if (
+        status
+      ) {
+        status.textContent =
+          hasReflection
+          ?
+          "บันทึกเมื่อ "
+          +
+          formatReflectionDate(
+            row?.updated_at
+          )
+          :
+          "ยังไม่พบ Reflection";
+      }
+
+
+      values.forEach(
+        function (
+          value,
+          index
+        ) {
+
+          const answer =
+            document.getElementById(
+              "teacherReflectionAnswer"
+              +
+              (index + 1)
+            );
+
+          if (
+            !answer
+          ) {
+            return;
+          }
+
+
+          const clean =
+            String(
+              value
+              ||
+              ""
+            ).trim();
+
+          answer.textContent =
+            clean
+            ||
+            "ยังไม่ได้บันทึกคำตอบข้อนี้";
+
+          answer.classList.toggle(
+            "teacher-reflection-empty",
+            !clean
+          );
+
+        }
+      );
+
+    }
+
+
+    async function loadStudentReflectionForTeacher(
+      student
+    ) {
+
+      setReflectionPanelLoading();
+
+
+      const teacherSessionToken =
+        localStorage.getItem(
+          "teacherSessionToken"
+        );
+
+
+      if (
+        !teacherSessionToken
+      ) {
+
+        renderStudentReflection(
+          null
+        );
+
+        return;
+
+      }
+
+
+      try {
+
+        const {
+          data,
+          error
+        } =
+          await supabaseClient.rpc(
+            "teacher_get_evolve_reflection_v1",
+            {
+              p_session_token:
+                teacherSessionToken,
+
+              p_student_id:
+                student.student_id
+            }
+          );
+
+
+        if (
+          error
+        ) {
+          throw error;
+        }
+
+
+        const row =
+          Array.isArray(
+            data
+          )
+          &&
+          data.length > 0
+          ?
+          data[0]
+          :
+          null;
+
+
+        renderStudentReflection(
+          row
+        );
+
+      }
+
+      catch (
+        error
+      ) {
+
+        console.error(
+          "Load Teacher Reflection Error:",
+          error
+        );
+
+        renderStudentReflection(
+          null
+        );
+
+        const status =
+          document.getElementById(
+            "teacherReflectionStatus"
+          );
+
+        if (
+          status
+        ) {
+          status.textContent =
+            "โหลด Reflection ไม่สำเร็จ";
+        }
+
+      }
+
+    }
+
+
+    function csvCell(
+      value
+    ) {
+
+      const text =
+        String(
+          value
+          ??
+          ""
+        )
+        .replace(
+          /\r?\n/g,
+          " "
+        )
+        .replace(
+          /"/g,
+          '""'
+        );
+
+
+      return '"'
+        +
+        text
+        +
+        '"';
+
+    }
+
+
+    async function exportEvolveReflectionsCSV() {
+
+      const button =
+        document.getElementById(
+          "exportEvolveReflectionButton"
+        );
+
+      const oldText =
+        button?.textContent
+        ||
+        "⇩ EXPORT REFLECTION";
+
+
+      if (
+        button
+      ) {
+        button.disabled =
+          true;
+        button.textContent =
+          "กำลังส่งออก...";
+      }
+
+
+      try {
+
+        const teacherSessionToken =
+          localStorage.getItem(
+            "teacherSessionToken"
+          );
+
+        if (
+          !teacherSessionToken
+        ) {
+          throw new Error(
+            "ไม่พบ Teacher Session"
+          );
+        }
+
+
+        const {
+          data,
+          error
+        } =
+          await supabaseClient.rpc(
+            "teacher_export_evolve_reflections_v1",
+            {
+              p_session_token:
+                teacherSessionToken
+            }
+          );
+
+
+        if (
+          error
+        ) {
+          throw error;
+        }
+
+
+        let rows =
+          Array.isArray(
+            data
+          )
+          ?
+          data
+          :
+          [];
+
+
+        const selectedClass =
+          classFilter.value;
+
+
+        if (
+          selectedClass
+        ) {
+
+          rows =
+            rows.filter(
+              function (
+                row
+              ) {
+                return row.class_name ===
+                  selectedClass;
+              }
+            );
+
+        }
+
+
+        if (
+          rows.length === 0
+        ) {
+          alert(
+            "ไม่พบข้อมูล Reflection สำหรับห้องที่เลือก"
+          );
+          return;
+        }
+
+
+        const headers = [
+          "ห้องเรียน",
+          "เลขที่",
+          "รหัสนักเรียน",
+          "ชื่อ-นามสกุล",
+          "สถานะ Reflection",
+          reflectionQuestions[0],
+          reflectionQuestions[1],
+          reflectionQuestions[2],
+          "วันที่บันทึก"
+        ];
+
+
+        const csvRows = [
+          headers.map(
+            csvCell
+          ).join(
+            ","
+          )
+        ];
+
+
+        rows.forEach(
+          function (
+            row
+          ) {
+
+            const hasReflection =
+              Boolean(
+                row.reflection_completed
+              )
+              ||
+              [
+                row.reflection_1,
+                row.reflection_2,
+                row.reflection_3
+              ].some(
+                function (
+                  value
+                ) {
+                  return String(
+                    value
+                    ||
+                    ""
+                  ).trim() !== "";
+                }
+              );
+
+
+            csvRows.push(
+              [
+                row.class_name,
+                row.student_number,
+                row.student_id,
+                row.student_name,
+                hasReflection
+                  ?
+                  "บันทึกแล้ว"
+                  :
+                  "ยังไม่บันทึก",
+                row.reflection_1,
+                row.reflection_2,
+                row.reflection_3,
+                formatReflectionDate(
+                  row.updated_at
+                )
+              ]
+              .map(
+                csvCell
+              )
+              .join(
+                ","
+              )
+            );
+
+          }
+        );
+
+
+        const blob =
+          new Blob(
+            [
+              "\uFEFF"
+              +
+              csvRows.join(
+                "\r\n"
+              )
+            ],
+            {
+              type:
+                "text/csv;charset=utf-8;"
+            }
+          );
+
+
+        const url =
+          URL.createObjectURL(
+            blob
+          );
+
+        const link =
+          document.createElement(
+            "a"
+          );
+
+        const classPart =
+          selectedClass
+          ?
+          "-"
+          +
+          selectedClass.replace(
+            "/",
+            "-"
+          )
+          :
+          "-all";
+
+        link.href =
+          url;
+
+        link.download =
+          "evolve-reflection"
+          +
+          classPart
+          +
+          ".csv";
+
+        document.body.appendChild(
+          link
+        );
+
+        link.click();
+
+        link.remove();
+
+        URL.revokeObjectURL(
+          url
+        );
+
+      }
+
+      catch (
+        error
+      ) {
+
+        console.error(
+          "Export Reflection Error:",
+          error
+        );
+
+        alert(
+          "ไม่สามารถส่งออก Reflection ได้ กรุณาตรวจสอบว่าได้รัน SQL สำหรับ Reflection Export แล้ว"
+        );
+
+      }
+
+      finally {
+
+        if (
+          button
+        ) {
+          button.disabled =
+            false;
+          button.textContent =
+            oldText;
+        }
+
+      }
+
+    }
+
+
+    /* =====================================================
        OPEN ASSESSMENT MODAL
     ===================================================== */
 
@@ -2143,6 +2949,15 @@ async function openAssessmentModal(
       0;
 
   }
+
+
+  /* ===============================================
+     LOAD STUDENT REFLECTION (READ-ONLY)
+  =============================================== */
+
+  await loadStudentReflectionForTeacher(
+    student
+  );
 
 
   /* ===============================================
@@ -2981,6 +3796,9 @@ const submissionData =
     ===================================================== */
 
     applyEvolveRubricContent();
+
+
+    ensureReflectionFeatureUI();
 
 
     setupRubricButtons();
